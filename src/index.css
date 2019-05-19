@@ -1,3 +1,9 @@
+/* Windows 95 Font from StackOverflow */
+@font-face {
+  font-family: "95font";
+  src: url(./fonts/95font.ttf);
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,8 +11,17 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
 
-  background: #59AAA9;
+* {
+  /* Turn off eye comfort */
+  font-family: "95font";
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+}
+
+body, #root {
+  height: 100vh;
 }
 
 code {
