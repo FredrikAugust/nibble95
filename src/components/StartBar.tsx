@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Button from './atom/Button';
+import ClockMoney from './atom/ClockMoney';
 
 const Container = styled.div`
   background-color: #C3C3C3;
@@ -16,6 +17,7 @@ const StartBar: React.FC = () => (
   <Container>
     <Button text="Start" icon={`${process.env.PUBLIC_URL}/start.png`} />
     <Button text="Nibble95" application={true} pressed={true} />
+    <ClockMoney />
   </Container>
 );
 
