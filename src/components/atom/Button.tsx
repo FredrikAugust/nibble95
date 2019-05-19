@@ -58,6 +58,9 @@ export default styled(Button)`
     border-bottom: 2px solid white;
     border-right: 2px solid white;
 
+    margin-top: -1px;
+    height: 36px;
+
     box-shadow: 1px 1px 1px 1px black inset;
 
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAJ0lEQVQYV2N88ODBfwYGBgZ5eXkQxcCIIfD//3+wiocPH0JUoAsAAMp5FTuPL92NAAAAAElFTkSuQmCC) repeat;
