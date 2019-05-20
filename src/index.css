@@ -22,7 +22,7 @@ body {
 }
 
 body, #root {
-  height: 100vh;
+  max-height: 100vh;
 }
 
 code {

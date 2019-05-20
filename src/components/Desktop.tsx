@@ -6,9 +6,9 @@ import Store from './Store';
 
 const Container = styled.div`
   background-color: #008282;
-  flex-grow: 1;
+  height: 100%;
 
-  display: flex;
+  padding: 1em;
 `;
 
 const Desktop: React.FC = () => (

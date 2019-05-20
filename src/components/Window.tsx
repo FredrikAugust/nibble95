@@ -15,22 +15,22 @@ const Container = styled.div`
 
   box-shadow: 1px 1px 0 1px black;
 
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(12, 8.25%);
+  grid-template-rows: 1.6em 10% auto;
 
-  flex-grow: 1;
+  padding: 0.5em;
 
-  margin: 1em;
+  height: 100%;
 `;
 
-const Content = styled.div`
-  flex-grow: 1;
+const WindowBody = styled.div`
 `;
 
-const Window: React.FC = props => (
-  <Container>
+const Window: React.FC<{className?: string}> = props => (
+  <Container className={props.className}>
     <TitleBar name="Nibble95" />
-    <Content>{props.children}</Content>
+    {props.children}
   </Container>
 );
 

@@ -37,6 +37,4 @@ const ClockMoney: React.FC<ClockMoneyProps> = ({ className }) => (
   </Container>
 );
 
-export default styled(ClockMoney)`
-  color: red;
-`;
+export default ClockMoney;
