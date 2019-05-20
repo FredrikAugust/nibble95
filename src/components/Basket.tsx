@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { StoreObject } from './../types/StoreObject';
+import { State } from './../reducers/basket';
 
 const Container = styled.div`
   grid-column: 10 / span 3;
@@ -12,7 +13,7 @@ const Container = styled.div`
   display: grid;
 
   grid-template-columns: 100%;
-  grid-template-rows: 2.3em 82% 2px auto;
+  grid-template-rows: 2.3em 79% 2px auto;
 
   grid-row-gap: 5px;
 
@@ -20,7 +21,7 @@ const Container = styled.div`
     border-top: 1px solid #929292;
     border-bottom: 1px solid white;
 
-    grid-row: 2;
+    grid-row: 3;
 
     margin: 0;
     pading: 0;
@@ -36,11 +37,23 @@ const Container = styled.div`
       margin-right: .3em;
     }
   }
+
+  div:nth-child(2) {
+    grid-row: 2 / span 1;
+
+    border-top: 1px solid #828282;
+    border-left: 1px solid #828282;
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
+
+    padding: 5px;
+  }
 `;
 
 interface BasketProps {
   items: StoreObject[];
   balance: number;
+  basket: State;
 }
 
 const PurchaseButton = styled.button`
@@ -48,6 +61,8 @@ const PurchaseButton = styled.button`
   border-top: 1px solid white;
   border-left: 1px solid white;
   box-shadow: 1px 1px 0 1px black;
+
+  grid-row: 4;
 
   color: white;
 
@@ -61,16 +76,23 @@ const PurchaseButton = styled.button`
     margin-left: .1em;
   }
 
+  outline: 0;
+
+  &:active {
+    box-shadow: 2px 2px 0 3px black;
+  }
+
   font-weight: 100;
 `;
 
 const Basket: React.FC<BasketProps> = props => (
   <Container>
     <h3>
-      <img src={`${process.env.PUBLIC_URL}/${props.items.length == 0 ? 'nofood' : 'food'}.png`} alt="Empty folder" />
+      <img src={`${process.env.PUBLIC_URL}/${props.items.length === 0 ? 'nofood' : 'food'}.png`} alt="Empty folder" />
       Basket
     </h3>
     <div>
+      {Object.keys(props.basket).map((e: string) => props.basket[Number(e)])}
     </div>
     <hr />
     <PurchaseButton>

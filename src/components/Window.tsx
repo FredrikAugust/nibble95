@@ -17,7 +17,6 @@ const Container = styled.div`
 
   display: grid;
   grid-template-columns: repeat(12, 8.25%);
-  grid-template-rows: 1.6em 10% auto;
 
   padding: 0.5em;
 
