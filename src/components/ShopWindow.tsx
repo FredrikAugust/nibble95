@@ -56,7 +56,8 @@ const WindowItem = styled.button`
   }
 
   p {
-    margin: 3 0 5px 0;
+    margin: 3px 0 5px 0;
+    font-size: 1.3em;
   }
 
   &:active {
