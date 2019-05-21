@@ -17,8 +17,8 @@ const Store: React.FC<{ className?: string }> = ({ className }) => {
         <img src={`${process.env.PUBLIC_URL}/logo.png`} />
         Welcome to <strong>Nibble</strong><span>95</span>
       </h1>
-      <ShopWindow></ShopWindow>
-      <Basket balance={0} items={[]} basket={state}></Basket>
+      <ShopWindow dispatch={dispatch} />
+      <Basket dispatch={dispatch} balance={0} basket={state}></Basket>
     </Window>
   );
 };

@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { StoreObject } from './../types/StoreObject';
 import { StoreCtx } from './App';
-
-import Window from './Window';
+import { Action, add } from '../reducers/basket';
 
 const Container = styled.div`
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAMklEQVQoU2P8/5//PwMYfIBQaICRCAX/oSZgNYCB8f9/khUIQI2CuAmLCQQVoLqFoBsA13oh6VgfNmcAAAAASUVORK5CYII=) repeat;
@@ -71,23 +70,27 @@ const WindowItem = styled.button`
   }
 `;
 
-const ShopWindowItem: React.FC<StoreObject> = (so: StoreObject) => (
-  <WindowItem key={so.pk}>
+interface ShopWindowItemProps extends StoreObject {
+  dispatch: Dispatch<Action>;
+}
+
+const ShopWindowItem: React.FC<ShopWindowItemProps> = ({ dispatch, ...item }: ShopWindowItemProps) => (
+  <WindowItem key={item.pk} onClick={() => dispatch(add(item))}>
     <div>
-      <img src={so.image ? `https://online.ntnu.no/${so.image.sm}` : ''} alt={so.name} />
+      <img src={item.image ? `https://online.ntnu.no/${item.image.sm}` : ''} alt={item.name} />
       <hr />
-      <h3>{so.name}</h3>
-      <p>{so.price} NOK</p>
+      <h3>{item.name}</h3>
+      <p>{item.price} NOK</p>
     </div>
   </WindowItem>
 );
 
-const ShopWindow: React.FC = () => {
+const ShopWindow: React.FC<{ dispatch: Dispatch<Action> }> = ({ dispatch }) => {
   const store = React.useContext(StoreCtx);
 
   return (
     <Container>
-      {store.length == 0 ? "Loading..." : store.map(ShopWindowItem)}
+      {store.length == 0 ? "Loading..." : store.map(e => <ShopWindowItem {...e} dispatch={dispatch} />)}
     </Container>
   );
 };

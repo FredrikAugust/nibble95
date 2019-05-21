@@ -7,7 +7,7 @@ export interface State {
 }
 
 export interface Action {
-  type: 'add' | 'remove';
+  type: "add" | "remove";
   item: number;
 }
 
@@ -20,12 +20,12 @@ const reducer = (state: State, action: Action) => {
   }
 }
 
-const add = (item: StoreObject) => ({
+const add = (item: StoreObject): { type: 'add', item: number } => ({
   type: 'add',
   item: item.pk
 });
 
-const remove = (item: StoreObject) => ({
+const remove = (item: StoreObject): { type: 'remove', item: number } => ({
   type: 'remove',
   item: item.pk
 });
