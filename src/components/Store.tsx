@@ -1,8 +1,8 @@
 import React from 'react';
 
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-import { reducer, initialState } from './../reducers/basket';
+import { reducer } from './../reducers/basket';
 
 import Window from './Window';
 import ShopWindow from './ShopWindow';
@@ -14,7 +14,7 @@ const Store: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <Window className={className}>
       <h1>
-        <img src={`${process.env.PUBLIC_URL}/logo.png`} />
+        <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Nibble Logo (Windows 95 Search Computer Icon)" />
         Welcome to <strong>Nibble</strong><span>95</span>
       </h1>
       <ShopWindow dispatch={dispatch} />

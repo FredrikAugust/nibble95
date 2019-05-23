@@ -16,7 +16,7 @@ const BasketItem: React.FC<BasketItemProps> = ({ className, id, quantity, dispat
 
   if (!quantity) return null;  
 
-  const item: StoreObject = store.find(e => e.pk === id)!;
+  const item: StoreObject = store.find(e => e.pk === id)!; // I PROMISE this exists, ok typescript?
 
   return (
     <div className={className} onClick={() => dispatch(remove(item))}>

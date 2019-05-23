@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import TitleBar from './TitleBar';
 
@@ -21,9 +21,6 @@ const Container = styled.div`
   padding: 0.5em;
 
   height: 100%;
-`;
-
-const WindowBody = styled.div`
 `;
 
 const Window: React.FC<{className?: string}> = props => (

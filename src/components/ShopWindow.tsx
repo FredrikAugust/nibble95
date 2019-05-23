@@ -52,6 +52,9 @@ const WindowItem = styled.button`
     margin-bottom: 0;
     text-align: center;
     font-size: 1.3em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   p {
@@ -90,7 +93,7 @@ const ShopWindow: React.FC<{ dispatch: Dispatch<Action> }> = ({ dispatch }) => {
 
   return (
     <Container>
-      {store.length == 0 ? "Loading..." : store.map(e => <ShopWindowItem {...e} dispatch={dispatch} />)}
+      {store.length === 0 ? "Loading..." : store.map(e => <ShopWindowItem key={e.pk} {...e} dispatch={dispatch} />)}
     </Container>
   );
 };

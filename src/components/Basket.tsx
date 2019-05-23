@@ -117,7 +117,7 @@ const Basket: React.FC<BasketProps> = props => {
         Basket <span style={{display: totalPrice > 0 ? "inline" : "none"}}>({ totalPrice }NOK)</span>
       </h3>
       <BasketItemContainer>
-        {Object.keys(props.basket).map((e: string) => <BasketItem id={Number(e)} quantity={props.basket[Number(e)]} dispatch={props.dispatch} />)}
+        {Object.keys(props.basket).map((e: string) => <BasketItem key={e} id={Number(e)} quantity={props.basket[Number(e)]} dispatch={props.dispatch} />)}
       </BasketItemContainer>
       <hr />
       <PurchaseButton>
