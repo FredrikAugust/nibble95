@@ -10,7 +10,6 @@ export type Action = { type: 'set_active', applicationName: string }
   | { type: 'add', applicationName: string, component: React.ComponentType<any> }
 
 const reducer = (state: State, action: Action): State => {
-  console.log(state, action.type);
   switch(action.type) {
     case 'set_active':
       const new_state = state;

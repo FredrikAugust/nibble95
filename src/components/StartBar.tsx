@@ -24,7 +24,7 @@ interface StartBarProps {
 
 const StartBar: React.FC<StartBarProps> = props => (
   <Container>
-    <Button onClick={() => {}}text="Start" icon={`${process.env.PUBLIC_URL}/start.png`} />
+    <Button onClick={() => {}} text="Start" icon={`${process.env.PUBLIC_URL}/start.png`} />
     {
       Object.entries(props.state).map(([name, info]) => (
         <Button
