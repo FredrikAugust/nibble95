@@ -1,7 +1,5 @@
 import { StoreObject } from './../types/StoreObject';
 
-const initialState = {};
-
 export interface State {
   [pk: number]: number,
 }
@@ -30,4 +28,4 @@ const remove = (item: StoreObject): { type: 'remove', item: number } => ({
   item: item.pk
 });
 
-export { reducer, initialState, add, remove };
+export { reducer, add, remove };

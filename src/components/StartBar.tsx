@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 
 import styled from 'styled-components';
 
 import Button from './atom/Button';
 import ClockMoney from './atom/ClockMoney';
+import { State, minimize, set_active, Action } from '../reducers/application';
 
 const Container = styled.div`
   background-color: #C3C3C3;
@@ -13,10 +14,21 @@ const Container = styled.div`
   display: flex;
 `;
 
-const StartBar: React.FC = () => (
+interface StartBarProps {
+  state: State;
+  minimize: typeof minimize;
+  set_active: typeof set_active;
+  dispatch: Dispatch<Action>;
+}
+
+const StartBar: React.FC<StartBarProps> = props => (
   <Container>
     <Button text="Start" icon={`${process.env.PUBLIC_URL}/start.png`} />
-    <Button text="Nibble95" application={true} pressed={true} />
+    {
+      Object.entries(props.state).map(([name, info]) => (
+        <Button key={name} text={name} application={true} pressed={info.state === 'focused' ? true : false} />
+      ))
+    }
     <ClockMoney />
   </Container>
 );

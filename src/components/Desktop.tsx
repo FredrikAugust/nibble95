@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 
 import styled from 'styled-components';
 
 import Store from './Store';
+import { add, Action } from '../reducers/application';
 
 const Container = styled.div`
   background-color: #008282;
@@ -11,10 +12,24 @@ const Container = styled.div`
   padding: 1em;
 `;
 
-const Desktop: React.FC = () => (
-  <Container>
-    <Store/>
-  </Container>
-);
+interface DesktopProps {
+  add: typeof add;
+  dispatch: Dispatch<Action>;
+}
+
+class Desktop extends React.Component<DesktopProps, {}> {
+  componentDidMount() {
+    const { dispatch, add } = this.props;
+    dispatch(add('Nibble95', Store));
+  }
+
+  render() {
+    return (
+      <Container>
+        <Store/>
+      </Container>
+    );
+  }
+}
 
 export default Desktop;
