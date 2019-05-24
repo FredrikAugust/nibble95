@@ -8,11 +8,18 @@ import Window from './Window';
 import ShopWindow from './ShopWindow';
 import Basket from './Basket';
 
-const Store: React.FC<{ className?: string, hidden: boolean }> = ({ className }) => {
+interface StoreProps {
+  className?: string;
+  state: 'focused' | 'not_focused' | 'minimized';
+  name: string;
+  onClick: Function;
+}
+
+const Store: React.FC<StoreProps> = ({ className, name, onClick }) => {
   const [state, dispatch] = React.useReducer(reducer, {});
 
   return (
-    <Window className={className}>
+    <Window className={className} name={name} onClick={onClick}>
       <h1>
         <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Nibble Logo (Windows 95 Search Computer Icon)" />
         Welcome to <strong>Nibble</strong><span>95</span>
@@ -55,5 +62,12 @@ export default styled(Store)`
 
   grid-template-rows: 1.6em 3.2em auto;
 
-  ${props => `${props.hidden ? 'display: none;' : ''}`}
+  height: calc(95vh - 44px);
+  width: 97vw;
+
+  top: 2.5vh;
+  left: 1.5vw;
+
+  ${props => `${props.state === 'focused' ? 'z-index: 1;' : 'z-index: 0'}`}
+  ${props => `${props.state === 'minimized' ? 'display: none' : ''}`}
 `;

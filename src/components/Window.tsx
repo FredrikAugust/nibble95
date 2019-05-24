@@ -20,12 +20,14 @@ const Container = styled.div`
 
   padding: 0.5em;
 
+  position: absolute;
+
   height: 100%;
 `;
 
-const Window: React.FC<{className?: string}> = props => (
-  <Container className={props.className}>
-    <TitleBar name="Nibble95" />
+const Window: React.FC<{className?: string, name: string, onClick: Function}> = props => (
+  <Container className={props.className} onClick={() => props.onClick()}>
+    <TitleBar name={props.name} />
     {props.children}
   </Container>
 );

@@ -13,6 +13,8 @@ const Container = styled.div`
   box-shadow: 0px 0px 1px 1px #e8e8e8;
   display: flex;
   height: 44px;
+  position: relative;
+  z-index: 4815162342;
 `;
 
 interface StartBarProps {
@@ -32,7 +34,7 @@ const StartBar: React.FC<StartBarProps> = props => (
           text={name}
           application={true}
           pressed={info.state === 'focused' ? true : false}
-          onClick={() => info.state === 'minimized' ? props.dispatch(set_active(name)) : props.dispatch(minimize(name))}
+          onClick={() => info.state === 'minimized' ? props.dispatch(set_active(name)) : (info.state === 'not_focused' ? props.dispatch(set_active(name)) : props.dispatch(minimize(name)))}
         />
       ))
     }
