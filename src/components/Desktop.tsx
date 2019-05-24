@@ -6,6 +6,7 @@ import Store from './Store';
 import Login from './Login';
 
 import { add, Action, State, set_active } from '../reducers/application';
+import { User } from '../types/User';
 
 const Container = styled.div`
   background-color: #008282;
@@ -19,6 +20,8 @@ interface DesktopProps {
   add: typeof add;
   dispatch: Dispatch<Action>;
   state: State;
+  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+  user: User | undefined;
 }
 
 class Desktop extends React.Component<DesktopProps, {}> {
@@ -33,7 +36,14 @@ class Desktop extends React.Component<DesktopProps, {}> {
       <Container>
         {
           Object.entries(this.props.state).map(([name, info]) => (
-            <info.component key={name} name={name} state={info.state} onClick={() => this.props.dispatch(set_active(name))} />
+            <info.component
+              key={name}
+              name={name}
+              state={info.state}
+              onClick={() => this.props.dispatch(set_active(name))}
+              setUser={this.props.setUser}
+              user={this.props.user}
+            />
           ))
         }
       </Container>

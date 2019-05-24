@@ -1,19 +1,19 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import StartBar from './StartBar'
 import Desktop from './Desktop'
 
 import { StoreObject } from './../types/StoreObject';
 import { add, minimize, set_active, reducer } from './../reducers/application';
+import { User } from '../types/User';
 
-const _Container: React.FC<{ className?: string }> = props => {
+const Container: React.FC = () => {
   const [state, dispatch] = React.useReducer(reducer, {});
+  const [user, setUser] = React.useState<User>();
 
   return (
-    <div className={props.className}>
-      <Desktop dispatch={dispatch} add={add} state={state} />
+    <div style={{ height: 'calc(100vh - 44px)' }}>
+      <Desktop user={user} dispatch={dispatch} add={add} state={state} setUser={setUser} />
       <StartBar dispatch={dispatch} state={state} minimize={minimize} set_active={set_active} />
     </div>
   );
@@ -41,9 +41,5 @@ class App extends React.Component<{}, { items: StoreObject[] }> {
     );
   }
 }
-
-const Container = styled(_Container)`
-  height: calc(100vh - 44px)
-`;
 
 export default App;

@@ -33,7 +33,7 @@ const Container = styled.div`
 
 const ClockMoney: React.FC<ClockMoneyProps> = ({ className }) => (
   <Container>
-    <span>100 NOK</span> 
+    <span>- NOK</span> 
   </Container>
 );
 

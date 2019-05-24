@@ -14,19 +14,19 @@ export const fetchToken = async () => {
 const saveToken = (token: string) => localStorage.setItem('n95_token', token);
 export const loadToken = (): string => localStorage.getItem('n95_token')!;
 
-export const fetchWithToken = async (url: string): Promise<Response> => {
+export const fetchWithToken = async (url: string, second: boolean = false): Promise<Response> => {
   const res = await fetch(url, {
     headers: {
-      authorization: `bearer ${loadToken()}`,
-      "content-type": "application/json"
+      Authorization: `Bearer ${loadToken()}`,
+      "Content-Type": "application/json"
     }
   });
 
-  if (res.status === 401) {
+  if (res.status === 401 && !second) {
     // token is too old
     await fetchToken();
 
-    const retryRes = await fetchWithToken(url);
+    const retryRes = await fetchWithToken(url, true);
 
     if (retryRes.status === 401) {
       throw (retryRes);
@@ -37,3 +37,18 @@ export const fetchWithToken = async (url: string): Promise<Response> => {
 
   return res;
 };
+
+export interface LoginResponse {
+  count: number;
+  next: any;
+  previous: any;
+  results: Array<{
+      pk: number;
+      first_name: string;
+      last_name: string;
+      saldo: number;
+  }>;
+}
+
+export const login = async (rfid: string) =>
+  await (await fetchWithToken(`${API_BASE}/usersaldo/?rfid=${rfid}`)).json() as LoginResponse;

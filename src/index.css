@@ -19,6 +19,7 @@ body {
   -webkit-font-smoothing: none;
   font-smooth: never;
   box-sizing: border-box;
+  outline: none;
 }
 
 body, #root {

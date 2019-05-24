@@ -7,12 +7,15 @@ import { reducer } from './../reducers/basket';
 import Window from './Window';
 import ShopWindow from './ShopWindow';
 import Basket from './Basket';
+import { User } from '../types/User';
 
 interface StoreProps {
   className?: string;
   state: 'focused' | 'not_focused' | 'minimized';
   name: string;
   onClick: Function;
+  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+  user: User | undefined;
 }
 
 const Store: React.FC<StoreProps> = ({ className, name, onClick }) => {
