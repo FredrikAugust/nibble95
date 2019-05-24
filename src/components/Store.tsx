@@ -8,7 +8,7 @@ import Window from './Window';
 import ShopWindow from './ShopWindow';
 import Basket from './Basket';
 
-const Store: React.FC<{ className?: string }> = ({ className }) => {
+const Store: React.FC<{ className?: string, hidden: boolean }> = ({ className }) => {
   const [state, dispatch] = React.useReducer(reducer, {});
 
   return (
@@ -54,4 +54,6 @@ export default styled(Store)`
   }
 
   grid-template-rows: 1.6em 3.2em auto;
+
+  ${props => `${props.hidden ? 'display: none;' : ''}`}
 `;

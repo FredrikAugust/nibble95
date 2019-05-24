@@ -1,19 +1,18 @@
 export interface State {
   [applicationName: string]: {
-    component: React.Component | React.FC,
+    component: React.ComponentType<any>,
     state: 'focused' | 'minimized' | 'not_focused'
   },
 }
 
 export type Action = { type: 'set_active', applicationName: string }
   | { type: 'minimize', applicationName: string }
-  | { type: 'add', applicationName: string, component: React.Component | React.FC }
+  | { type: 'add', applicationName: string, component: React.ComponentType<any> }
 
 const reducer = (state: State, action: Action): State => {
+  console.log(state, action.type);
   switch(action.type) {
     case 'set_active':
-      return {...state, [action.applicationName]: { state: 'focused', ...state[action.applicationName] }};
-    case 'minimize':
       const new_state = state;
 
       Object.entries(state).forEach(([name, body]) => {
@@ -25,6 +24,8 @@ const reducer = (state: State, action: Action): State => {
       });
 
       return { ...new_state };
+    case 'minimize':
+      return { ...state, [action.applicationName]: { ...state[action.applicationName], state: 'minimized' }};
     case 'add':
       return { ...state, [action.applicationName]: { component: action.component, state: 'focused' } };
   }
@@ -40,7 +41,7 @@ const minimize = (applicationName: string): { type: 'minimize', applicationName:
   applicationName
 });
 
-const add = (applicationName: string, component: React.Component | React.FC): { type: 'add', applicationName: string, component: React.Component | React.FC } => ({
+const add = (applicationName: string, component: React.ComponentType<any>): { type: 'add', applicationName: string, component: React.ComponentType<any>} => ({
   type: 'add',
   applicationName,
   component

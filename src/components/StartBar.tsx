@@ -12,6 +12,7 @@ const Container = styled.div`
   border-top: 1px solid white;
   box-shadow: 0px 0px 1px 1px #e8e8e8;
   display: flex;
+  height: 44px;
 `;
 
 interface StartBarProps {
@@ -23,10 +24,16 @@ interface StartBarProps {
 
 const StartBar: React.FC<StartBarProps> = props => (
   <Container>
-    <Button text="Start" icon={`${process.env.PUBLIC_URL}/start.png`} />
+    <Button onClick={() => {}}text="Start" icon={`${process.env.PUBLIC_URL}/start.png`} />
     {
       Object.entries(props.state).map(([name, info]) => (
-        <Button key={name} text={name} application={true} pressed={info.state === 'focused' ? true : false} />
+        <Button
+          key={name}
+          text={name}
+          application={true}
+          pressed={info.state === 'focused' ? true : false}
+          onClick={() => info.state === 'minimized' ? props.dispatch(set_active(name)) : props.dispatch(minimize(name))}
+        />
       ))
     }
     <ClockMoney />

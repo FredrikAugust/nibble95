@@ -3,7 +3,7 @@ import React, { Dispatch } from 'react';
 import styled from 'styled-components';
 
 import Store from './Store';
-import { add, Action } from '../reducers/application';
+import { add, Action, State } from '../reducers/application';
 
 const Container = styled.div`
   background-color: #008282;
@@ -15,6 +15,7 @@ const Container = styled.div`
 interface DesktopProps {
   add: typeof add;
   dispatch: Dispatch<Action>;
+  state: State;
 }
 
 class Desktop extends React.Component<DesktopProps, {}> {
@@ -26,7 +27,11 @@ class Desktop extends React.Component<DesktopProps, {}> {
   render() {
     return (
       <Container>
-        <Store/>
+        {
+          Object.entries(this.props.state).map(([name, info]) => (
+            <info.component key={name} hidden={info.state === 'minimized'} />
+          ))
+        }
       </Container>
     );
   }

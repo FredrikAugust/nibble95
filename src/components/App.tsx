@@ -13,7 +13,7 @@ const _Container: React.FC<{ className?: string }> = props => {
 
   return (
     <div className={props.className}>
-      <Desktop dispatch={dispatch} add={add} />
+      <Desktop dispatch={dispatch} add={add} state={state} />
       <StartBar dispatch={dispatch} state={state} minimize={minimize} set_active={set_active} />
     </div>
   );

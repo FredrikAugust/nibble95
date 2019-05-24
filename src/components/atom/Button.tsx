@@ -8,6 +8,7 @@ export interface ButtonProps {
   className?: string;
   application?: boolean;
   pressed?: boolean;
+  onClick: Function;
 }
 
 const Icon = styled.img`
@@ -17,8 +18,8 @@ const Icon = styled.img`
   margin-right: .3em;
 `;
 
-const Button: React.FC<ButtonProps> = ({ text, className, icon }) => (
-  <button className={className}>
+const Button: React.FC<ButtonProps> = ({ text, className, icon, onClick }) => (
+  <button className={className} onClick={() => onClick()}>
     { icon ? <Icon src={icon} alt="Windows 95 Logo" /> : "" }
     {text}
   </button>
