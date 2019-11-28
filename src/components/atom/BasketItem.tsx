@@ -1,8 +1,8 @@
-import React, { Dispatch } from 'react';
-import styled from 'styled-components';
-import { StoreCtx } from '../App';
-import { StoreObject } from '../../types/StoreObject';
-import { Action, remove } from '../../reducers/basket';
+import React, { Dispatch } from "react";
+import styled from "styled-components";
+import { Action, remove } from "../../reducers/basket";
+import { StoreObject } from "../../types/StoreObject";
+import { StoreCtx } from "../App";
 
 interface BasketItemProps {
   className?: string;
@@ -11,10 +11,17 @@ interface BasketItemProps {
   dispatch: Dispatch<Action>;
 }
 
-const BasketItem: React.FC<BasketItemProps> = ({ className, id, quantity, dispatch }) => {
+const BasketItem: React.FC<BasketItemProps> = ({
+  className,
+  id,
+  quantity,
+  dispatch
+}) => {
   const store = React.useContext(StoreCtx);
 
-  if (!quantity) return null;  
+  if (!quantity) {
+    return null;
+  }
 
   const item: StoreObject = store.find(e => e.pk === id)!; // I PROMISE this exists, ok typescript?
 
@@ -24,13 +31,17 @@ const BasketItem: React.FC<BasketItemProps> = ({ className, id, quantity, dispat
         <h3>{item.name}</h3>
         <h5>x{quantity}</h5>
       </div>
-      <h5>{item.price * quantity}<span>NOK</span></h5>
+      <h5>
+        {item.price * quantity}
+        <span>NOK</span>
+      </h5>
     </div>
   );
 };
 
 export default styled(BasketItem)`
-  h3, h5 {
+  h3,
+  h5 {
     margin: 0;
     padding: 0;
     font-weight: 100;
@@ -50,7 +61,7 @@ export default styled(BasketItem)`
 
   margin-bottom: 5px;
 
-  &>h5 {
+  & > h5 {
     margin-left: auto;
     align-self: center;
 

@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import styled from 'styled-components'
+import styled from "styled-components";
 
 enum ButtonType {
   minimize,
@@ -13,8 +13,11 @@ interface TitleBarButtonProps {
   className?: string;
 }
 
-const TitleBarButton: React.FC<TitleBarButtonProps> = ({ button, className }) => {
-  switch(button) {
+const TitleBarButton: React.FC<TitleBarButtonProps> = ({
+  button,
+  className
+}) => {
+  switch (button) {
     case ButtonType.minimize:
       return <button className={className}>_</button>;
     case ButtonType.maximize:

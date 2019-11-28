@@ -1,13 +1,13 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch } from "react";
 
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import Button from './atom/Button';
-import ClockMoney from './atom/ClockMoney';
-import { State, minimize, set_active, Action } from '../reducers/application';
+import { Action, minimize, set_active, State } from "../reducers/application";
+import Button from "./atom/Button";
+import ClockMoney from "./atom/ClockMoney";
 
 const Container = styled.div`
-  background-color: #C3C3C3;
+  background-color: #c3c3c3;
   padding: 3px 3px 5px 3px;
   border-top: 1px solid white;
   box-shadow: 0px 0px 1px 1px #e8e8e8;
@@ -26,18 +26,26 @@ interface StartBarProps {
 
 const StartBar: React.FC<StartBarProps> = props => (
   <Container>
-    <Button onClick={() => {}} text="Start" icon={`${process.env.PUBLIC_URL}/start.png`} />
-    {
-      Object.entries(props.state).map(([name, info]) => (
-        <Button
-          key={name}
-          text={name}
-          application={true}
-          pressed={info.state === 'focused' ? true : false}
-          onClick={() => info.state === 'minimized' ? props.dispatch(set_active(name)) : (info.state === 'not_focused' ? props.dispatch(set_active(name)) : props.dispatch(minimize(name)))}
-        />
-      ))
-    }
+    <Button
+      onClick={() => {}}
+      text="Start"
+      icon={`${process.env.PUBLIC_URL}/start.png`}
+    />
+    {Object.entries(props.state).map(([name, info]) => (
+      <Button
+        key={name}
+        text={name}
+        application={true}
+        pressed={info.state === "focused" ? true : false}
+        onClick={() =>
+          info.state === "minimized"
+            ? props.dispatch(set_active(name))
+            : info.state === "not_focused"
+            ? props.dispatch(set_active(name))
+            : props.dispatch(minimize(name))
+        }
+      />
+    ))}
     <ClockMoney />
   </Container>
 );

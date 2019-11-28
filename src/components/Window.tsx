@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import TitleBar from './TitleBar';
+import TitleBar from "./TitleBar";
 
 const Container = styled.div`
   background: #c3c3c3;
@@ -25,7 +25,11 @@ const Container = styled.div`
   height: 100%;
 `;
 
-const Window: React.FC<{className?: string, name: string, onClick: Function}> = props => (
+const Window: React.FC<{
+  className?: string;
+  name: string;
+  onClick: Function;
+}> = props => (
   <Container className={props.className} onClick={() => props.onClick()}>
     <TitleBar name={props.name} />
     {props.children}

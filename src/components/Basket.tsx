@@ -1,12 +1,12 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch } from "react";
 
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { StoreObject } from './../types/StoreObject';
-import { State, Action } from './../reducers/basket';
+import { Action, State } from "./../reducers/basket";
+import { StoreObject } from "./../types/StoreObject";
 
-import BasketItem from './atom/BasketItem';
-import { StoreCtx } from './App';
+import { StoreCtx } from "./App";
+import BasketItem from "./atom/BasketItem";
 
 const Container = styled.div`
   overflow: hidden;
@@ -38,7 +38,7 @@ const Container = styled.div`
 
     img {
       vertical-align: middle;
-      margin-right: .3em;
+      margin-right: 0.3em;
     }
 
     span {
@@ -47,7 +47,7 @@ const Container = styled.div`
     }
   }
 
-  &>div:nth-child(2) {
+  & > div:nth-child(2) {
     grid-row: 2 / span 1;
 
     border-top: 1px solid #828282;
@@ -82,11 +82,11 @@ const PurchaseButton = styled.button`
   text-align: left;
 
   img {
-    margin-right: .3em;
+    margin-right: 0.3em;
     vertical-align: middle;
-    height: .9em;
+    height: 0.9em;
     margin-top: -5px;
-    margin-left: .1em;
+    margin-left: 0.1em;
   }
 
   outline: 0;
@@ -105,23 +105,46 @@ const BasketItemContainer = styled.div`
 const Basket: React.FC<BasketProps> = props => {
   const store = React.useContext(StoreCtx);
 
-  const totalPrice = Object.keys(props.basket).reduce((prev: number, so: string) => {
-    const p = (store.find(e => e.pk === Number(so))! as StoreObject).price;
-    return prev + p*props.basket[Number(so)];
-  }, 0);
+  const totalPrice = Object.keys(props.basket).reduce(
+    (prev: number, so: string) => {
+      const p = (store.find(e => e.pk === Number(so))! as StoreObject).price;
+      return prev + p * props.basket[Number(so)];
+    },
+    0
+  );
 
   return (
     <Container>
       <h3>
-        <img src={`${process.env.PUBLIC_URL}/${Math.max(...Object.values(props.basket)) > 0 ? 'food' : 'nofood'}.png`} alt="Empty folder" />
-        Basket <span style={{display: totalPrice > 0 ? "inline" : "none"}}>({ totalPrice }NOK)</span>
+        <img
+          src={`${process.env.PUBLIC_URL}/${
+            Math.max(...Object.values(props.basket)) > 0 ? "food" : "nofood"
+          }.png`}
+          alt="Empty folder"
+        />
+        Basket{" "}
+        <span style={{ display: totalPrice > 0 ? "inline" : "none" }}>
+          ({totalPrice}NOK)
+        </span>
       </h3>
       <BasketItemContainer>
-        {Object.keys(props.basket).map((e: string) => <BasketItem key={e} id={Number(e)} quantity={props.basket[Number(e)]} dispatch={props.dispatch} />)}
+        {Object.keys(props.basket).map((e: string) => (
+          <BasketItem
+            key={e}
+            id={Number(e)}
+            quantity={props.basket[Number(e)]}
+            dispatch={props.dispatch}
+          />
+        ))}
       </BasketItemContainer>
       <hr />
       <PurchaseButton>
-        <img src={`${process.env.PUBLIC_URL}/${props.balance >= 0 ? 'purchase' : 'insufficient'}.png`} alt="Money or no money" />
+        <img
+          src={`${process.env.PUBLIC_URL}/${
+            props.balance >= 0 ? "purchase" : "insufficient"
+          }.png`}
+          alt="Money or no money"
+        />
         Purchase
       </PurchaseButton>
     </Container>

@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
 export interface ButtonProps {
   icon?: string;
@@ -15,12 +15,12 @@ const Icon = styled.img`
   height: 1em;
   width: 1em;
 
-  margin-right: .3em;
+  margin-right: 0.3em;
 `;
 
 const Button: React.FC<ButtonProps> = ({ text, className, icon, onClick }) => (
   <button className={className} onClick={() => onClick()}>
-    { icon ? <Icon src={icon} alt="Windows 95 Logo" /> : "" }
+    {icon ? <Icon src={icon} alt="Windows 95 Logo" /> : ""}
     {text}
   </button>
 );
@@ -48,24 +48,31 @@ export default styled(Button)`
   outline: none;
 
   /* If it is an "application" */
-  ${(props: ButtonProps) => props.application ? css`
-    width: 10em;
-  ` : null}
+  ${(props: ButtonProps) =>
+    props.application
+      ? css`
+          width: 10em;
+        `
+      : null}
 
   /* If it is active */
-  ${(props: ButtonProps) => props.pressed ? css`
-    border-top: 1px solid #c3c3c3;
-    border-left: 1px solid #c3c3c3;
-    border-bottom: 2px solid white;
-    border-right: 2px solid white;
+  ${(props: ButtonProps) =>
+    props.pressed
+      ? css`
+          border-top: 1px solid #c3c3c3;
+          border-left: 1px solid #c3c3c3;
+          border-bottom: 2px solid white;
+          border-right: 2px solid white;
 
-    margin-top: -1px;
-    height: 36px;
+          margin-top: -1px;
+          height: 36px;
 
-    box-shadow: 1px 1px 1px 1px black inset;
+          box-shadow: 1px 1px 1px 1px black inset;
 
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAJ0lEQVQYV2N88ODBfwYGBgZ5eXkQxcCIIfD//3+wiocPH0JUoAsAAMp5FTuPL92NAAAAAElFTkSuQmCC) repeat;
-  ` : null}
+          background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAJ0lEQVQYV2N88ODBfwYGBgZ5eXkQxcCIIfD//3+wiocPH0JUoAsAAMp5FTuPL92NAAAAAElFTkSuQmCC)
+            repeat;
+        `
+      : null}
 
   &:not(:last-of-type) {
     margin-right: .3em;

@@ -1,4 +1,4 @@
 export interface User {
-    pk: number;
-    balance: number;
+  pk: number;
+  balance: number;
 }

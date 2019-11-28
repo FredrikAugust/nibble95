@@ -6,4 +6,3 @@ export interface StoreObject {
     sm: string;
   };
 }
-

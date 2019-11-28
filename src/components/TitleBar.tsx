@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import TitleBarButton, { ButtonType } from './atom/TitleBarButton';
+import TitleBarButton, { ButtonType } from "./atom/TitleBarButton";
 
 const Container = styled.div`
   height: 1.6em;
@@ -11,7 +11,7 @@ const Container = styled.div`
   color: white;
   padding: 3px 3px 2px 6px;
 
-  margin: -.5em; /* Counteract the padding from window */
+  margin: -0.5em; /* Counteract the padding from window */
 
   display: flex;
   justify-content: space-between;

@@ -1,13 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import './index.css';
+import "./index.css";
 
-import App from './components/App';
+import App from "./components/App";
 
-import { fetchToken, loadToken } from './artillery/API';
+import { fetchToken, loadToken } from "./artillery/API";
 
-if (!loadToken())
-    fetchToken();
+if (!loadToken()) {
+  fetchToken();
+}
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));
