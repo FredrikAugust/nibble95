@@ -29,7 +29,7 @@ interface TitleBarProps {
 }
 
 const TitleBar: React.FC<TitleBarProps> = ({ name }) => (
-  <Container>
+  <Container className="titlebar">
     <span>{name}</span>
     <TitleBarButton button={ButtonType.close} />
   </Container>

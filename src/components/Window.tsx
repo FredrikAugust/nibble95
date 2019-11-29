@@ -4,6 +4,8 @@ import styled from "styled-components";
 
 import TitleBar from "./TitleBar";
 
+import Draggable from "react-draggable";
+
 const Container = styled.div`
   background: #c3c3c3;
 
@@ -30,10 +32,12 @@ const Window: React.FC<{
   name: string;
   onClick: Function;
 }> = props => (
-  <Container className={props.className} onClick={() => props.onClick()}>
-    <TitleBar name={props.name} />
-    {props.children}
-  </Container>
+  <Draggable handle=".titlebar" onMouseDown={() => props.onClick()}>
+    <Container className={props.className}>
+      <TitleBar name={props.name} />
+      {props.children}
+    </Container>
+  </Draggable>
 );
 
 export default Window;

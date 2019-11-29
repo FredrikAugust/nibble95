@@ -72,8 +72,8 @@ export default styled(Store)`
   height: calc(95vh - 44px);
   width: 97vw;
 
-  top: 2.5vh;
-  left: 1.5vw;
+  /* top: 2.5vh;
+  left: 1.5vw; */
 
   ${props => `${props.state === "focused" ? "z-index: 1;" : "z-index: 0"}`}
   ${props => `${props.state === "minimized" ? "display: none" : ""}`}
