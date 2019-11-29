@@ -23,7 +23,7 @@ const TitleBarButton: React.FC<TitleBarButtonProps> = ({
     case ButtonType.maximize:
       return <button className={className}>&#x274f;</button>;
     case ButtonType.close:
-      return <button className={className}>&#x2715;</button>;
+      return <button className={className}>X</button>;
   }
 };
 
@@ -34,9 +34,12 @@ export default styled(TitleBarButton)`
   font-size: 0.9em;
   line-height: 1em;
   height: 1.15em;
+  width: 1.15em;
   margin-right: 2px;
   margin-top: 1px;
   outline: none;
+  background-color: #c3c3c3;
+  font-weight: 600;
 
   border-top: 2px solid white;
   border-left: 2px solid white;
