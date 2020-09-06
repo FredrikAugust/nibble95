@@ -8,6 +8,7 @@ import {
     add, minimize, reducer, set_active,
 } from '../reducers/application';
 import { StoreObject } from '../types/StoreObject';
+import { GlobalProvider } from '../reducers/state';
 
 const Container: React.FC = () => {
     const [state, dispatch] = React.useReducer(reducer, {});
@@ -43,16 +44,18 @@ class App extends React.Component<{}, { items: Array<StoreObject> }> {
 
     public async componentDidMount() {
         const res = await (
-            await fetch('https://online.ntnu.no/api/v1/inventory/')
+            await fetch(`${process.env.REACT_APP_API_BASE}/inventory/`)
         ).json();
         this.setState({ items: res });
     }
 
     public render() {
         return (
-            <StoreCtx.Provider value={this.state.items}>
-                <Container />
-            </StoreCtx.Provider>
+            <GlobalProvider>
+              <StoreCtx.Provider value={this.state.items}>
+                  <Container />
+              </StoreCtx.Provider>
+            </GlobalProvider>
         );
     }
 }

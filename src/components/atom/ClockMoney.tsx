@@ -1,9 +1,21 @@
-import React from 'react';
-
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { GlobalContext } from '../../reducers/state';
 
 interface ClockMoneyProps {
   className?: string;
+}
+
+const ClockMoney: React.FC<ClockMoneyProps> = ({ className }) => {
+  const { state } = useContext(GlobalContext);
+  const value = state.user ? state.user.balance : '-';
+  console.log(state.user);
+
+  return (
+    <Container>
+      <span>{value} NOK</span>
+    </Container>
+  );
 }
 
 const Container = styled.div`
@@ -30,11 +42,5 @@ const Container = styled.div`
     display: block;
   }
 `;
-
-const ClockMoney: React.FC<ClockMoneyProps> = ({ className }) => (
-    <Container>
-        <span>- NOK</span>
-    </Container>
-);
 
 export default ClockMoney;

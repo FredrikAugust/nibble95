@@ -1,10 +1,9 @@
-import React from 'react';
-
+import React, { useContext, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-
 import { login, LoginResponse } from '../artillery/API';
 import { User } from '../types/User';
 import Window from './Window';
+import { GlobalContext, GlobalActionTypes } from '../reducers/state';
 
 interface LoginProps {
   className?: string;
@@ -17,48 +16,56 @@ interface LoginProps {
 
 async function handleLogin(
     lr: LoginResponse,
-    setUser: React.Dispatch<React.SetStateAction<User | undefined>>,
+    setUser: Dispatch<SetStateAction<User | undefined>>,
+    dispatchUser: (user: User) => void,
 ): Promise<void> {
     if (lr.count) {
         const { pk, saldo } = lr.results[0];
         setUser({ pk, balance: saldo });
+        dispatchUser({ pk, balance: saldo });
     }
 }
 
 const Login: React.FC<LoginProps> = ({
-    className, name, onClick, setUser,
-}) => (
-    <Window className={className} name={name} onClick={onClick}>
-        <Container>
-            <div>
-                <img
-                    src={`${process.env.PUBLIC_URL}/find.png`}
-                    alt="Search icon win95"
-                />
-            </div>
-            <div>
-                <p>Please scan your student card to log in to this computer.</p>
-            </div>
-            <div>
-                <label htmlFor="rfid">RFID: </label>
-                <input
-                    id="rfid"
-                    type="text"
-                    onKeyUp={async (e) => {
-                        e.persist();
-                        if (e.keyCode === 13) {
-                            handleLogin(await login(e.currentTarget.value), setUser);
-                            (e.target as EventTarget & HTMLInputElement).value = '';
-                        }
-                    }}
-                />
-            </div>
-            <div>
-                <button>OK</button>
-            </div>
-        </Container>
-    </Window>
-);
+    className, name, onClick, setUser, user
+}) => {
+    const { dispatch } = useContext(GlobalContext);
+
+    const dispatchUser = (user: User) => dispatch({ type: GlobalActionTypes.SET_USER, payload: user })
+    if (user) return null;
+    return (
+      <Window className={className} name={name} onClick={onClick}>
+          <Container>
+              <div>
+                  <img
+                      src={`${process.env.PUBLIC_URL}/find.png`}
+                      alt="Search icon win95"
+                  />
+              </div>
+              <div>
+                  <p>Please scan your student card to log in to this computer.</p>
+              </div>
+              <div>
+                  <label htmlFor="rfid">RFID: </label>
+                  <input
+                      id="rfid"
+                      type="text"
+                      onKeyUp={async (e) => {
+                          e.persist();
+                          if (e.keyCode === 13) {
+                              handleLogin(await login(e.currentTarget.value), setUser, dispatchUser);
+                              (e.target as EventTarget & HTMLInputElement).value = '';
+                          }
+                      }}
+                  />
+              </div>
+              <div>
+                  <button>OK</button>
+              </div>
+          </Container>
+      </Window>
+    );
+};
 
 export default styled(Login)`
   ${(props) => `${props.state === 'minimized' ? 'display: none;' : ''}`}
