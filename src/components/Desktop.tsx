@@ -8,7 +8,6 @@ import Store from './Store';
 import {
     Action, add, set_active, State,
 } from '../reducers/application';
-import { GlobalContext, GlobalActionTypes } from '../globalState';
 
 const Container = styled.div`
   background-color: #008282;
@@ -21,17 +20,15 @@ const Container = styled.div`
 interface DesktopProps {
   add: typeof add;
   applicationDispatch: Dispatch<Action>;
-  state: State;
+  applicationState: State;
 }
 
 const Desktop: FunctionComponent<DesktopProps> = (props: DesktopProps) => {
   const {
-    state,
+    applicationState,
     applicationDispatch,
     add,
   } = props;
-
-  console.log('render');
 
   useEffect(() => {
     applicationDispatch(add('Nibble95', Store))
@@ -40,7 +37,7 @@ const Desktop: FunctionComponent<DesktopProps> = (props: DesktopProps) => {
 
   return (
       <Container>
-          {Object.entries(state).map(([name, info]) => (
+          {Object.entries(applicationState).map(([name, info]) => (
               <info.component
                   key={name}
                   name={name}

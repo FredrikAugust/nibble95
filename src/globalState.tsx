@@ -12,7 +12,7 @@ type GlobalAction = {
 }
 
 type GlobalState = {
-    user?: User
+    user?: User | null
 }
 
 const initialState: GlobalState = {

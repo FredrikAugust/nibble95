@@ -20,7 +20,7 @@ const Container = styled.div`
 `;
 
 interface StartBarProps {
-  state: State;
+  applicationState: State;
   minimize: typeof minimize;
   set_active: typeof set_active;
   applicationDispatch: Dispatch<Action>;
@@ -33,7 +33,7 @@ const StartBar: React.FC<StartBarProps> = (props) => (
             text="Start"
             icon={`${process.env.PUBLIC_URL}/start.png`}
         />
-        {Object.entries(props.state).map(([name, info]) => (
+        {Object.entries(props.applicationState).map(([name, info]) => (
             <Button
                 key={name}
                 text={name}

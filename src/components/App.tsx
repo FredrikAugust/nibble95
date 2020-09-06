@@ -10,18 +10,18 @@ import { StoreObject } from '../types/StoreObject';
 import { GlobalProvider } from '../globalState';
 
 const Container: React.FC = () => {
-    const [state, dispatch] = React.useReducer(reducer, {});
+    const [applicationState, applicationDispatch] = React.useReducer(reducer, {});
 
     return (
         <div style={{ height: 'calc(100vh - 44px)' }}>
             <Desktop
-                applicationDispatch={dispatch}
+                applicationDispatch={applicationDispatch}
                 add={add}
-                state={state}
+                applicationState={applicationState}
             />
             <StartBar
-                applicationDispatch={dispatch}
-                state={state}
+                applicationDispatch={applicationDispatch}
+                applicationState={applicationState}
                 minimize={minimize}
                 set_active={set_active}
             />

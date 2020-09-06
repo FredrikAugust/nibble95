@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, FC, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { login, LoginResponse } from '../artillery/API';
 import { User } from '../types/User';
@@ -14,12 +14,99 @@ interface LoginProps {
 
 async function handleLogin(
     lr: LoginResponse,
-    dispatchUser: (user: User) => void,
+    dispatchUser: (user: User | null) => void,
 ): Promise<void> {
     if (lr.count) {
         const { pk, saldo } = lr.results[0];
         dispatchUser({ pk, balance: saldo });
+    } else {
+      dispatchUser(null);
     }
+}
+
+type LoginViewProps = {
+  dispatchUser: (user?: User | null) => void;
+}
+
+const LoginView: FC<LoginViewProps> = ({ dispatchUser }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current!.focus();
+    console.log('focusing');
+  });
+
+  return (
+    <>
+      <div>
+        <img
+            src={`${process.env.PUBLIC_URL}/find.png`}
+            alt="Search icon win95"
+        />
+      </div>
+      <div>
+          <p>Please scan your student card to log in or register to Nibble.</p>
+      </div>
+      <div>
+          <label htmlFor="rfid">RFID: </label>
+          <input
+              id="rfid"
+              type="text"
+              ref={inputRef}
+              onKeyUp={async (e) => {
+                  e.persist();
+                  if (e.keyCode === 13) {
+                      handleLogin(await login(e.currentTarget.value), dispatchUser);
+                      (e.target as EventTarget & HTMLInputElement).value = '';
+                  }
+              }}
+          />
+      </div>
+      <div>
+          <button>OK</button>
+      </div>
+    </>
+  );
+}
+
+const RegistrationView: FC<LoginViewProps> = ({ dispatchUser }) => {
+  const register = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    event.persist();
+    if (event.keyCode === 13) {
+      console.log('TODO register');
+    }
+  }
+  return (
+    <>
+      <div>
+        <img
+              src={`${process.env.PUBLIC_URL}/find.png`}
+              alt="Search icon win95"
+          />
+      </div>
+      <div>
+          <p>Register with your Online.ntnu.no username and password.</p>
+      </div>
+          <div>
+            <label htmlFor="username">Username: </label>
+            <input
+                id="username"
+                type="text"
+                onKeyUp={async (e) => register}
+            />
+            <label htmlFor="password">Password: </label>
+            <input
+                id="password"
+                type="password"
+                onKeyUp={async (e) => register}
+            />
+      </div>
+      <div>
+        <button>OK</button>
+        <button onClick={() => dispatchUser(undefined)}>Back</button>
+      </div>
+    </>
+  )
 }
 
 const Login: React.FC<LoginProps> = ({
@@ -28,37 +115,13 @@ const Login: React.FC<LoginProps> = ({
     const { state, dispatch } = useContext(GlobalContext);
     const { user } = state;
 
-    const dispatchUser = (user: User) => dispatch({ type: GlobalActionTypes.SET_USER, payload: user })
+    const dispatchUser = (user?: User | null) => dispatch({ type: GlobalActionTypes.SET_USER, payload: user })
     if (user) return null;
+    const view = user === undefined ? <LoginView dispatchUser={dispatchUser} /> : <RegistrationView dispatchUser={dispatchUser} />
     return (
       <Window className={className} name={name} onClick={onClick}>
           <Container>
-              <div>
-                  <img
-                      src={`${process.env.PUBLIC_URL}/find.png`}
-                      alt="Search icon win95"
-                  />
-              </div>
-              <div>
-                  <p>Please scan your student card to log in to this computer.</p>
-              </div>
-              <div>
-                  <label htmlFor="rfid">RFID: </label>
-                  <input
-                      id="rfid"
-                      type="text"
-                      onKeyUp={async (e) => {
-                          e.persist();
-                          if (e.keyCode === 13) {
-                              handleLogin(await login(e.currentTarget.value), dispatchUser);
-                              (e.target as EventTarget & HTMLInputElement).value = '';
-                          }
-                      }}
-                  />
-              </div>
-              <div>
-                  <button>OK</button>
-              </div>
+              {view}
           </Container>
       </Window>
     );
