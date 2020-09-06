@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useContext, useEffect, FC } from 'react';
 import Desktop from './Desktop';
 import StartBar from './StartBar';
 import {
     add, minimize, reducer, set_active,
 } from '../reducers/application';
 import { StoreObject } from '../types/StoreObject';
-import { GlobalProvider } from '../globalState';
+import { GlobalContext, GlobalActionTypes } from '../globalState';
 
 const Container: React.FC = () => {
     const [applicationState, applicationDispatch] = React.useReducer(reducer, {});
@@ -27,32 +27,22 @@ const Container: React.FC = () => {
     );
 };
 
-export const StoreCtx = React.createContext<Array<StoreObject>>([]);
+const App: FC = () => {
+    const { dispatch } = useContext(GlobalContext);
 
-class App extends React.Component<{}, { items: Array<StoreObject> }> {
-    constructor(props: {}) {
-        super(props);
-
-        this.state = { items: [] };
-    }
-
-    public async componentDidMount() {
-        const res = await (
-            await fetch(`${process.env.REACT_APP_API_BASE}/inventory/`)
-        ).json();
-        this.setState({ items: res });
-    }
-
-    public render() {
-        const { items } = this.state;
-        return (
-            <GlobalProvider>
-                <StoreCtx.Provider value={items}>
-                    <Container />
-                </StoreCtx.Provider>
-            </GlobalProvider>
+    useEffect(() => {
+        const dispatchItems = (payload: StoreObject[]) => (
+            dispatch({ type: GlobalActionTypes.SET_ITEMS, payload })
         );
-    }
-}
+        const fetchItems = () => fetch(`${process.env.REACT_APP_API_BASE}/inventory/`)
+            .then((response) => response.json())
+            .then((result) => dispatchItems(result));
+
+        fetchItems();
+    }, [dispatch]);
+    return (
+        <Container />
+    );
+};
 
 export default App;

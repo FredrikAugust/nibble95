@@ -1,9 +1,11 @@
 import React, { createContext, useReducer } from 'react';
 import { User } from './types/User';
+import { StoreObject } from './types/StoreObject';
 
 export enum GlobalActionTypes {
     SET_USER = 'SET_USER',
-    LOGOUT_USER = 'LOGOUT_USER'
+    LOGOUT_USER = 'LOGOUT_USER',
+    SET_ITEMS = 'SET_ITEMS',
 }
 
 type GlobalAction = {
@@ -13,9 +15,11 @@ type GlobalAction = {
 
 type GlobalState = {
     user?: User | null
+    items: StoreObject[]
 }
 
 const initialState: GlobalState = {
+    items: [],
 };
 
 const globalReducer = (state: GlobalState, action: GlobalAction) => {
@@ -24,6 +28,8 @@ const globalReducer = (state: GlobalState, action: GlobalAction) => {
             return { ...state, user: action.payload };
         case GlobalActionTypes.LOGOUT_USER:
             return { ...state, user: undefined };
+        case GlobalActionTypes.SET_ITEMS:
+            return { ...state, items: action.payload };
         default: return { ...state };
     }
 };

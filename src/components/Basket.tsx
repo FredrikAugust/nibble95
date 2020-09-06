@@ -1,9 +1,64 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useContext } from 'react';
 import styled from 'styled-components';
 import { Action, State } from '../reducers/basket';
 import { StoreObject } from '../types/StoreObject';
-import { StoreCtx } from './App';
 import BasketItem from './atom/BasketItem';
+import { GlobalContext } from '../globalState';
+
+interface BasketProps {
+  balance: number;
+  basket: State;
+  dispatch: Dispatch<Action>;
+}
+
+const Basket: React.FC<BasketProps> = ({ basket, dispatch, balance }: BasketProps) => {
+    const { state } = useContext(GlobalContext);
+    const totalPrice = Object.keys(basket).reduce(
+        (prev: number, so: string) => {
+            const p = (state.items.find((e) => e.pk === Number(so))! as StoreObject).price;
+            return prev + p * basket[Number(so)];
+        },
+        0,
+    );
+
+    return (
+        <Container>
+            <h3>
+                <img
+                    src={`${process.env.PUBLIC_URL}/${
+                        Math.max(...Object.values(basket)) > 0 ? 'food' : 'nofood'
+                    }.png`}
+                    alt="Empty folder"
+                />
+                Basket
+                {' '}
+                <span style={{ display: totalPrice > 0 ? 'inline' : 'none' }}>
+                    {`(${totalPrice} NOK)`}
+                </span>
+            </h3>
+            <BasketItemContainer>
+                {Object.keys(basket).map((e: string) => (
+                    <BasketItem
+                        key={e}
+                        id={Number(e)}
+                        quantity={basket[Number(e)]}
+                        dispatch={dispatch}
+                    />
+                ))}
+            </BasketItemContainer>
+            <hr />
+            <PurchaseButton>
+                <img
+                    src={`${process.env.PUBLIC_URL}/${
+                        balance >= 0 ? 'purchase' : 'insufficient'
+                    }.png`}
+                    alt="Money or no money"
+                />
+                Purchase
+            </PurchaseButton>
+        </Container>
+    );
+};
 
 const Container = styled.div`
   overflow: hidden;
@@ -56,12 +111,6 @@ const Container = styled.div`
   }
 `;
 
-interface BasketProps {
-  balance: number;
-  basket: State;
-  dispatch: Dispatch<Action>;
-}
-
 const PurchaseButton = styled.button`
   background-color: #008282;
   border-top: 1px solid white;
@@ -98,57 +147,5 @@ const PurchaseButton = styled.button`
 const BasketItemContainer = styled.div`
   overflow-y: auto;
 `;
-
-const Basket: React.FC<BasketProps> = ({ basket, dispatch, balance }: BasketProps) => {
-    const store = React.useContext(StoreCtx);
-
-    const totalPrice = Object.keys(basket).reduce(
-        (prev: number, so: string) => {
-            const p = (store.find((e) => e.pk === Number(so))! as StoreObject).price;
-            return prev + p * basket[Number(so)];
-        },
-        0,
-    );
-
-    return (
-        <Container>
-            <h3>
-                <img
-                    src={`${process.env.PUBLIC_URL}/${
-                        Math.max(...Object.values(basket)) > 0 ? 'food' : 'nofood'
-                    }.png`}
-                    alt="Empty folder"
-                />
-        Basket
-                {' '}
-                <span style={{ display: totalPrice > 0 ? 'inline' : 'none' }}>
-          (
-                    {totalPrice}
-NOK)
-                </span>
-            </h3>
-            <BasketItemContainer>
-                {Object.keys(basket).map((e: string) => (
-                    <BasketItem
-                        key={e}
-                        id={Number(e)}
-                        quantity={basket[Number(e)]}
-                        dispatch={dispatch}
-                    />
-                ))}
-            </BasketItemContainer>
-            <hr />
-            <PurchaseButton>
-                <img
-                    src={`${process.env.PUBLIC_URL}/${
-                        balance >= 0 ? 'purchase' : 'insufficient'
-                    }.png`}
-                    alt="Money or no money"
-                />
-        Purchase
-            </PurchaseButton>
-        </Container>
-    );
-};
 
 export default Basket;

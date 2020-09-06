@@ -6,6 +6,7 @@ import './index.css';
 import App from './components/App';
 
 import { fetchToken, loadToken } from './artillery/API';
+import { GlobalProvider } from './globalState';
 
 if (!loadToken()) {
     fetchToken().catch(() => console.warn(
@@ -13,4 +14,9 @@ if (!loadToken()) {
     ));
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+    <GlobalProvider>
+        <App />
+    </GlobalProvider>,
+    document.getElementById('root'),
+);

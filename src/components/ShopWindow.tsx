@@ -1,8 +1,8 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useContext } from 'react';
 import styled from 'styled-components';
 import { Action, add } from '../reducers/basket';
 import { StoreObject } from '../types/StoreObject';
-import { StoreCtx } from './App';
+import { GlobalContext } from '../globalState';
 
 interface ShopWindowItemProps {
   dispatch: Dispatch<Action>;
@@ -33,13 +33,12 @@ type ShopWindowProps = {
 }
 
 const ShopWindow: React.FC<ShopWindowProps> = ({ dispatch }: ShopWindowProps) => {
-    const store = React.useContext(StoreCtx);
-
+    const { state } = useContext(GlobalContext);
     return (
         <Container>
-            {store.length === 0
+            {state.items.length === 0
                 ? 'Loading...'
-                : store.map((e) => (
+                : state.items.map((e) => (
                     <ShopWindowItem key={e.pk} storeObject={e} dispatch={dispatch} />
                 ))}
         </Container>

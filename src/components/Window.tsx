@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import Draggable from 'react-draggable';
 import TitleBar from './TitleBar';
@@ -29,10 +29,11 @@ type WindowProps = {
   name: string;
   onClick: Function;
   onClose?: () => void;
-  children: Element;
+  // eslint-disable-next-line no-undef
+  children: JSX.Element[] | JSX.Element;
 }
 
-const Window: React.FC<WindowProps> = ({
+const Window: FC<WindowProps> = ({
     className,
     name,
     onClick,

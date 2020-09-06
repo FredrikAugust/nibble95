@@ -1,8 +1,8 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useContext } from 'react';
 import styled from 'styled-components';
 import { Action, remove } from '../../reducers/basket';
 import { StoreObject } from '../../types/StoreObject';
-import { StoreCtx } from '../App';
+import { GlobalContext } from '../../globalState';
 
 interface BasketItemProps {
   className?: string;
@@ -17,14 +17,14 @@ const BasketItem: React.FC<BasketItemProps> = ({
     quantity,
     dispatch,
 }: BasketItemProps) => {
-    const store = React.useContext(StoreCtx);
+    const { state } = useContext(GlobalContext);
 
     if (!quantity) {
         return null;
     }
 
     // I PROMISE this exists, ok typescript?
-    const item: StoreObject = store.find((e) => e.pk === id)!;
+    const item: StoreObject = state.items.find((e) => e.pk === id)!;
     const removeItem = () => dispatch(remove(item));
 
     return (
