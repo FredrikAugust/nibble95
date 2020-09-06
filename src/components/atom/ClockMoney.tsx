@@ -2,20 +2,18 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { GlobalContext } from '../../globalState';
 
-interface ClockMoneyProps {
-  className?: string;
-}
+const ClockMoney: React.FC = () => {
+    const { state } = useContext(GlobalContext);
+    const value = state.user ? state.user.balance : '-';
 
-const ClockMoney: React.FC<ClockMoneyProps> = ({ className }) => {
-  const { state } = useContext(GlobalContext);
-  const value = state.user ? state.user.balance : '-';
-
-  return (
-    <Container>
-      <span>{value} NOK</span>
-    </Container>
-  );
-}
+    return (
+        <Container>
+            <span>
+                {`${value} NOK`}
+            </span>
+        </Container>
+    );
+};
 
 const Container = styled.div`
   align-self: center;

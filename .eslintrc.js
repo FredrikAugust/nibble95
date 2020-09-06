@@ -41,7 +41,13 @@ module.exports = {
       indent: ['error', 4, { SwitchCase: 1 }],
       'react/jsx-indent': 'off',
       'react/jsx-indent-props': 'off',
+      'jsx-a11y/click-events-have-key-events': 'off',
+      'jsx-a11y/label-has-associated-control': 'off',
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['error'],
+      'react/require-default-props': 'off',
+      "no-shadow": "off",
+      "@typescript-eslint/no-shadow": ["error"],
+      camelcase: ['off', { properties: 'never'}],
   },
 };

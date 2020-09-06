@@ -16,17 +16,24 @@ const BasketItem: React.FC<BasketItemProps> = ({
     id,
     quantity,
     dispatch,
-}) => {
+}: BasketItemProps) => {
     const store = React.useContext(StoreCtx);
 
     if (!quantity) {
         return null;
     }
 
-    const item: StoreObject = store.find((e) => e.pk === id)!; // I PROMISE this exists, ok typescript?
+    // I PROMISE this exists, ok typescript?
+    const item: StoreObject = store.find((e) => e.pk === id)!;
+    const removeItem = () => dispatch(remove(item));
 
     return (
-        <div className={className} onClick={() => dispatch(remove(item))}>
+        <div
+            role="button"
+            className={className}
+            onClick={removeItem}
+            tabIndex={0}
+        >
             <div>
                 <h3>{item.name}</h3>
                 <h5>

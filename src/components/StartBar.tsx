@@ -1,9 +1,7 @@
 import React, { Dispatch } from 'react';
-
 import styled from 'styled-components';
-
 import {
-    Action, minimize, set_active, State,
+    Action, minimize, set_active, State, ApplicationState,
 } from '../reducers/application';
 import Button from './atom/Button';
 import ClockMoney from './atom/ClockMoney';
@@ -21,33 +19,47 @@ const Container = styled.div`
 
 interface StartBarProps {
   applicationState: State;
-  minimize: typeof minimize;
-  set_active: typeof set_active;
+  minimizeApp: typeof minimize;
+  setActiveApp: typeof set_active;
   applicationDispatch: Dispatch<Action>;
 }
 
-const StartBar: React.FC<StartBarProps> = (props) => (
-    <Container>
-        <Button
-            onClick={() => {}}
-            text="Start"
-            icon={`${process.env.PUBLIC_URL}/start.png`}
-        />
-        {Object.entries(props.applicationState).map(([name, info]) => (
+const StartBar: React.FC<StartBarProps> = (
+    {
+        applicationState,
+        applicationDispatch,
+        minimizeApp,
+        setActiveApp,
+    }: StartBarProps,
+) => {
+    const onClick = (state: ApplicationState, name: string) => {
+        if (state === ApplicationState.MINIMIZED) {
+            applicationDispatch(setActiveApp(name));
+        } else if (state === ApplicationState.NOT_FOCUSED) {
+            applicationDispatch(setActiveApp(name));
+        } else {
+            applicationDispatch(minimizeApp(name));
+        }
+    };
+    return (
+        <Container>
             <Button
-                key={name}
-                text={name}
-                application
-                pressed={info.state === 'focused'}
-                onClick={() => (info.state === 'minimized'
-                    ? props.applicationDispatch(set_active(name))
-                    : info.state === 'not_focused'
-                        ? props.applicationDispatch(set_active(name))
-                        : props.applicationDispatch(minimize(name)))}
+                onClick={() => {}}
+                text="Start"
+                icon={`${process.env.PUBLIC_URL}/start.png`}
             />
-        ))}
-        <ClockMoney />
-    </Container>
-);
+            {Object.entries(applicationState).map(([name, info]) => (
+                <Button
+                    key={name}
+                    text={name}
+                    application
+                    pressed={info.state === 'focused'}
+                    onClick={() => onClick(info.state, name)}
+                />
+            ))}
+            <ClockMoney />
+        </Container>
+    );
+};
 
 export default StartBar;

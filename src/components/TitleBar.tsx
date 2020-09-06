@@ -1,7 +1,5 @@
 import React from 'react';
-
 import styled from 'styled-components';
-
 import TitleBarButton, { ButtonType } from './atom/TitleBarButton';
 
 const Container = styled.div`
@@ -29,7 +27,7 @@ interface TitleBarProps {
   onClose?: () => void;
 }
 
-const TitleBar: React.FC<TitleBarProps> = ({ name, onClose }) => (
+const TitleBar: React.FC<TitleBarProps> = ({ name, onClose }: TitleBarProps) => (
     <Container className="titlebar">
         <span>{name}</span>
         <TitleBarButton button={ButtonType.close} onClick={onClose} />

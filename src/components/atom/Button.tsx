@@ -1,5 +1,4 @@
 import React from 'react';
-
 import styled, { css } from 'styled-components';
 
 export interface ButtonProps {
@@ -20,8 +19,12 @@ const Icon = styled.img`
 
 const Button: React.FC<ButtonProps> = ({
     text, className, icon, onClick,
-}) => (
-    <button className={className} onClick={() => onClick()}>
+}: ButtonProps) => (
+    <button
+        className={className}
+        onClick={() => onClick()}
+        type="button"
+    >
         {icon ? <Icon src={icon} alt="Windows 95 Logo" /> : ''}
         {text}
     </button>

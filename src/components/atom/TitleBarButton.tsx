@@ -1,8 +1,7 @@
 import React from 'react';
-
 import styled from 'styled-components';
 
-enum ButtonType {
+export enum ButtonType {
   minimize,
   maximize,
   close
@@ -17,19 +16,19 @@ interface TitleBarButtonProps {
 const TitleBarButton: React.FC<TitleBarButtonProps> = ({
     button,
     className,
-    onClick
-}) => {
+    onClick,
+}: TitleBarButtonProps) => {
     switch (button) {
         case ButtonType.minimize:
-            return <button className={className}>_</button>;
+            return <button type="button" className={className}>_</button>;
         case ButtonType.maximize:
-            return <button className={className}>&#x274f;</button>;
+            return <button type="button" className={className}>&#x274f;</button>;
         case ButtonType.close:
-            return <button className={className} onClick={onClick}>X</button>;
+            return <button type="button" className={className} onClick={onClick}>X</button>;
+        default:
+            return null;
     }
 };
-
-export { ButtonType };
 
 export default styled(TitleBarButton)`
   padding: 0 1px;

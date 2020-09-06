@@ -1,7 +1,15 @@
+import React, { ComponentType } from 'react';
+
+export enum ApplicationState {
+  FOCUSED = 'focused',
+  MINIMIZED = 'minimized',
+  NOT_FOCUSED = 'not_focused',
+}
+
 export interface State {
   [applicationName: string]: {
-    component: React.ComponentType<any>;
-    state: 'focused' | 'minimized' | 'not_focused';
+    component: ComponentType<any>;
+    state: ApplicationState
   };
 }
 
@@ -18,8 +26,8 @@ function minimizeAllOthers(state: State, applicationName: string) {
     const new_state = state;
 
     Object.entries(state).forEach(([name, body]) => {
-        if (body.state === 'focused' && name !== applicationName) {
-            new_state[name].state = 'not_focused';
+        if (body.state === ApplicationState.FOCUSED && name !== applicationName) {
+            new_state[name].state = ApplicationState.NOT_FOCUSED;
         }
     });
 
@@ -34,7 +42,7 @@ const reducer = (state: State, action: Action): State => {
                     ...state,
                     [action.applicationName]: {
                         ...state[action.applicationName],
-                        state: 'focused',
+                        state: ApplicationState.FOCUSED,
                     },
                 },
                 action.applicationName,
@@ -44,7 +52,7 @@ const reducer = (state: State, action: Action): State => {
                 ...state,
                 [action.applicationName]: {
                     ...state[action.applicationName],
-                    state: 'minimized',
+                    state: ApplicationState.MINIMIZED,
                 },
             };
         case 'add':
@@ -53,11 +61,13 @@ const reducer = (state: State, action: Action): State => {
                     ...state,
                     [action.applicationName]: {
                         component: action.component,
-                        state: 'focused',
+                        state: ApplicationState.FOCUSED,
                     },
                 },
                 action.applicationName,
             );
+        default:
+            return { ...state };
     }
 };
 

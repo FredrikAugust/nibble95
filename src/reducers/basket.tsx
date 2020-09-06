@@ -18,6 +18,8 @@ const reducer = (state: State, action: Action) => {
             };
         case 'remove':
             return { ...state, [action.item]: state[action.item] - 1 };
+        default:
+            return { ...state };
     }
 };
 

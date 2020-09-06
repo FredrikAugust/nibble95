@@ -5,10 +5,13 @@ import Basket from './Basket';
 import ShopWindow from './ShopWindow';
 import Window from './Window';
 import { GlobalContext, GlobalActionTypes } from '../globalState';
+import { ApplicationState } from '../reducers/application';
 
 interface StoreProps {
   className?: string;
-  state: 'focused' | 'not_focused' | 'minimized';
+  // It is used in styled container
+  // eslint-disable-next-line react/no-unused-prop-types
+  state: ApplicationState;
   name: string;
   onClick: Function;
 }
@@ -18,8 +21,7 @@ const Store: React.FC<StoreProps> = (props: StoreProps) => {
     const { dispatch } = useContext(GlobalContext);
     const { className, name, onClick } = props;
 
-    const logout = () => dispatch({ type: GlobalActionTypes.LOGOUT_USER })
-
+    const logout = () => dispatch({ type: GlobalActionTypes.LOGOUT_USER });
 
     return (
         <Window className={className} name={name} onClick={onClick} onClose={logout}>
@@ -28,7 +30,7 @@ const Store: React.FC<StoreProps> = (props: StoreProps) => {
                     src={`${process.env.PUBLIC_URL}/logo.png`}
                     alt="Nibble Logo (Windows 95 Search Computer Icon)"
                 />
-        Welcome to
+                Welcome to
                 {' '}
                 <strong>Nibble</strong>
                 <span>95</span>

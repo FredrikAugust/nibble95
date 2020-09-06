@@ -1,10 +1,7 @@
 import React, { Dispatch } from 'react';
-
 import styled from 'styled-components';
-
 import { Action, State } from '../reducers/basket';
 import { StoreObject } from '../types/StoreObject';
-
 import { StoreCtx } from './App';
 import BasketItem from './atom/BasketItem';
 
@@ -102,13 +99,13 @@ const BasketItemContainer = styled.div`
   overflow-y: auto;
 `;
 
-const Basket: React.FC<BasketProps> = (props) => {
+const Basket: React.FC<BasketProps> = ({ basket, dispatch, balance }: BasketProps) => {
     const store = React.useContext(StoreCtx);
 
-    const totalPrice = Object.keys(props.basket).reduce(
+    const totalPrice = Object.keys(basket).reduce(
         (prev: number, so: string) => {
             const p = (store.find((e) => e.pk === Number(so))! as StoreObject).price;
-            return prev + p * props.basket[Number(so)];
+            return prev + p * basket[Number(so)];
         },
         0,
     );
@@ -118,7 +115,7 @@ const Basket: React.FC<BasketProps> = (props) => {
             <h3>
                 <img
                     src={`${process.env.PUBLIC_URL}/${
-                        Math.max(...Object.values(props.basket)) > 0 ? 'food' : 'nofood'
+                        Math.max(...Object.values(basket)) > 0 ? 'food' : 'nofood'
                     }.png`}
                     alt="Empty folder"
                 />
@@ -131,12 +128,12 @@ NOK)
                 </span>
             </h3>
             <BasketItemContainer>
-                {Object.keys(props.basket).map((e: string) => (
+                {Object.keys(basket).map((e: string) => (
                     <BasketItem
                         key={e}
                         id={Number(e)}
-                        quantity={props.basket[Number(e)]}
-                        dispatch={props.dispatch}
+                        quantity={basket[Number(e)]}
+                        dispatch={dispatch}
                     />
                 ))}
             </BasketItemContainer>
@@ -144,7 +141,7 @@ NOK)
             <PurchaseButton>
                 <img
                     src={`${process.env.PUBLIC_URL}/${
-                        props.balance >= 0 ? 'purchase' : 'insufficient'
+                        balance >= 0 ? 'purchase' : 'insufficient'
                     }.png`}
                     alt="Money or no money"
                 />

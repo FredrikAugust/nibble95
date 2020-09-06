@@ -1,7 +1,5 @@
 import React from 'react';
-
 import styled from 'styled-components';
-
 import Draggable from 'react-draggable';
 import TitleBar from './TitleBar';
 
@@ -26,16 +24,25 @@ const Container = styled.div`
   height: 100%;
 `;
 
-const Window: React.FC<{
+type WindowProps = {
   className?: string;
   name: string;
   onClick: Function;
   onClose?: () => void;
-}> = (props) => (
-    <Draggable handle=".titlebar" onMouseDown={() => props.onClick()}>
-        <Container className={props.className}>
-            <TitleBar name={props.name} onClose={props.onClose}/>
-            {props.children}
+  children: Element;
+}
+
+const Window: React.FC<WindowProps> = ({
+    className,
+    name,
+    onClick,
+    onClose,
+    children,
+}: WindowProps) => (
+    <Draggable handle=".titlebar" onMouseDown={() => onClick()}>
+        <Container className={className}>
+            <TitleBar name={name} onClose={onClose} />
+            {children}
         </Container>
     </Draggable>
 );

@@ -1,8 +1,6 @@
 import React from 'react';
-
 import Desktop from './Desktop';
 import StartBar from './StartBar';
-
 import {
     add, minimize, reducer, set_active,
 } from '../reducers/application';
@@ -16,14 +14,14 @@ const Container: React.FC = () => {
         <div style={{ height: 'calc(100vh - 44px)' }}>
             <Desktop
                 applicationDispatch={applicationDispatch}
-                add={add}
+                addApplication={add}
                 applicationState={applicationState}
             />
             <StartBar
                 applicationDispatch={applicationDispatch}
                 applicationState={applicationState}
-                minimize={minimize}
-                set_active={set_active}
+                minimizeApp={minimize}
+                setActiveApp={set_active}
             />
         </div>
     );
@@ -46,11 +44,12 @@ class App extends React.Component<{}, { items: Array<StoreObject> }> {
     }
 
     public render() {
+        const { items } = this.state;
         return (
             <GlobalProvider>
-              <StoreCtx.Provider value={this.state.items}>
-                  <Container />
-              </StoreCtx.Provider>
+                <StoreCtx.Provider value={items}>
+                    <Container />
+                </StoreCtx.Provider>
             </GlobalProvider>
         );
     }

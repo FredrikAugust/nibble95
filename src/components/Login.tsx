@@ -1,15 +1,20 @@
-import React, { useContext, FC, useRef, useEffect } from 'react';
+import React, {
+    useContext, FC, useRef, useEffect,
+} from 'react';
 import styled from 'styled-components';
 import { login, LoginResponse } from '../artillery/API';
 import { User } from '../types/User';
 import Window from './Window';
 import { GlobalContext, GlobalActionTypes } from '../globalState';
+import { ApplicationState } from '../reducers/application';
 
 interface LoginProps {
   className?: string;
-  state: 'focused' | 'not_focused' | 'minimized';
   name: string;
   onClick: Function;
+  // It used with styled component
+  // eslint-disable-next-line react/no-unused-prop-types
+  state: ApplicationState;
 }
 
 async function handleLogin(
@@ -20,7 +25,7 @@ async function handleLogin(
         const { pk, saldo } = lr.results[0];
         dispatchUser({ pk, balance: saldo });
     } else {
-      dispatchUser(null);
+        dispatchUser(null);
     }
 }
 
@@ -28,109 +33,110 @@ type LoginViewProps = {
   dispatchUser: (user?: User | null) => void;
 }
 
-const LoginView: FC<LoginViewProps> = ({ dispatchUser }) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+const LoginView: FC<LoginViewProps> = ({ dispatchUser }: LoginViewProps) => {
+    const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
+    useEffect(() => {
     inputRef.current!.focus();
-    console.log('focusing');
-  });
+    });
 
-  return (
-    <>
-      <div>
-        <img
-            src={`${process.env.PUBLIC_URL}/find.png`}
-            alt="Search icon win95"
-        />
-      </div>
-      <div>
-          <p>Please scan your student card to log in or register to Nibble.</p>
-      </div>
-      <div>
-          <label htmlFor="rfid">RFID: </label>
-          <input
-              id="rfid"
-              type="text"
-              ref={inputRef}
-              onKeyUp={async (e) => {
-                  e.persist();
-                  if (e.keyCode === 13) {
-                      handleLogin(await login(e.currentTarget.value), dispatchUser);
-                      (e.target as EventTarget & HTMLInputElement).value = '';
-                  }
-              }}
-          />
-      </div>
-      <div>
-          <button>OK</button>
-      </div>
-    </>
-  );
-}
+    return (
+        <>
+            <div>
+                <img
+                    src={`${process.env.PUBLIC_URL}/find.png`}
+                    alt="Search icon win95"
+                />
+            </div>
+            <div>
+                <p>Please scan your student card to log in or register to Nibble.</p>
+            </div>
+            <div>
+                <label htmlFor="rfid">RFID: </label>
+                <input
+                    id="rfid"
+                    type="text"
+                    ref={inputRef}
+                    onKeyUp={async (e) => {
+                        e.persist();
+                        if (e.keyCode === 13) {
+                            handleLogin(await login(e.currentTarget.value), dispatchUser);
+                            (e.target as EventTarget & HTMLInputElement).value = '';
+                        }
+                    }}
+                />
+            </div>
+            <div>
+                <button type="button">OK</button>
+            </div>
+        </>
+    );
+};
 
-const RegistrationView: FC<LoginViewProps> = ({ dispatchUser }) => {
-  const register = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    event.persist();
-    if (event.keyCode === 13) {
-      console.log('TODO register');
-    }
-  }
-  return (
-    <>
-      <div>
-        <img
-              src={`${process.env.PUBLIC_URL}/find.png`}
-              alt="Search icon win95"
-          />
-      </div>
-      <div>
-          <p>Register with your Online.ntnu.no username and password.</p>
-      </div>
-          <div>
-            <label htmlFor="username">Username: </label>
-            <input
-                id="username"
-                type="text"
-                onKeyUp={async (e) => register}
-            />
-            <label htmlFor="password">Password: </label>
-            <input
-                id="password"
-                type="password"
-                onKeyUp={async (e) => register}
-            />
-      </div>
-      <div>
-        <button>OK</button>
-        <button onClick={() => dispatchUser(undefined)}>Back</button>
-      </div>
-    </>
-  )
-}
+const RegistrationView: FC<LoginViewProps> = ({ dispatchUser }: LoginViewProps) => {
+    const register = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+        event.persist();
+        if (event.keyCode === 13) {
+            console.log('TODO register');
+        }
+    };
+    return (
+        <>
+            <div>
+                <img
+                    src={`${process.env.PUBLIC_URL}/find.png`}
+                    alt="Search icon win95"
+                />
+            </div>
+            <div>
+                <p>Register with your Online.ntnu.no username and password.</p>
+            </div>
+            <div>
+                <label htmlFor="username">Username: </label>
+                <input
+                    id="username"
+                    type="text"
+                    onKeyUp={register}
+                />
+                <label htmlFor="password">Password: </label>
+                <input
+                    id="password"
+                    type="password"
+                    onKeyUp={register}
+                />
+            </div>
+            <div>
+                <button type="button">OK</button>
+                <button type="button" onClick={() => dispatchUser(undefined)}>Back</button>
+            </div>
+        </>
+    );
+};
 
-const Login: React.FC<LoginProps> = ({
-    className, name, onClick
-}) => {
+const Login: React.FC<LoginProps> = ({ className, name, onClick }: LoginProps) => {
     const { state, dispatch } = useContext(GlobalContext);
     const { user } = state;
 
-    const dispatchUser = (user?: User | null) => dispatch({ type: GlobalActionTypes.SET_USER, payload: user })
+    const dispatchUser = (connectedUser?: User | null) => (
+        dispatch({ type: GlobalActionTypes.SET_USER, payload: connectedUser })
+    );
     if (user) return null;
-    const view = user === undefined ? <LoginView dispatchUser={dispatchUser} /> : <RegistrationView dispatchUser={dispatchUser} />
+    const view = user === undefined
+        ? <LoginView dispatchUser={dispatchUser} />
+        : <RegistrationView dispatchUser={dispatchUser} />;
     return (
-      <Window className={className} name={name} onClick={onClick}>
-          <Container>
-              {view}
-          </Container>
-      </Window>
+        <Window className={className} name={name} onClick={onClick}>
+            <Container>
+                {view}
+            </Container>
+        </Window>
     );
 };
 
 export default styled(Login)`
-  ${(props) => `${props.state === 'minimized' ? 'display: none;' : ''}`}
+  ${(props) => `${props.state === ApplicationState.MINIMIZED ? 'display: none;' : ''}`}
   ${(props) => `${
-        props.state === 'focused' ? 'z-index: 1;' : 'z-index: 0'
+        props.state === ApplicationState.FOCUSED ? 'z-index: 1;' : 'z-index: 0'
     }`}
 
   position: absolute;

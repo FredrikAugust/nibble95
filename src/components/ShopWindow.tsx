@@ -1,10 +1,52 @@
 import React, { Dispatch } from 'react';
-
 import styled from 'styled-components';
-
 import { Action, add } from '../reducers/basket';
 import { StoreObject } from '../types/StoreObject';
 import { StoreCtx } from './App';
+
+interface ShopWindowItemProps {
+  dispatch: Dispatch<Action>;
+  storeObject: StoreObject ;
+}
+
+const ShopWindowItem: React.FC<ShopWindowItemProps> = ({
+    dispatch,
+    storeObject,
+}: ShopWindowItemProps) => (
+    <WindowItem key={storeObject.pk} onClick={() => dispatch(add(storeObject))}>
+        <div>
+            <img
+                src={storeObject.image ? `https://online.ntnu.no/${storeObject.image.sm}` : ''}
+                alt={storeObject.name}
+            />
+            <hr />
+            <h3>{storeObject.name}</h3>
+            <p>
+                {`${storeObject.price} NOK`}
+            </p>
+        </div>
+    </WindowItem>
+);
+
+type ShopWindowProps = {
+  dispatch: Dispatch<Action>
+}
+
+const ShopWindow: React.FC<ShopWindowProps> = ({ dispatch }: ShopWindowProps) => {
+    const store = React.useContext(StoreCtx);
+
+    return (
+        <Container>
+            {store.length === 0
+                ? 'Loading...'
+                : store.map((e) => (
+                    <ShopWindowItem key={e.pk} storeObject={e} dispatch={dispatch} />
+                ))}
+        </Container>
+    );
+};
+
+export default ShopWindow;
 
 const Container = styled.div`
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAMklEQVQoU2P8/5//PwMYfIBQaICRCAX/oSZgNYCB8f9/khUIQI2CuAmLCQQVoLqFoBsA13oh6VgfNmcAAAAASUVORK5CYII=)
@@ -73,44 +115,3 @@ const WindowItem = styled.button`
     padding: calc(0.6em - 2px);
   }
 `;
-
-interface ShopWindowItemProps extends StoreObject {
-  dispatch: Dispatch<Action>;
-}
-
-const ShopWindowItem: React.FC<ShopWindowItemProps> = ({
-    dispatch,
-    ...item
-}: ShopWindowItemProps) => (
-    <WindowItem key={item.pk} onClick={() => dispatch(add(item))}>
-        <div>
-            <img
-                src={item.image ? `https://online.ntnu.no/${item.image.sm}` : ''}
-                alt={item.name}
-            />
-            <hr />
-            <h3>{item.name}</h3>
-            <p>
-                {item.price}
-                {' '}
-NOK
-            </p>
-        </div>
-    </WindowItem>
-);
-
-const ShopWindow: React.FC<{ dispatch: Dispatch<Action> }> = ({ dispatch }) => {
-    const store = React.useContext(StoreCtx);
-
-    return (
-        <Container>
-            {store.length === 0
-                ? 'Loading...'
-                : store.map((e) => (
-                    <ShopWindowItem key={e.pk} {...e} dispatch={dispatch} />
-                ))}
-        </Container>
-    );
-};
-
-export default ShopWindow;
