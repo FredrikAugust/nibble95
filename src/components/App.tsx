@@ -3,28 +3,24 @@ import React from 'react';
 import Desktop from './Desktop';
 import StartBar from './StartBar';
 
-import { User } from '../types/User';
 import {
     add, minimize, reducer, set_active,
 } from '../reducers/application';
 import { StoreObject } from '../types/StoreObject';
-import { GlobalProvider } from '../reducers/state';
+import { GlobalProvider } from '../globalState';
 
 const Container: React.FC = () => {
     const [state, dispatch] = React.useReducer(reducer, {});
-    const [user, setUser] = React.useState<User>();
 
     return (
         <div style={{ height: 'calc(100vh - 44px)' }}>
             <Desktop
-                user={user}
-                dispatch={dispatch}
+                applicationDispatch={dispatch}
                 add={add}
                 state={state}
-                setUser={setUser}
             />
             <StartBar
-                dispatch={dispatch}
+                applicationDispatch={dispatch}
                 state={state}
                 minimize={minimize}
                 set_active={set_active}

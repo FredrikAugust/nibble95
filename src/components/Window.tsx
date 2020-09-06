@@ -30,10 +30,11 @@ const Window: React.FC<{
   className?: string;
   name: string;
   onClick: Function;
+  onClose?: () => void;
 }> = (props) => (
     <Draggable handle=".titlebar" onMouseDown={() => props.onClick()}>
         <Container className={props.className}>
-            <TitleBar name={props.name} />
+            <TitleBar name={props.name} onClose={props.onClose}/>
             {props.children}
         </Container>
     </Draggable>

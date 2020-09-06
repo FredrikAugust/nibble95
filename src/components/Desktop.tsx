@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useContext, FunctionComponent, useEffect } from 'react';
 
 import styled from 'styled-components';
 
@@ -8,7 +8,7 @@ import Store from './Store';
 import {
     Action, add, set_active, State,
 } from '../reducers/application';
-import { User } from '../types/User';
+import { GlobalContext, GlobalActionTypes } from '../globalState';
 
 const Container = styled.div`
   background-color: #008282;
@@ -20,35 +20,36 @@ const Container = styled.div`
 
 interface DesktopProps {
   add: typeof add;
-  dispatch: Dispatch<Action>;
+  applicationDispatch: Dispatch<Action>;
   state: State;
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
-  user: User | undefined;
 }
 
-class Desktop extends React.Component<DesktopProps, {}> {
-    public componentDidMount() {
-        const { dispatch, add } = this.props;
-        dispatch(add('Nibble95', Store));
-        dispatch(add('Login', Login));
-    }
+const Desktop: FunctionComponent<DesktopProps> = (props: DesktopProps) => {
+  const {
+    state,
+    applicationDispatch,
+    add,
+  } = props;
 
-    public render() {
-        return (
-            <Container>
-                {Object.entries(this.props.state).map(([name, info]) => (
-                    <info.component
-                        key={name}
-                        name={name}
-                        state={info.state}
-                        onClick={() => this.props.dispatch(set_active(name))}
-                        setUser={this.props.setUser}
-                        user={this.props.user}
-                    />
-                ))}
-            </Container>
-        );
-    }
+  console.log('render');
+
+  useEffect(() => {
+    applicationDispatch(add('Nibble95', Store))
+    applicationDispatch(add('Login', Login))
+  }, [add])
+
+  return (
+      <Container>
+          {Object.entries(state).map(([name, info]) => (
+              <info.component
+                  key={name}
+                  name={name}
+                  state={info.state}
+                  onClick={() => applicationDispatch(set_active(name))}
+              />
+          ))}
+      </Container>
+  );
 }
 
 export default Desktop;

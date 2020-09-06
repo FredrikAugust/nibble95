@@ -23,7 +23,7 @@ interface StartBarProps {
   state: State;
   minimize: typeof minimize;
   set_active: typeof set_active;
-  dispatch: Dispatch<Action>;
+  applicationDispatch: Dispatch<Action>;
 }
 
 const StartBar: React.FC<StartBarProps> = (props) => (
@@ -40,10 +40,10 @@ const StartBar: React.FC<StartBarProps> = (props) => (
                 application
                 pressed={info.state === 'focused'}
                 onClick={() => (info.state === 'minimized'
-                    ? props.dispatch(set_active(name))
+                    ? props.applicationDispatch(set_active(name))
                     : info.state === 'not_focused'
-                        ? props.dispatch(set_active(name))
-                        : props.dispatch(minimize(name)))}
+                        ? props.applicationDispatch(set_active(name))
+                        : props.applicationDispatch(minimize(name)))}
             />
         ))}
         <ClockMoney />

@@ -1,8 +1,9 @@
 import React, { createContext, useReducer } from 'react';
-import { User } from '../types/User';
+import { User } from './types/User';
 
 export enum GlobalActionTypes {
     SET_USER = 'SET_USER',
+    LOGOUT_USER = 'LOGOUT_USER'
 }
 
 type GlobalAction = {
@@ -21,6 +22,8 @@ const globalReducer = (state: GlobalState, action: GlobalAction) => {
     switch (action.type) {
         case GlobalActionTypes.SET_USER:
             return { ...state, user: action.payload };
+        case GlobalActionTypes.LOGOUT_USER:
+            return { ...state, user: undefined };
         default: return { ...state };
     }
 };

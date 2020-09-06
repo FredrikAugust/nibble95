@@ -1,28 +1,28 @@
-import React from 'react';
-
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-
 import { reducer } from '../reducers/basket';
-
-import { User } from '../types/User';
 import Basket from './Basket';
 import ShopWindow from './ShopWindow';
 import Window from './Window';
+import { GlobalContext, GlobalActionTypes } from '../globalState';
 
 interface StoreProps {
   className?: string;
   state: 'focused' | 'not_focused' | 'minimized';
   name: string;
   onClick: Function;
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
-  user: User | undefined;
 }
 
-const Store: React.FC<StoreProps> = ({ className, name, onClick }) => {
-    const [state, dispatch] = React.useReducer(reducer, {});
+const Store: React.FC<StoreProps> = (props: StoreProps) => {
+    const [basketState, basketDispatch] = React.useReducer(reducer, {});
+    const { dispatch } = useContext(GlobalContext);
+    const { className, name, onClick } = props;
+
+    const logout = () => dispatch({ type: GlobalActionTypes.LOGOUT_USER })
+
 
     return (
-        <Window className={className} name={name} onClick={onClick}>
+        <Window className={className} name={name} onClick={onClick} onClose={logout}>
             <h1>
                 <img
                     src={`${process.env.PUBLIC_URL}/logo.png`}
@@ -33,8 +33,8 @@ const Store: React.FC<StoreProps> = ({ className, name, onClick }) => {
                 <strong>Nibble</strong>
                 <span>95</span>
             </h1>
-            <ShopWindow dispatch={dispatch} />
-            <Basket dispatch={dispatch} balance={0} basket={state} />
+            <ShopWindow dispatch={basketDispatch} />
+            <Basket dispatch={basketDispatch} balance={0} basket={basketState} />
         </Window>
     );
 };

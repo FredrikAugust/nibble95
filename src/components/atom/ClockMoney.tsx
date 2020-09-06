@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { GlobalContext } from '../../reducers/state';
+import { GlobalContext } from '../../globalState';
 
 interface ClockMoneyProps {
   className?: string;
@@ -9,7 +9,6 @@ interface ClockMoneyProps {
 const ClockMoney: React.FC<ClockMoneyProps> = ({ className }) => {
   const { state } = useContext(GlobalContext);
   const value = state.user ? state.user.balance : '-';
-  console.log(state.user);
 
   return (
     <Container>

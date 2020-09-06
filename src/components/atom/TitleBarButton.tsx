@@ -11,11 +11,13 @@ enum ButtonType {
 interface TitleBarButtonProps {
   button: ButtonType;
   className?: string;
+  onClick?: () => void;
 }
 
 const TitleBarButton: React.FC<TitleBarButtonProps> = ({
     button,
     className,
+    onClick
 }) => {
     switch (button) {
         case ButtonType.minimize:
@@ -23,7 +25,7 @@ const TitleBarButton: React.FC<TitleBarButtonProps> = ({
         case ButtonType.maximize:
             return <button className={className}>&#x274f;</button>;
         case ButtonType.close:
-            return <button className={className}>X</button>;
+            return <button className={className} onClick={onClick}>X</button>;
     }
 };
 

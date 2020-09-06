@@ -1,35 +1,32 @@
-import React, { useContext, Dispatch, SetStateAction } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { login, LoginResponse } from '../artillery/API';
 import { User } from '../types/User';
 import Window from './Window';
-import { GlobalContext, GlobalActionTypes } from '../reducers/state';
+import { GlobalContext, GlobalActionTypes } from '../globalState';
 
 interface LoginProps {
   className?: string;
   state: 'focused' | 'not_focused' | 'minimized';
   name: string;
   onClick: Function;
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
-  user: User | undefined;
 }
 
 async function handleLogin(
     lr: LoginResponse,
-    setUser: Dispatch<SetStateAction<User | undefined>>,
     dispatchUser: (user: User) => void,
 ): Promise<void> {
     if (lr.count) {
         const { pk, saldo } = lr.results[0];
-        setUser({ pk, balance: saldo });
         dispatchUser({ pk, balance: saldo });
     }
 }
 
 const Login: React.FC<LoginProps> = ({
-    className, name, onClick, setUser, user
+    className, name, onClick
 }) => {
-    const { dispatch } = useContext(GlobalContext);
+    const { state, dispatch } = useContext(GlobalContext);
+    const { user } = state;
 
     const dispatchUser = (user: User) => dispatch({ type: GlobalActionTypes.SET_USER, payload: user })
     if (user) return null;
@@ -53,7 +50,7 @@ const Login: React.FC<LoginProps> = ({
                       onKeyUp={async (e) => {
                           e.persist();
                           if (e.keyCode === 13) {
-                              handleLogin(await login(e.currentTarget.value), setUser, dispatchUser);
+                              handleLogin(await login(e.currentTarget.value), dispatchUser);
                               (e.target as EventTarget & HTMLInputElement).value = '';
                           }
                       }}
