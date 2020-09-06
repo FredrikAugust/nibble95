@@ -2,20 +2,19 @@ const CLIENT_ID = encodeURIComponent(process.env.REACT_APP_CLIENT_ID!);
 const CLIENT_SECRET = encodeURIComponent(process.env.REACT_APP_CLIENT_SECRET!);
 const API_BASE = process.env.REACT_APP_API_BASE!;
 
-console.log(CLIENT_ID);
-console.log(CLIENT_SECRET);
-console.log(API_BASE);
-
 export const fetchToken = async () => {
+    const payload = `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`
+
     saveToken(
     (
       await (
-          await fetch(
-              `${API_BASE}/auth/?client_id=`
-            + `${CLIENT_ID}&client_secret=${CLIENT_SECRET}`
-            + '&grant_type=client_credentials',
-              { method: 'post' },
-          )
+          await fetch(`${API_BASE}/auth/`, {
+            method: 'POST',
+            body: payload,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+          })
       ).json()
     ).access_token as string,
     );
