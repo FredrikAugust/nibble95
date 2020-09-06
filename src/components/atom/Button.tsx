@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
 export interface ButtonProps {
   icon?: string;
@@ -18,11 +18,13 @@ const Icon = styled.img`
   margin-right: 0.3em;
 `;
 
-const Button: React.FC<ButtonProps> = ({ text, className, icon, onClick }) => (
-  <button className={className} onClick={() => onClick()}>
-    {icon ? <Icon src={icon} alt="Windows 95 Logo" /> : ""}
-    {text}
-  </button>
+const Button: React.FC<ButtonProps> = ({
+    text, className, icon, onClick,
+}) => (
+    <button className={className} onClick={() => onClick()}>
+        {icon ? <Icon src={icon} alt="Windows 95 Logo" /> : ''}
+        {text}
+    </button>
 );
 
 export default styled(Button)`
@@ -48,17 +50,15 @@ export default styled(Button)`
   outline: none;
 
   /* If it is an "application" */
-  ${(props: ButtonProps) =>
-    props.application
-      ? css`
+  ${(props: ButtonProps) => (props.application
+        ? css`
           width: 10em;
         `
-      : null}
+        : null)}
 
   /* If it is active */
-  ${(props: ButtonProps) =>
-    props.pressed
-      ? css`
+  ${(props: ButtonProps) => (props.pressed
+        ? css`
           border-top: 1px solid #c3c3c3;
           border-left: 1px solid #c3c3c3;
           border-bottom: 2px solid white;
@@ -72,7 +72,7 @@ export default styled(Button)`
           background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAJ0lEQVQYV2N88ODBfwYGBgZ5eXkQxcCIIfD//3+wiocPH0JUoAsAAMp5FTuPL92NAAAAAElFTkSuQmCC)
             repeat;
         `
-      : null}
+        : null)}
 
   &:not(:last-of-type) {
     margin-right: .3em;

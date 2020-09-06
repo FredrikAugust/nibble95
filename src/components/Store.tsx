@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { reducer } from "./../reducers/basket";
+import { reducer } from '../reducers/basket';
 
-import { User } from "../types/User";
-import Basket from "./Basket";
-import ShopWindow from "./ShopWindow";
-import Window from "./Window";
+import { User } from '../types/User';
+import Basket from './Basket';
+import ShopWindow from './ShopWindow';
+import Window from './Window';
 
 interface StoreProps {
   className?: string;
-  state: "focused" | "not_focused" | "minimized";
+  state: 'focused' | 'not_focused' | 'minimized';
   name: string;
   onClick: Function;
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
@@ -19,22 +19,24 @@ interface StoreProps {
 }
 
 const Store: React.FC<StoreProps> = ({ className, name, onClick }) => {
-  const [state, dispatch] = React.useReducer(reducer, {});
+    const [state, dispatch] = React.useReducer(reducer, {});
 
-  return (
-    <Window className={className} name={name} onClick={onClick}>
-      <h1>
-        <img
-          src={`${process.env.PUBLIC_URL}/logo.png`}
-          alt="Nibble Logo (Windows 95 Search Computer Icon)"
-        />
-        Welcome to <strong>Nibble</strong>
-        <span>95</span>
-      </h1>
-      <ShopWindow dispatch={dispatch} />
-      <Basket dispatch={dispatch} balance={0} basket={state}></Basket>
-    </Window>
-  );
+    return (
+        <Window className={className} name={name} onClick={onClick}>
+            <h1>
+                <img
+                    src={`${process.env.PUBLIC_URL}/logo.png`}
+                    alt="Nibble Logo (Windows 95 Search Computer Icon)"
+                />
+        Welcome to
+                {' '}
+                <strong>Nibble</strong>
+                <span>95</span>
+            </h1>
+            <ShopWindow dispatch={dispatch} />
+            <Basket dispatch={dispatch} balance={0} basket={state} />
+        </Window>
+    );
 };
 
 export default styled(Store)`
@@ -75,6 +77,6 @@ export default styled(Store)`
   /* top: 2.5vh;
   left: 1.5vw; */
 
-  ${props => `${props.state === "focused" ? "z-index: 1;" : "z-index: 0"}`}
-  ${props => `${props.state === "minimized" ? "display: none" : ""}`}
+  ${(props) => `${props.state === 'focused' ? 'z-index: 1;' : 'z-index: 0'}`}
+  ${(props) => `${props.state === 'minimized' ? 'display: none' : ''}`}
 `;

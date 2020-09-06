@@ -1,19 +1,79 @@
-import React from "react";
+import React from 'react';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { login, LoginResponse } from "../artillery/API";
-import { User } from "../types/User";
-import Window from "./Window";
+import { login, LoginResponse } from '../artillery/API';
+import { User } from '../types/User';
+import Window from './Window';
 
 interface LoginProps {
   className?: string;
-  state: "focused" | "not_focused" | "minimized";
+  state: 'focused' | 'not_focused' | 'minimized';
   name: string;
   onClick: Function;
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
   user: User | undefined;
 }
+
+async function handleLogin(
+    lr: LoginResponse,
+    setUser: React.Dispatch<React.SetStateAction<User | undefined>>,
+): Promise<void> {
+    if (lr.count) {
+        const { pk, saldo } = lr.results[0];
+        setUser({ pk, balance: saldo });
+    }
+}
+
+const Login: React.FC<LoginProps> = ({
+    className, name, onClick, setUser,
+}) => (
+    <Window className={className} name={name} onClick={onClick}>
+        <Container>
+            <div>
+                <img
+                    src={`${process.env.PUBLIC_URL}/find.png`}
+                    alt="Search icon win95"
+                />
+            </div>
+            <div>
+                <p>Please scan your student card to log in to this computer.</p>
+            </div>
+            <div>
+                <label htmlFor="rfid">RFID: </label>
+                <input
+                    id="rfid"
+                    type="text"
+                    onKeyUp={async (e) => {
+                        e.persist();
+                        if (e.keyCode === 13) {
+                            handleLogin(await login(e.currentTarget.value), setUser);
+                            (e.target as EventTarget & HTMLInputElement).value = '';
+                        }
+                    }}
+                />
+            </div>
+            <div>
+                <button>OK</button>
+            </div>
+        </Container>
+    </Window>
+);
+
+export default styled(Login)`
+  ${(props) => `${props.state === 'minimized' ? 'display: none;' : ''}`}
+  ${(props) => `${
+        props.state === 'focused' ? 'z-index: 1;' : 'z-index: 0'
+    }`}
+
+  position: absolute;
+  width: 40vw;
+  height: auto;
+  grid-template-rows: 2em auto;
+
+  top: calc(50% - 30vh / 2);
+  left: calc(50% - 40vw / 2);
+`;
 
 const Container = styled.div`
   grid-column: 1 / span 12;
@@ -98,63 +158,4 @@ const Container = styled.div`
       }
     }
   }
-`;
-
-async function handleLogin(
-  lr: LoginResponse,
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>
-): Promise<void> {
-  if (lr.count) {
-    const { pk, saldo } = lr.results[0];
-    setUser({ pk, balance: saldo });
-  }
-}
-
-const Login: React.FC<LoginProps> = ({ className, name, onClick, setUser }) => (
-  <Window className={className} name={name} onClick={onClick}>
-    <Container>
-      <div>
-        <img
-          src={`${process.env.PUBLIC_URL}/find.png`}
-          alt="Search icon win95"
-        />
-      </div>
-      <div>
-        <p>Please scan your student card to log in to this computer.</p>
-      </div>
-      <div>
-        <label htmlFor="rfid">RFID: </label>
-        <input
-          id="rfid"
-          type="text"
-          onKeyUp={async e => {
-            e.persist();
-            if (e.keyCode === 13) {
-              handleLogin(await login(e.currentTarget.value), setUser);
-              (e.target as EventTarget & HTMLInputElement).value = "";
-            }
-          }}
-        />
-      </div>
-      <div>
-        <button>OK</button>
-      </div>
-    </Container>
-  </Window>
-);
-
-export default styled(Login)`
-  ${props => `${props.state === "minimized" ? "display: none;" : ""}`}
-  ${props =>
-    `${
-      props.state === "focused" ? "z-index: 1;" : "z-index: 0"
-    }`}
-
-  position: absolute;
-  width: 40vw;
-  height: auto;
-  grid-template-rows: 2em auto;
-
-  top: calc(50% - 30vh / 2);
-  left: calc(50% - 40vw / 2);
 `;

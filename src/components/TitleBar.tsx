@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import TitleBarButton, { ButtonType } from "./atom/TitleBarButton";
+import TitleBarButton, { ButtonType } from './atom/TitleBarButton';
 
 const Container = styled.div`
   height: 1.6em;
@@ -29,10 +29,10 @@ interface TitleBarProps {
 }
 
 const TitleBar: React.FC<TitleBarProps> = ({ name }) => (
-  <Container className="titlebar">
-    <span>{name}</span>
-    <TitleBarButton button={ButtonType.close} />
-  </Container>
+    <Container className="titlebar">
+        <span>{name}</span>
+        <TitleBarButton button={ButtonType.close} />
+    </Container>
 );
 
 export default TitleBar;

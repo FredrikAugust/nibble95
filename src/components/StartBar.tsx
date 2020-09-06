@@ -1,10 +1,12 @@
-import React, { Dispatch } from "react";
+import React, { Dispatch } from 'react';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { Action, minimize, set_active, State } from "../reducers/application";
-import Button from "./atom/Button";
-import ClockMoney from "./atom/ClockMoney";
+import {
+    Action, minimize, set_active, State,
+} from '../reducers/application';
+import Button from './atom/Button';
+import ClockMoney from './atom/ClockMoney';
 
 const Container = styled.div`
   background-color: #c3c3c3;
@@ -24,30 +26,28 @@ interface StartBarProps {
   dispatch: Dispatch<Action>;
 }
 
-const StartBar: React.FC<StartBarProps> = props => (
-  <Container>
-    <Button
-      onClick={() => {}}
-      text="Start"
-      icon={`${process.env.PUBLIC_URL}/start.png`}
-    />
-    {Object.entries(props.state).map(([name, info]) => (
-      <Button
-        key={name}
-        text={name}
-        application={true}
-        pressed={info.state === "focused" ? true : false}
-        onClick={() =>
-          info.state === "minimized"
-            ? props.dispatch(set_active(name))
-            : info.state === "not_focused"
-            ? props.dispatch(set_active(name))
-            : props.dispatch(minimize(name))
-        }
-      />
-    ))}
-    <ClockMoney />
-  </Container>
+const StartBar: React.FC<StartBarProps> = (props) => (
+    <Container>
+        <Button
+            onClick={() => {}}
+            text="Start"
+            icon={`${process.env.PUBLIC_URL}/start.png`}
+        />
+        {Object.entries(props.state).map(([name, info]) => (
+            <Button
+                key={name}
+                text={name}
+                application
+                pressed={info.state === 'focused'}
+                onClick={() => (info.state === 'minimized'
+                    ? props.dispatch(set_active(name))
+                    : info.state === 'not_focused'
+                        ? props.dispatch(set_active(name))
+                        : props.dispatch(minimize(name)))}
+            />
+        ))}
+        <ClockMoney />
+    </Container>
 );
 
 export default StartBar;

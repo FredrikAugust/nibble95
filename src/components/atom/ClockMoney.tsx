@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
 interface ClockMoneyProps {
   className?: string;
@@ -32,9 +32,9 @@ const Container = styled.div`
 `;
 
 const ClockMoney: React.FC<ClockMoneyProps> = ({ className }) => (
-  <Container>
-    <span>- NOK</span>
-  </Container>
+    <Container>
+        <span>- NOK</span>
+    </Container>
 );
 
 export default ClockMoney;

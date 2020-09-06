@@ -1,8 +1,8 @@
-import React, { Dispatch } from "react";
-import styled from "styled-components";
-import { Action, remove } from "../../reducers/basket";
-import { StoreObject } from "../../types/StoreObject";
-import { StoreCtx } from "../App";
+import React, { Dispatch } from 'react';
+import styled from 'styled-components';
+import { Action, remove } from '../../reducers/basket';
+import { StoreObject } from '../../types/StoreObject';
+import { StoreCtx } from '../App';
 
 interface BasketItemProps {
   className?: string;
@@ -12,31 +12,34 @@ interface BasketItemProps {
 }
 
 const BasketItem: React.FC<BasketItemProps> = ({
-  className,
-  id,
-  quantity,
-  dispatch
+    className,
+    id,
+    quantity,
+    dispatch,
 }) => {
-  const store = React.useContext(StoreCtx);
+    const store = React.useContext(StoreCtx);
 
-  if (!quantity) {
-    return null;
-  }
+    if (!quantity) {
+        return null;
+    }
 
-  const item: StoreObject = store.find(e => e.pk === id)!; // I PROMISE this exists, ok typescript?
+    const item: StoreObject = store.find((e) => e.pk === id)!; // I PROMISE this exists, ok typescript?
 
-  return (
-    <div className={className} onClick={() => dispatch(remove(item))}>
-      <div>
-        <h3>{item.name}</h3>
-        <h5>x{quantity}</h5>
-      </div>
-      <h5>
-        {item.price * quantity}
-        <span>NOK</span>
-      </h5>
-    </div>
-  );
+    return (
+        <div className={className} onClick={() => dispatch(remove(item))}>
+            <div>
+                <h3>{item.name}</h3>
+                <h5>
+x
+                    {quantity}
+                </h5>
+            </div>
+            <h5>
+                {item.price * quantity}
+                <span>NOK</span>
+            </h5>
+        </div>
+    );
 };
 
 export default styled(BasketItem)`

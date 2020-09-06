@@ -1,10 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import TitleBar from "./TitleBar";
-
-import Draggable from "react-draggable";
+import Draggable from 'react-draggable';
+import TitleBar from './TitleBar';
 
 const Container = styled.div`
   background: #c3c3c3;
@@ -31,13 +30,13 @@ const Window: React.FC<{
   className?: string;
   name: string;
   onClick: Function;
-}> = props => (
-  <Draggable handle=".titlebar" onMouseDown={() => props.onClick()}>
-    <Container className={props.className}>
-      <TitleBar name={props.name} />
-      {props.children}
-    </Container>
-  </Draggable>
+}> = (props) => (
+    <Draggable handle=".titlebar" onMouseDown={() => props.onClick()}>
+        <Container className={props.className}>
+            <TitleBar name={props.name} />
+            {props.children}
+        </Container>
+    </Draggable>
 );
 
 export default Window;

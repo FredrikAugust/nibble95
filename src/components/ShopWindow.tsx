@@ -1,10 +1,10 @@
-import React, { Dispatch } from "react";
+import React, { Dispatch } from 'react';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { Action, add } from "../reducers/basket";
-import { StoreObject } from "./../types/StoreObject";
-import { StoreCtx } from "./App";
+import { Action, add } from '../reducers/basket';
+import { StoreObject } from '../types/StoreObject';
+import { StoreCtx } from './App';
 
 const Container = styled.div`
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAMklEQVQoU2P8/5//PwMYfIBQaICRCAX/oSZgNYCB8f9/khUIQI2CuAmLCQQVoLqFoBsA13oh6VgfNmcAAAAASUVORK5CYII=)
@@ -79,34 +79,38 @@ interface ShopWindowItemProps extends StoreObject {
 }
 
 const ShopWindowItem: React.FC<ShopWindowItemProps> = ({
-  dispatch,
-  ...item
+    dispatch,
+    ...item
 }: ShopWindowItemProps) => (
-  <WindowItem key={item.pk} onClick={() => dispatch(add(item))}>
-    <div>
-      <img
-        src={item.image ? `https://online.ntnu.no/${item.image.sm}` : ""}
-        alt={item.name}
-      />
-      <hr />
-      <h3>{item.name}</h3>
-      <p>{item.price} NOK</p>
-    </div>
-  </WindowItem>
+    <WindowItem key={item.pk} onClick={() => dispatch(add(item))}>
+        <div>
+            <img
+                src={item.image ? `https://online.ntnu.no/${item.image.sm}` : ''}
+                alt={item.name}
+            />
+            <hr />
+            <h3>{item.name}</h3>
+            <p>
+                {item.price}
+                {' '}
+NOK
+            </p>
+        </div>
+    </WindowItem>
 );
 
 const ShopWindow: React.FC<{ dispatch: Dispatch<Action> }> = ({ dispatch }) => {
-  const store = React.useContext(StoreCtx);
+    const store = React.useContext(StoreCtx);
 
-  return (
-    <Container>
-      {store.length === 0
-        ? "Loading..."
-        : store.map(e => (
-            <ShopWindowItem key={e.pk} {...e} dispatch={dispatch} />
-          ))}
-    </Container>
-  );
+    return (
+        <Container>
+            {store.length === 0
+                ? 'Loading...'
+                : store.map((e) => (
+                    <ShopWindowItem key={e.pk} {...e} dispatch={dispatch} />
+                ))}
+        </Container>
+    );
 };
 
 export default ShopWindow;
