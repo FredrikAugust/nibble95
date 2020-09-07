@@ -1,36 +1,42 @@
 import { StoreObject } from '../types/StoreObject';
 
+export enum BasketTypes {
+  ADD = 'ADD',
+  REMOVE = 'REMOVE'
+}
+
 export interface State {
-  [pk: number]: number;
+  [pk: number]: number
 }
 
 export interface Action {
-  type: 'add' | 'remove';
-  item: number;
+  type: BasketTypes;
+  item: StoreObject;
 }
 
 const reducer = (state: State, action: Action) => {
+    const id = action.item.pk;
     switch (action.type) {
-        case 'add':
+        case BasketTypes.ADD:
             return {
                 ...state,
-                [action.item]: state[action.item] ? state[action.item] + 1 : 1,
+                [id]: state[id] ? state[id] + 1 : 1,
             };
-        case 'remove':
-            return { ...state, [action.item]: state[action.item] - 1 };
+        case BasketTypes.REMOVE:
+            return { ...state, [id]: state[id] - 1 };
         default:
             return { ...state };
     }
 };
 
-const add = (item: StoreObject): { type: 'add'; item: number } => ({
-    type: 'add',
-    item: item.pk,
+const add = (item: StoreObject) => ({
+    type: BasketTypes.ADD,
+    item,
 });
 
-const remove = (item: StoreObject): { type: 'remove'; item: number } => ({
-    type: 'remove',
-    item: item.pk,
+const remove = (item: StoreObject) => ({
+    type: BasketTypes.REMOVE,
+    item,
 });
 
 export { reducer, add, remove };

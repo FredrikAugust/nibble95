@@ -1,4 +1,4 @@
 export interface User {
-  pk: number;
+  pk: number; // user id
   balance: number;
 }

@@ -1,37 +1,47 @@
-import React, { Dispatch, useContext } from 'react';
+import React, { Dispatch, useContext, FC } from 'react';
 import styled from 'styled-components';
 import { Action, State } from '../reducers/basket';
 import { StoreObject } from '../types/StoreObject';
 import BasketItem from './atom/BasketItem';
-import { GlobalContext } from '../globalState';
+import purchaseItems from '../artillery/store';
+import { GlobalContext, GlobalActionTypes } from '../globalState';
 
 interface BasketProps {
-  balance: number;
   basket: State;
-  dispatch: Dispatch<Action>;
+  basketDispatch: Dispatch<Action>;
 }
 
-const Basket: React.FC<BasketProps> = ({ basket, dispatch, balance }: BasketProps) => {
-    const { state } = useContext(GlobalContext);
+const Basket: FC<BasketProps> = ({ basket, basketDispatch }: BasketProps) => {
+    const { state, dispatch } = useContext(GlobalContext);
+    const { user } = state;
     const totalPrice = Object.keys(basket).reduce(
         (prev: number, so: string) => {
-            const p = (state.items.find((e) => e.pk === Number(so))! as StoreObject).price;
-            return prev + p * basket[Number(so)];
+            const p = (state.items.find((e) => e.pk === Number(so))! as StoreObject);
+            return prev + p.price * basket[Number(so)];
         },
         0,
     );
+
+    const balance = user ? user.balance : 0;
+    const fundsImageUri = balance >= totalPrice ? 'purchase' : 'insufficient';
+    const fundsText = balance >= totalPrice ? 'PURCHASE' : 'INSUFFICIENT';
+    const cartImageUri = Math.max(...Object.values(basket)) > 0 ? 'food' : 'nofood';
+
+    const userId = user ? user.pk : -1;
+    const withdrawBalance = () => (
+        dispatch({ type: GlobalActionTypes.WITHDRAW_BALANCE, payload: totalPrice })
+    );
+    const flatBasket = Object.entries(basket).flatMap((entry) => Array(entry[1]).fill(Number(entry[0])));
+    const purchase = () => purchaseItems(userId, flatBasket).then(() => withdrawBalance);
 
     return (
         <Container>
             <h3>
                 <img
-                    src={`${process.env.PUBLIC_URL}/${
-                        Math.max(...Object.values(basket)) > 0 ? 'food' : 'nofood'
-                    }.png`}
+                    src={`${process.env.PUBLIC_URL}/${cartImageUri}.png`}
                     alt="Empty folder"
                 />
                 Basket
-                {' '}
                 <span style={{ display: totalPrice > 0 ? 'inline' : 'none' }}>
                     {`(${totalPrice} NOK)`}
                 </span>
@@ -42,19 +52,20 @@ const Basket: React.FC<BasketProps> = ({ basket, dispatch, balance }: BasketProp
                         key={e}
                         id={Number(e)}
                         quantity={basket[Number(e)]}
-                        dispatch={dispatch}
+                        dispatch={basketDispatch}
                     />
                 ))}
             </BasketItemContainer>
             <hr />
-            <PurchaseButton>
+            <PurchaseButton
+                onClick={purchase}
+                disabled={balance < totalPrice}
+            >
                 <img
-                    src={`${process.env.PUBLIC_URL}/${
-                        balance >= 0 ? 'purchase' : 'insufficient'
-                    }.png`}
+                    src={`${process.env.PUBLIC_URL}/${fundsImageUri}.png`}
                     alt="Money or no money"
                 />
-                Purchase
+                {fundsText}
             </PurchaseButton>
         </Container>
     );

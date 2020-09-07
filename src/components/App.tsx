@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, FC } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import Desktop from './Desktop';
 import StartBar from './StartBar';
 import {
@@ -6,9 +6,18 @@ import {
 } from '../reducers/application';
 import { StoreObject } from '../types/StoreObject';
 import { GlobalContext, GlobalActionTypes } from '../globalState';
+import useFetch from '../hooks/useFetch';
+import { INVENTORY_URI } from '../artillery/API';
 
-const Container: React.FC = () => {
-    const [applicationState, applicationDispatch] = React.useReducer(reducer, {});
+const App: React.FC = () => {
+    const [applicationState, applicationDispatch] = useReducer(reducer, {});
+
+    const { dispatch } = useContext(GlobalContext);
+    const { data = [] }: { data: StoreObject[] } = useFetch(INVENTORY_URI);
+
+    useEffect(() => {
+        dispatch({ type: GlobalActionTypes.SET_ITEMS, payload: data });
+    }, [data, dispatch]);
 
     return (
         <div style={{ height: 'calc(100vh - 44px)' }}>
@@ -24,24 +33,6 @@ const Container: React.FC = () => {
                 setActiveApp={set_active}
             />
         </div>
-    );
-};
-
-const App: FC = () => {
-    const { dispatch } = useContext(GlobalContext);
-
-    useEffect(() => {
-        const dispatchItems = (payload: StoreObject[]) => (
-            dispatch({ type: GlobalActionTypes.SET_ITEMS, payload })
-        );
-        const fetchItems = () => fetch(`${process.env.REACT_APP_API_BASE}/inventory/`)
-            .then((response) => response.json())
-            .then((result) => dispatchItems(result));
-
-        fetchItems();
-    }, [dispatch]);
-    return (
-        <Container />
     );
 };
 

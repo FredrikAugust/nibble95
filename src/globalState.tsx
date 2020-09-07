@@ -6,6 +6,7 @@ export enum GlobalActionTypes {
     SET_USER = 'SET_USER',
     LOGOUT_USER = 'LOGOUT_USER',
     SET_ITEMS = 'SET_ITEMS',
+    WITHDRAW_BALANCE = 'WITHDRAW_BALANCE',
 }
 
 type GlobalAction = {
@@ -30,6 +31,14 @@ const globalReducer = (state: GlobalState, action: GlobalAction) => {
             return { ...state, user: undefined };
         case GlobalActionTypes.SET_ITEMS:
             return { ...state, items: action.payload };
+        case GlobalActionTypes.WITHDRAW_BALANCE:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    balance: state.user!.balance - action.payload,
+                },
+            };
         default: return { ...state };
     }
 };

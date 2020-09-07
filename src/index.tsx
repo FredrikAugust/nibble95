@@ -1,12 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import './index.css';
-
 import App from './components/App';
-
-import { fetchToken, loadToken } from './artillery/API';
 import { GlobalProvider } from './globalState';
+import { loadToken, fetchToken } from './artillery/tokens';
 
 if (!loadToken()) {
     fetchToken().catch(() => console.warn(

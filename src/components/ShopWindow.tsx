@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Action, add } from '../reducers/basket';
 import { StoreObject } from '../types/StoreObject';
 import { GlobalContext } from '../globalState';
+import { IMAGE_URI } from '../artillery/API';
 
 interface ShopWindowItemProps {
   dispatch: Dispatch<Action>;
@@ -16,14 +17,12 @@ const ShopWindowItem: React.FC<ShopWindowItemProps> = ({
     <WindowItem key={storeObject.pk} onClick={() => dispatch(add(storeObject))}>
         <div>
             <img
-                src={storeObject.image ? `https://online.ntnu.no/${storeObject.image.sm}` : ''}
+                src={storeObject.image ? IMAGE_URI(storeObject.image.sm) : ''}
                 alt={storeObject.name}
             />
             <hr />
             <h3>{storeObject.name}</h3>
-            <p>
-                {`${storeObject.price} NOK`}
-            </p>
+            <p>{`${storeObject.price} NOK`}</p>
         </div>
     </WindowItem>
 );

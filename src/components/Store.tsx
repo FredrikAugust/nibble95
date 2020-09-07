@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useReducer } from 'react';
 import styled from 'styled-components';
 import { reducer } from '../reducers/basket';
 import Basket from './Basket';
@@ -17,7 +17,7 @@ interface StoreProps {
 }
 
 const Store: React.FC<StoreProps> = (props: StoreProps) => {
-    const [basketState, basketDispatch] = React.useReducer(reducer, {});
+    const [basketState, basketDispatch] = useReducer(reducer, {});
     const { dispatch } = useContext(GlobalContext);
     const { className, name, onClick } = props;
 
@@ -36,7 +36,7 @@ const Store: React.FC<StoreProps> = (props: StoreProps) => {
                 <span>95</span>
             </h1>
             <ShopWindow dispatch={basketDispatch} />
-            <Basket dispatch={basketDispatch} balance={0} basket={basketState} />
+            <Basket basketDispatch={basketDispatch} basket={basketState} />
         </Window>
     );
 };
