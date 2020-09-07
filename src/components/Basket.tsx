@@ -5,9 +5,7 @@ import BasketItem from './atom/BasketItem';
 import purchaseItems from '../artillery/store';
 import {
     GlobalContext,
-    withdrawBalance,
-    logoutUser,
-    emptyCart,
+    dispatchPurchaseItems,
 } from '../globalState';
 
 const Basket: FC = () => {
@@ -27,11 +25,7 @@ const Basket: FC = () => {
     const cartImageUri = Math.max(Object.keys(cart).length) > 0 ? 'food' : 'nofood';
 
     const userId = user ? user.pk : -1;
-    const dispatchWithdraw = () => {
-        dispatch(withdrawBalance(totalPrice));
-        dispatch(emptyCart());
-        dispatch(logoutUser());
-    };
+    const dispatchWithdraw = () => dispatchPurchaseItems(dispatch, totalPrice);
     const purchase = () => purchaseItems(userId, cart)
         .then((response) => {
             if (response.ok) {

@@ -1,17 +1,22 @@
-import React, { FC, useRef, useEffect } from 'react';
+import React, {
+    FC,
+    useRef,
+    useEffect,
+    Dispatch,
+    SetStateAction,
+} from 'react';
 import { User } from '../../types/User';
-import { handleLogin, login } from '../../artillery/authorization';
+import { handleLogin } from '../../artillery/authorization';
 
 type Props = {
   dispatchUser: (user?: User | null) => void;
+  setRfid: Dispatch<SetStateAction<string>>;
 }
 
-const LoginView: FC<Props> = ({ dispatchUser }: Props) => {
+const LoginView: FC<Props> = ({ dispatchUser, setRfid }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-  inputRef.current!.focus();
-    });
+    useEffect(() => { inputRef.current!.focus(); });
 
     return (
         <>
@@ -33,7 +38,7 @@ const LoginView: FC<Props> = ({ dispatchUser }: Props) => {
                     onKeyUp={async (e) => {
                         e.persist();
                         if (e.keyCode === 13) {
-                            handleLogin(await login(e.currentTarget.value), dispatchUser);
+                            handleLogin(e.currentTarget.value, dispatchUser, setRfid);
                             (e.target as EventTarget & HTMLInputElement).value = '';
                         }
                     }}

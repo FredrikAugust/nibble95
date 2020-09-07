@@ -3,6 +3,7 @@ export const CLIENT_SECRET = encodeURIComponent(process.env.REACT_APP_CLIENT_SEC
 const API_BASE = process.env.REACT_APP_API_BASE!;
 
 export const AUTHORIZE_URI = `${API_BASE}/auth/`;
+export const REGISTER_RFID_URI = `${API_BASE}/rfid/`;
 export const INVENTORY_URI = `${process.env.REACT_APP_API_BASE}/inventory/`;
 export const BALANCE_URI = `${process.env.REACT_APP_API_BASE}/transactions/`; // Update balance
 export const TRANSACTION_URI = `${process.env.REACT_APP_API_BASE}/orderline/`; // purchase item

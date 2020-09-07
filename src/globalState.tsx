@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useReducer, Dispatch } from 'react';
 import { User } from './types/User';
 import {
     StoreObject,
@@ -16,6 +16,7 @@ export enum GlobalActionTypes {
     ADD_TO_CART = 'ADD_TO_CART',
     REMOVE_FROM_CART = 'REMOVE_FROM_CART',
     EMPTY_CART = 'EMPTY_CART',
+    SET_IS_LOGGING_OUT = 'SET_IS_LOGGING_OUT',
 }
 
 type GlobalAction = {
@@ -27,11 +28,13 @@ type GlobalState = {
     user?: User | null
     inventory: StoreObject[]
     cart: { [id: number]: CartItem }
+    isLoggingOut: boolean
 }
 
 const initialState: GlobalState = {
     inventory: [],
     cart: {},
+    isLoggingOut: false,
 };
 
 const getIncrementedCartItem = (id: number, state: GlobalState): CartItem => {
@@ -82,6 +85,8 @@ const globalReducer = (state: GlobalState, action: GlobalAction) => {
         }
         case GlobalActionTypes.EMPTY_CART:
             return { ...state, cart: { } };
+        case GlobalActionTypes.SET_IS_LOGGING_OUT:
+            return { ...state, isLoggingOut: action.payload };
         default: return { ...state };
     }
 };
@@ -103,6 +108,25 @@ export const removeFromCart = (id: number) => (
     { type: GlobalActionTypes.REMOVE_FROM_CART, payload: id }
 );
 export const emptyCart = () => ({ type: GlobalActionTypes.EMPTY_CART });
+export const setIsLogout = (isLoggingOut: boolean) => (
+    { type: GlobalActionTypes.SET_IS_LOGGING_OUT, payload: isLoggingOut }
+);
+
+export const exitUser = (dispatch: Dispatch<GlobalAction>) => {
+    dispatch(emptyCart());
+    dispatch(logoutUser());
+};
+export const exitUserWithTimer = (dispatch: Dispatch<GlobalAction>) => {
+    dispatch(setIsLogout(true));
+    setTimeout(() => {
+        exitUser(dispatch);
+        dispatch(setIsLogout(false));
+    }, 3000);
+};
+export const dispatchPurchaseItems = (dispatch: Dispatch<GlobalAction>, amount: number) => {
+    dispatch(withdrawBalance(amount));
+    exitUserWithTimer(dispatch);
+};
 
 type GlobalContextProps = {
     state: GlobalState

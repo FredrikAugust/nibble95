@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Basket from './Basket';
 import ShopWindow from './ShopWindow';
 import Window from './Window';
-import { GlobalContext, logoutUser } from '../globalState';
+import { GlobalContext, exitUser } from '../globalState';
 import { ApplicationState } from '../reducers/application';
 
 interface StoreProps {
@@ -16,10 +16,21 @@ interface StoreProps {
 }
 
 const Store: React.FC<StoreProps> = (props: StoreProps) => {
-    const { dispatch } = useContext(GlobalContext);
+    const { state, dispatch } = useContext(GlobalContext);
     const { className, name, onClick } = props;
 
-    const logout = () => dispatch(logoutUser());
+    const logout = () => exitUser(dispatch);
+
+    const titleText = state.isLoggingOut ? 'Logging out of ' : 'Welcome to ';
+
+    const welcomeTitle = (
+        <>
+            {titleText}
+            {' '}
+            <strong>Nibble</strong>
+            <span>95</span>
+        </>
+    );
 
     return (
         <Window className={className} name={name} onClick={onClick} onClose={logout}>
@@ -28,10 +39,7 @@ const Store: React.FC<StoreProps> = (props: StoreProps) => {
                     src={`${process.env.PUBLIC_URL}/logo.png`}
                     alt="Nibble Logo (Windows 95 Search Computer Icon)"
                 />
-                Welcome to
-                {' '}
-                <strong>Nibble</strong>
-                <span>95</span>
+                {welcomeTitle}
             </h1>
             <ShopWindow />
             <Basket />

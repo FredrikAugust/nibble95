@@ -1,15 +1,27 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { User } from '../../types/User';
+import { registerUser, handleLogin } from '../../artillery/authorization';
 
 type Props = {
   dispatchUser: (user?: User | null) => void;
+  rfid: string;
 }
 
-const RegistrationView: FC<Props> = ({ dispatchUser }: Props) => {
+const RegistrationView: FC<Props> = ({ dispatchUser, rfid }: Props) => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const bindRfid = () => registerUser(username, password, rfid)
+        .then((response) => {
+            if (response.ok) {
+                handleLogin(rfid, dispatchUser);
+            }
+        });
+
     const register = async (event: React.KeyboardEvent<HTMLInputElement>) => {
         event.persist();
         if (event.keyCode === 13) {
-            console.log('TODO register');
+            bindRfid();
         }
     };
     return (
@@ -29,12 +41,14 @@ const RegistrationView: FC<Props> = ({ dispatchUser }: Props) => {
                     id="username"
                     type="text"
                     onKeyUp={register}
+                    onChange={(event) => setUsername(event.target.value)}
                 />
                 <label htmlFor="password">Password: </label>
                 <input
                     id="password"
                     type="password"
                     onKeyUp={register}
+                    onChange={(event) => setPassword(event.target.value)}
                 />
             </div>
             <div>

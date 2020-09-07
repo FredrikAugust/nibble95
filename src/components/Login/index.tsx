@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { User } from '../../types/User';
 import Window from '../Window';
@@ -18,13 +18,14 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = ({ className, name, onClick }: LoginProps) => {
     const { state, dispatch } = useContext(GlobalContext);
+    const [rfid, setRfid] = useState<string>('');
     const { user } = state;
 
     const dispatchUser = (connectedUser?: User | null) => dispatch(setUser(connectedUser));
     if (user) return null;
     const view = user === undefined
-        ? <LoginView dispatchUser={dispatchUser} />
-        : <RegistrationView dispatchUser={dispatchUser} />;
+        ? <LoginView dispatchUser={dispatchUser} setRfid={setRfid} />
+        : <RegistrationView dispatchUser={dispatchUser} rfid={rfid} />;
     return (
         <Window className={className} name={name} onClick={onClick}>
             <Container>
