@@ -21,7 +21,7 @@ const Login: React.FC<LoginProps> = ({ className, name, onClick }: LoginProps) =
     const [rfid, setRfid] = useState<string>('');
     const { user } = state;
 
-    const dispatchUser = (connectedUser?: User | null) => dispatch(setUser(connectedUser));
+    const dispatchUser = (connectedUser?: User | null) => setUser(dispatch, connectedUser);
     if (user) return null;
     const view = user === undefined
         ? <LoginView dispatchUser={dispatchUser} setRfid={setRfid} />

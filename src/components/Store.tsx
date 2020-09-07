@@ -21,7 +21,8 @@ const Store: React.FC<StoreProps> = (props: StoreProps) => {
 
     const logout = () => exitUser(dispatch);
 
-    const titleText = state.isLoggingOut ? 'Logging out of ' : 'Welcome to ';
+    const username = state.user?.first_name || '';
+    const titleText = state.isLoggingOut ? `Logging ${username} out of ` : 'Welcome to ';
 
     const welcomeTitle = (
         <>
@@ -29,6 +30,7 @@ const Store: React.FC<StoreProps> = (props: StoreProps) => {
             {' '}
             <strong>Nibble</strong>
             <span>95</span>
+            { state.user && !state.isLoggingOut ? `, ${username}` : ''}
         </>
     );
 

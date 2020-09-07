@@ -14,8 +14,8 @@ export async function handleLogin(
 ): Promise<void> {
     const lr = await login(rfid);
     if (lr.count) {
-        const { pk, saldo } = lr.results[0];
-        dispatchUser({ pk, balance: saldo });
+        const { pk, saldo, first_name } = lr.results[0];
+        dispatchUser({ pk, balance: saldo, first_name });
     } else {
         dispatchUser(null);
         if (setRfid) setRfid(rfid);

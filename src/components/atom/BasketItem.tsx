@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { StoreObject } from '../../types/StoreObject';
-import { GlobalContext, GlobalActionTypes } from '../../globalState';
+import { GlobalContext, removeFromCart } from '../../globalState';
 
 interface BasketItemProps {
   className?: string;
@@ -15,7 +15,7 @@ const BasketItem: React.FC<BasketItemProps> = ({
     quantity,
 }: BasketItemProps) => {
     const { state, dispatch } = useContext(GlobalContext);
-    const removeItem = () => dispatch({ type: GlobalActionTypes.REMOVE_FROM_CART, payload: id });
+    const removeItem = () => removeFromCart(dispatch, id);
 
     if (!quantity) {
         return null;

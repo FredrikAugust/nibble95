@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { StoreObject } from '../types/StoreObject';
-import { GlobalContext, GlobalActionTypes } from '../globalState';
+import { GlobalContext, addToCart } from '../globalState';
 import { IMAGE_URI } from '../artillery/API';
 
 interface ShopWindowItemProps {
@@ -12,7 +12,7 @@ const ShopWindowItem: React.FC<ShopWindowItemProps> = ({
     storeObject,
 }: ShopWindowItemProps) => {
     const { dispatch } = useContext(GlobalContext);
-    const addItem = (id: number) => dispatch({ type: GlobalActionTypes.ADD_TO_CART, payload: id });
+    const addItem = (id: number) => addToCart(dispatch, id);
     return (
         <WindowItem key={storeObject.pk} onClick={() => addItem(storeObject.pk)}>
             <div>

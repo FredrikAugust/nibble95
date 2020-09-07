@@ -7,6 +7,7 @@ import {
     GlobalContext,
     dispatchPurchaseItems,
 } from '../globalState';
+import Button from './atom/Button';
 
 const Basket: FC = () => {
     const { state, dispatch } = useContext(GlobalContext);
@@ -33,8 +34,10 @@ const Basket: FC = () => {
             }
         });
 
+    const refresh = () => window.location.reload();
     return (
         <Container>
+            <Button className="refresh-window" text="Refresh window" onClick={refresh} />
             <h3>
                 <img
                     src={`${process.env.PUBLIC_URL}/${cartImageUri}.png`}
@@ -78,22 +81,26 @@ const Container = styled.div`
   display: grid;
 
   grid-template-columns: 100%;
-  grid-template-rows: 2.3em 79% 2px auto;
+  grid-template-rows: 2.3em 2.3em 79% 2px;
 
   grid-row-gap: 5px;
+
+  .refresh-window {
+    grid-row: 1;
+  }
 
   hr {
     border-top: 1px solid #929292;
     border-bottom: 1px solid white;
 
-    grid-row: 3;
+    grid-row: 4;
 
     margin: 0;
     padding: 0;
   }
 
   h3 {
-    grid-row: 1;
+    grid-row: 2;
     margin: 0;
     font-weight: 100;
 
@@ -109,7 +116,7 @@ const Container = styled.div`
   }
 
   & > div:nth-child(2) {
-    grid-row: 2 / span 1;
+    grid-row: 3 / span 1;
 
     border-top: 1px solid #828282;
     border-left: 1px solid #828282;
@@ -129,7 +136,7 @@ const PurchaseButton = styled.button`
   box-shadow: 1px 1px 0 1px black;
   margin: 1px 3px 3px 1px;
 
-  grid-row: 4;
+  grid-row: 5;
 
   color: white;
 
@@ -154,6 +161,7 @@ const PurchaseButton = styled.button`
 `;
 
 const BasketItemContainer = styled.div`
+  grid-row: 3;
   overflow-y: auto;
 `;
 
