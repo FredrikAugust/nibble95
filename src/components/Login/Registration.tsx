@@ -10,11 +10,14 @@ type Props = {
 const RegistrationView: FC<Props> = ({ dispatchUser, rfid }: Props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [badLogin, setBadLogin] = useState(false);
 
     const bindRfid = () => registerUser(username, password, rfid)
         .then((response) => {
             if (response.ok) {
                 handleLogin(rfid, dispatchUser);
+            } else {
+                setBadLogin(true);
             }
         });
 
@@ -34,6 +37,7 @@ const RegistrationView: FC<Props> = ({ dispatchUser, rfid }: Props) => {
             </div>
             <div>
                 <p>Register with your Online.ntnu.no username and password.</p>
+                {badLogin ? <p>You logged in with wrong credentials. Try again</p> : null}
             </div>
             <div>
                 <label htmlFor="username">Username: </label>
@@ -52,7 +56,7 @@ const RegistrationView: FC<Props> = ({ dispatchUser, rfid }: Props) => {
                 />
             </div>
             <div>
-                <button type="button">OK</button>
+                <button type="button" onClick={bindRfid}>OK</button>
                 <button type="button" onClick={() => dispatchUser(undefined)}>Back</button>
             </div>
         </>

@@ -4,6 +4,8 @@ import React, {
     useEffect,
     Dispatch,
     SetStateAction,
+    useState,
+    ChangeEvent,
 } from 'react';
 import { User } from '../../types/User';
 import { handleLogin } from '../../artillery/authorization';
@@ -14,9 +16,12 @@ type Props = {
 }
 
 const LoginView: FC<Props> = ({ dispatchUser, setRfid }: Props) => {
+    const [input, setInput] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => { inputRef.current!.focus(); });
+
+    const login = () => handleLogin(input, dispatchUser, setRfid);
 
     return (
         <>
@@ -35,17 +40,19 @@ const LoginView: FC<Props> = ({ dispatchUser, setRfid }: Props) => {
                     id="rfid"
                     type="text"
                     ref={inputRef}
+                    value={input}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
                     onKeyUp={async (e) => {
                         e.persist();
                         if (e.keyCode === 13) {
-                            handleLogin(e.currentTarget.value, dispatchUser, setRfid);
+                            login();
                             (e.target as EventTarget & HTMLInputElement).value = '';
                         }
                     }}
                 />
             </div>
             <div>
-                <button type="button">OK</button>
+                <button onClick={login} type="button">OK</button>
             </div>
         </>
     );
