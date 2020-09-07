@@ -1,15 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { GlobalContext } from '../../globalState';
+import { LOGOUT_TIME } from '../App';
 
 const ClockMoney: React.FC = () => {
     const { state } = useContext(GlobalContext);
-    const value = state.user ? state.user.balance : '-';
+    const { user } = state;
+    const [countdown, setCountdown] = useState(LOGOUT_TIME);
+    const value = user ? user.balance : '-';
+    const loggingOutText = user ? ` | Logout in ${countdown / 1000}S` : '';
+    useEffect(() => {
+        let intervalId: number;
+        if (user) {
+            intervalId = window.setInterval(() => {
+                setCountdown(countdown - 1000);
+            }, 1000);
+        }
+        return () => clearInterval(intervalId);
+    }, [user, countdown]);
 
     return (
         <Container>
             <span>
                 {`${value} NOK`}
+                {loggingOutText}
             </span>
         </Container>
     );

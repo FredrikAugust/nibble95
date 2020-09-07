@@ -9,6 +9,8 @@ import { GlobalContext, setInventory, exitUser } from '../globalState';
 import useFetch from '../hooks/useFetch';
 import { INVENTORY_URI } from '../artillery/API';
 
+export const LOGOUT_TIME = 1000 * 60 * 2;
+
 const App: React.FC = () => {
     const [applicationState, applicationDispatch] = useReducer(reducer, {});
     const { state, dispatch } = useContext(GlobalContext);
@@ -23,7 +25,7 @@ const App: React.FC = () => {
         if (user) {
             setTimeout(() => {
                 exitUser(dispatch);
-            }, 1000 * 60 * 2);
+            }, LOGOUT_TIME);
         }
     }, [user]);
 
