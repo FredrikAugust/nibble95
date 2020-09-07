@@ -5,6 +5,10 @@ export interface StoreObject {
   image: {
     sm: string;
   };
+  category: {
+    pk: number
+    name: string
+  };
 }
 
 export type CartItem = {

@@ -5,7 +5,7 @@ import { GlobalContext, addToCart } from '../globalState';
 import { IMAGE_URI } from '../artillery/API';
 
 interface ShopWindowItemProps {
-  storeObject: StoreObject ;
+  storeObject: StoreObject;
 }
 
 const ShopWindowItem: React.FC<ShopWindowItemProps> = ({
@@ -28,13 +28,16 @@ const ShopWindowItem: React.FC<ShopWindowItemProps> = ({
     );
 };
 
-const ShopWindow: React.FC = () => {
-    const { state } = useContext(GlobalContext);
+type Props = {
+  inventory: StoreObject[]
+}
+
+const ShopWindow: React.FC<Props> = ({ inventory }: Props) => {
     return (
         <Container>
-            {state.inventory.length === 0
+            {inventory.length === 0
                 ? 'Loading...'
-                : state.inventory.map((e) => (
+                : inventory.map((e) => (
                     <ShopWindowItem key={e.pk} storeObject={e} />
                 ))}
         </Container>

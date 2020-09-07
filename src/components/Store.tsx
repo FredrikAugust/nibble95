@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, FC, useState, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import Basket from './Basket';
 import ShopWindow from './ShopWindow';
 import Window from './Window';
 import { GlobalContext, exitUser } from '../globalState';
 import { ApplicationState } from '../reducers/application';
+import Button from './atom/Button';
 
 interface StoreProps {
   className?: string;
@@ -15,8 +16,27 @@ interface StoreProps {
   onClick: Function;
 }
 
-const Store: React.FC<StoreProps> = (props: StoreProps) => {
+type CategoryWindowProps = {
+  categories: string[]
+  setCategory: Dispatch<SetStateAction<string>>
+}
+
+const CategoryWindow: FC<CategoryWindowProps> = (
+    { categories, setCategory }: CategoryWindowProps,
+) => {
+    const row = categories.map((category) => (
+        <Button key={category} text={category} onClick={() => setCategory(category)} />
+    ));
+    return (
+        <div className="category-window">
+            {row}
+        </div>
+    );
+};
+
+const Store: FC<StoreProps> = (props: StoreProps) => {
     const { state, dispatch } = useContext(GlobalContext);
+    const [filterCategory, setFilterCategory] = useState('Alt');
     const { className, name, onClick } = props;
 
     const logout = () => exitUser(dispatch);
@@ -34,6 +54,18 @@ const Store: React.FC<StoreProps> = (props: StoreProps) => {
         </>
     );
 
+    const filteredInventory = state.inventory.filter((item) => {
+        if (filterCategory === 'Alt') return item;
+        return item.category.name === filterCategory;
+    });
+
+    const categories = state.inventory.reduce((acc, current) => {
+        if (acc.includes(current.category.name)) {
+            return [...acc];
+        }
+        return [...acc, current.category.name];
+    }, ['Alt'] as string[]);
+
     return (
         <Window className={className} name={name} onClick={onClick} onClose={logout}>
             <h1>
@@ -43,8 +75,9 @@ const Store: React.FC<StoreProps> = (props: StoreProps) => {
                 />
                 {welcomeTitle}
             </h1>
-            <ShopWindow />
+            <ShopWindow inventory={filteredInventory} />
             <Basket />
+            <CategoryWindow categories={categories} setCategory={setFilterCategory} />
         </Window>
     );
 };
@@ -79,7 +112,13 @@ export default styled(Store)`
     }
   }
 
-  grid-template-rows: 1.6em 3.2em auto;
+  .category-window {
+    grid-row: 4;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  grid-template-rows: 1.6em 3.2em auto min-content;
 
   height: calc(95vh - 44px);
   width: 97vw;
