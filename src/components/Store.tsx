@@ -16,13 +16,13 @@ interface StoreProps {
   onClick: Function;
 }
 
-type CategoryWindowProps = {
+type CategoryBarProps = {
   categories: string[]
   setCategory: Dispatch<SetStateAction<string>>
 }
 
-const CategoryWindow: FC<CategoryWindowProps> = (
-    { categories, setCategory }: CategoryWindowProps,
+const CategoryBar: FC<CategoryBarProps> = (
+    { categories, setCategory }: CategoryBarProps,
 ) => {
     const row = categories.map((category) => (
         <Button key={category} text={category} onClick={() => setCategory(category)} />
@@ -77,7 +77,7 @@ const Store: FC<StoreProps> = (props: StoreProps) => {
             </h1>
             <ShopWindow inventory={filteredInventory} />
             <Basket />
-            <CategoryWindow categories={categories} setCategory={setFilterCategory} />
+            <CategoryBar categories={categories} setCategory={setFilterCategory} />
         </Window>
     );
 };
