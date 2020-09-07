@@ -4,7 +4,7 @@ import { User } from '../../types/User';
 import Window from '../Window';
 import { ApplicationState } from '../../reducers/application';
 import LoginView from './Login';
-import { GlobalContext, GlobalActionTypes } from '../../globalState';
+import { GlobalContext, setUser } from '../../globalState';
 import RegistrationView from './Registration';
 
 interface LoginProps {
@@ -20,9 +20,7 @@ const Login: React.FC<LoginProps> = ({ className, name, onClick }: LoginProps) =
     const { state, dispatch } = useContext(GlobalContext);
     const { user } = state;
 
-    const dispatchUser = (connectedUser?: User | null) => (
-        dispatch({ type: GlobalActionTypes.SET_USER, payload: connectedUser })
-    );
+    const dispatchUser = (connectedUser?: User | null) => dispatch(setUser(connectedUser));
     if (user) return null;
     const view = user === undefined
         ? <LoginView dispatchUser={dispatchUser} />

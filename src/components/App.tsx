@@ -5,7 +5,7 @@ import {
     add, minimize, reducer, set_active,
 } from '../reducers/application';
 import { StoreObject } from '../types/StoreObject';
-import { GlobalContext, GlobalActionTypes } from '../globalState';
+import { GlobalContext, setInventory } from '../globalState';
 import useFetch from '../hooks/useFetch';
 import { INVENTORY_URI } from '../artillery/API';
 
@@ -16,7 +16,7 @@ const App: React.FC = () => {
     const { data = [] }: { data: StoreObject[] } = useFetch(INVENTORY_URI);
 
     useEffect(() => {
-        dispatch({ type: GlobalActionTypes.SET_ITEMS, payload: data });
+        dispatch(setInventory(data));
     }, [data, dispatch]);
 
     return (

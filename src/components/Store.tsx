@@ -1,10 +1,9 @@
-import React, { useContext, useReducer } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { reducer } from '../reducers/basket';
 import Basket from './Basket';
 import ShopWindow from './ShopWindow';
 import Window from './Window';
-import { GlobalContext, GlobalActionTypes } from '../globalState';
+import { GlobalContext, logoutUser } from '../globalState';
 import { ApplicationState } from '../reducers/application';
 
 interface StoreProps {
@@ -17,11 +16,10 @@ interface StoreProps {
 }
 
 const Store: React.FC<StoreProps> = (props: StoreProps) => {
-    const [basketState, basketDispatch] = useReducer(reducer, {});
     const { dispatch } = useContext(GlobalContext);
     const { className, name, onClick } = props;
 
-    const logout = () => dispatch({ type: GlobalActionTypes.LOGOUT_USER });
+    const logout = () => dispatch(logoutUser());
 
     return (
         <Window className={className} name={name} onClick={onClick} onClose={logout}>
@@ -35,8 +33,8 @@ const Store: React.FC<StoreProps> = (props: StoreProps) => {
                 <strong>Nibble</strong>
                 <span>95</span>
             </h1>
-            <ShopWindow dispatch={basketDispatch} />
-            <Basket basketDispatch={basketDispatch} basket={basketState} />
+            <ShopWindow />
+            <Basket />
         </Window>
     );
 };

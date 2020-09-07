@@ -1,31 +1,27 @@
-import React, { Dispatch, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Action, remove } from '../../reducers/basket';
 import { StoreObject } from '../../types/StoreObject';
-import { GlobalContext } from '../../globalState';
+import { GlobalContext, GlobalActionTypes } from '../../globalState';
 
 interface BasketItemProps {
   className?: string;
   id: number;
   quantity: number;
-  dispatch: Dispatch<Action>;
 }
 
 const BasketItem: React.FC<BasketItemProps> = ({
     className,
     id,
     quantity,
-    dispatch,
 }: BasketItemProps) => {
-    const { state } = useContext(GlobalContext);
+    const { state, dispatch } = useContext(GlobalContext);
+    const removeItem = () => dispatch({ type: GlobalActionTypes.REMOVE_FROM_CART, payload: id });
 
     if (!quantity) {
         return null;
     }
 
-    // I PROMISE this exists, ok typescript?
-    const item: StoreObject = state.items.find((e) => e.pk === id)!;
-    const removeItem = () => dispatch(remove(item));
+    const item: StoreObject = state.inventory.find((e) => e.pk === id)!;
 
     return (
         <div

@@ -1,12 +1,21 @@
 import React, { createContext, useReducer } from 'react';
 import { User } from './types/User';
-import { StoreObject } from './types/StoreObject';
+import {
+    StoreObject,
+    CartItem,
+    incrementCartItem,
+    createCartItem,
+    decrementCartItem,
+} from './types/StoreObject';
 
 export enum GlobalActionTypes {
     SET_USER = 'SET_USER',
     LOGOUT_USER = 'LOGOUT_USER',
-    SET_ITEMS = 'SET_ITEMS',
+    SET_INVENTORY = 'SET_INVENTORY',
     WITHDRAW_BALANCE = 'WITHDRAW_BALANCE',
+    ADD_TO_CART = 'ADD_TO_CART',
+    REMOVE_FROM_CART = 'REMOVE_FROM_CART',
+    EMPTY_CART = 'EMPTY_CART',
 }
 
 type GlobalAction = {
@@ -16,11 +25,29 @@ type GlobalAction = {
 
 type GlobalState = {
     user?: User | null
-    items: StoreObject[]
+    inventory: StoreObject[]
+    cart: { [id: number]: CartItem }
 }
 
 const initialState: GlobalState = {
-    items: [],
+    inventory: [],
+    cart: {},
+};
+
+const getIncrementedCartItem = (id: number, state: GlobalState): CartItem => {
+    if (state.cart[id]) {
+        return incrementCartItem(state.cart[id]);
+    }
+    return createCartItem(id);
+};
+
+const getDecrementedCart = (id: number, state: GlobalState) => {
+    if (state.cart[id].quantity > 1) {
+        return { ...state.cart, [id]: decrementCartItem(state.cart[id]) };
+    }
+    const removedCart = { ...state.cart };
+    delete removedCart[id];
+    return { ...removedCart };
 };
 
 const globalReducer = (state: GlobalState, action: GlobalAction) => {
@@ -29,8 +56,8 @@ const globalReducer = (state: GlobalState, action: GlobalAction) => {
             return { ...state, user: action.payload };
         case GlobalActionTypes.LOGOUT_USER:
             return { ...state, user: undefined };
-        case GlobalActionTypes.SET_ITEMS:
-            return { ...state, items: action.payload };
+        case GlobalActionTypes.SET_INVENTORY:
+            return { ...state, inventory: action.payload };
         case GlobalActionTypes.WITHDRAW_BALANCE:
             return {
                 ...state,
@@ -39,9 +66,43 @@ const globalReducer = (state: GlobalState, action: GlobalAction) => {
                     balance: state.user!.balance - action.payload,
                 },
             };
+        case GlobalActionTypes.ADD_TO_CART:
+            return {
+                ...state,
+                cart: {
+                    ...state.cart,
+                    [action.payload]: getIncrementedCartItem(action.payload, state),
+                },
+            };
+        case GlobalActionTypes.REMOVE_FROM_CART: {
+            return {
+                ...state,
+                cart: getDecrementedCart(action.payload, state),
+            };
+        }
+        case GlobalActionTypes.EMPTY_CART:
+            return { ...state, cart: { } };
         default: return { ...state };
     }
 };
+
+export const setUser = (user?: User | null) => (
+    { type: GlobalActionTypes.SET_USER, payload: user }
+);
+export const logoutUser = () => ({ type: GlobalActionTypes.LOGOUT_USER });
+export const setInventory = (inventory: StoreObject[]) => (
+    { type: GlobalActionTypes.SET_INVENTORY, payload: inventory }
+);
+export const withdrawBalance = (amount: number) => (
+    { type: GlobalActionTypes.WITHDRAW_BALANCE, payload: amount }
+);
+export const addToCart = (id: number) => (
+    { type: GlobalActionTypes.ADD_TO_CART, payload: id }
+);
+export const removeFromCart = (id: number) => (
+    { type: GlobalActionTypes.REMOVE_FROM_CART, payload: id }
+);
+export const emptyCart = () => ({ type: GlobalActionTypes.EMPTY_CART });
 
 type GlobalContextProps = {
     state: GlobalState

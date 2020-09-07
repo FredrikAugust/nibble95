@@ -1,44 +1,41 @@
-import React, { Dispatch, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Action, add } from '../reducers/basket';
 import { StoreObject } from '../types/StoreObject';
-import { GlobalContext } from '../globalState';
+import { GlobalContext, GlobalActionTypes } from '../globalState';
 import { IMAGE_URI } from '../artillery/API';
 
 interface ShopWindowItemProps {
-  dispatch: Dispatch<Action>;
   storeObject: StoreObject ;
 }
 
 const ShopWindowItem: React.FC<ShopWindowItemProps> = ({
-    dispatch,
     storeObject,
-}: ShopWindowItemProps) => (
-    <WindowItem key={storeObject.pk} onClick={() => dispatch(add(storeObject))}>
-        <div>
-            <img
-                src={storeObject.image ? IMAGE_URI(storeObject.image.sm) : ''}
-                alt={storeObject.name}
-            />
-            <hr />
-            <h3>{storeObject.name}</h3>
-            <p>{`${storeObject.price} NOK`}</p>
-        </div>
-    </WindowItem>
-);
+}: ShopWindowItemProps) => {
+    const { dispatch } = useContext(GlobalContext);
+    const addItem = (id: number) => dispatch({ type: GlobalActionTypes.ADD_TO_CART, payload: id });
+    return (
+        <WindowItem key={storeObject.pk} onClick={() => addItem(storeObject.pk)}>
+            <div>
+                <img
+                    src={storeObject.image ? IMAGE_URI(storeObject.image.sm) : ''}
+                    alt={storeObject.name}
+                />
+                <hr />
+                <h3>{storeObject.name}</h3>
+                <p>{`${storeObject.price} NOK`}</p>
+            </div>
+        </WindowItem>
+    );
+};
 
-type ShopWindowProps = {
-  dispatch: Dispatch<Action>
-}
-
-const ShopWindow: React.FC<ShopWindowProps> = ({ dispatch }: ShopWindowProps) => {
+const ShopWindow: React.FC = () => {
     const { state } = useContext(GlobalContext);
     return (
         <Container>
-            {state.items.length === 0
+            {state.inventory.length === 0
                 ? 'Loading...'
-                : state.items.map((e) => (
-                    <ShopWindowItem key={e.pk} storeObject={e} dispatch={dispatch} />
+                : state.inventory.map((e) => (
+                    <ShopWindowItem key={e.pk} storeObject={e} />
                 ))}
         </Container>
     );

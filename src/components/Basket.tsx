@@ -1,23 +1,22 @@
-import React, { Dispatch, useContext, FC } from 'react';
+import React, { useContext, FC } from 'react';
 import styled from 'styled-components';
-import { Action, State } from '../reducers/basket';
 import { StoreObject } from '../types/StoreObject';
 import BasketItem from './atom/BasketItem';
 import purchaseItems from '../artillery/store';
-import { GlobalContext, GlobalActionTypes } from '../globalState';
+import {
+    GlobalContext,
+    withdrawBalance,
+    logoutUser,
+    emptyCart,
+} from '../globalState';
 
-interface BasketProps {
-  basket: State;
-  basketDispatch: Dispatch<Action>;
-}
-
-const Basket: FC<BasketProps> = ({ basket, basketDispatch }: BasketProps) => {
+const Basket: FC = () => {
     const { state, dispatch } = useContext(GlobalContext);
-    const { user } = state;
-    const totalPrice = Object.keys(basket).reduce(
+    const { user, cart } = state;
+    const totalPrice = Object.keys(cart).reduce(
         (prev: number, so: string) => {
-            const p = (state.items.find((e) => e.pk === Number(so))! as StoreObject);
-            return prev + p.price * basket[Number(so)];
+            const item = (state.inventory.find((e) => e.pk === Number(so))! as StoreObject);
+            return prev + item.price * cart[Number(so)].quantity;
         },
         0,
     );
@@ -25,14 +24,20 @@ const Basket: FC<BasketProps> = ({ basket, basketDispatch }: BasketProps) => {
     const balance = user ? user.balance : 0;
     const fundsImageUri = balance >= totalPrice ? 'purchase' : 'insufficient';
     const fundsText = balance >= totalPrice ? 'PURCHASE' : 'INSUFFICIENT';
-    const cartImageUri = Math.max(...Object.values(basket)) > 0 ? 'food' : 'nofood';
+    const cartImageUri = Math.max(Object.keys(cart).length) > 0 ? 'food' : 'nofood';
 
     const userId = user ? user.pk : -1;
-    const withdrawBalance = () => (
-        dispatch({ type: GlobalActionTypes.WITHDRAW_BALANCE, payload: totalPrice })
-    );
-    const flatBasket = Object.entries(basket).flatMap((entry) => Array(entry[1]).fill(Number(entry[0])));
-    const purchase = () => purchaseItems(userId, flatBasket).then(() => withdrawBalance);
+    const dispatchWithdraw = () => {
+        dispatch(withdrawBalance(totalPrice));
+        dispatch(emptyCart());
+        dispatch(logoutUser());
+    };
+    const purchase = () => purchaseItems(userId, cart)
+        .then((response) => {
+            if (response.ok) {
+                dispatchWithdraw();
+            }
+        });
 
     return (
         <Container>
@@ -47,12 +52,11 @@ const Basket: FC<BasketProps> = ({ basket, basketDispatch }: BasketProps) => {
                 </span>
             </h3>
             <BasketItemContainer>
-                {Object.keys(basket).map((e: string) => (
+                {Object.keys(cart).map((key: string) => (
                     <BasketItem
-                        key={e}
-                        id={Number(e)}
-                        quantity={basket[Number(e)]}
-                        dispatch={basketDispatch}
+                        key={key}
+                        id={Number(key)}
+                        quantity={cart[Number(key)].quantity}
                     />
                 ))}
             </BasketItemContainer>

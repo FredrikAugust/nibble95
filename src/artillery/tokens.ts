@@ -47,18 +47,13 @@ export const fetchWithToken = async (
     return res;
 };
 
-export const postWithToken = async (
-    url: string,
-    data: any,
-): Promise<Response> => {
-    const res = await fetch(url, {
+export const postWithToken = (url: string, data: any): Promise<Response> => (
+    fetch(url, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${loadToken()}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-    });
-
-    return res;
-};
+    })
+);

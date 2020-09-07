@@ -1,10 +1,11 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import {
     Action, minimize, set_active, State, ApplicationState,
 } from '../reducers/application';
 import Button from './atom/Button';
 import ClockMoney from './atom/ClockMoney';
+import { GlobalContext } from '../globalState';
 
 const Container = styled.div`
   background-color: #c3c3c3;
@@ -32,15 +33,23 @@ const StartBar: React.FC<StartBarProps> = (
         setActiveApp,
     }: StartBarProps,
 ) => {
-    const onClick = (state: ApplicationState, name: string) => {
-        if (state === ApplicationState.MINIMIZED) {
+    const { state } = useContext(GlobalContext);
+    const { user } = state;
+    const onClick = (startBarState: ApplicationState, name: string) => {
+        if (startBarState === ApplicationState.MINIMIZED) {
             applicationDispatch(setActiveApp(name));
-        } else if (state === ApplicationState.NOT_FOCUSED) {
+        } else if (startBarState === ApplicationState.NOT_FOCUSED) {
             applicationDispatch(setActiveApp(name));
         } else {
             applicationDispatch(minimizeApp(name));
         }
     };
+
+    useEffect(() => {
+        if (!user) {
+            applicationDispatch(setActiveApp('Login'));
+        }
+    }, [user]);
     return (
         <Container>
             <Button
