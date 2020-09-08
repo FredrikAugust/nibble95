@@ -1,6 +1,6 @@
 import React, { useContext, FC } from 'react';
 import styled from 'styled-components';
-import { StoreObject } from '../types/StoreObject';
+import { StoreObject, CartItem } from '../types/StoreObject';
 import BasketItem from './atom/BasketItem';
 import purchaseItems from '../artillery/order';
 import {
@@ -9,16 +9,18 @@ import {
 } from '../state/globalState';
 import Button from './atom/Button';
 
+const calculateTotal = (cart: { [name: number]: CartItem }, inventory: StoreObject[]) => (
+    Object.keys(cart).reduce((accumulator: number, id: string) => {
+        const item = cart[Number(id)];
+        const product = inventory.find((e) => e.pk === Number(id))! as StoreObject;
+        return accumulator + product.price * item.quantity;
+    }, 0)
+);
+
 const Basket: FC = () => {
     const { state, dispatch } = useContext(GlobalContext);
     const { user, cart } = state;
-    const totalPrice = Object.keys(cart).reduce(
-        (prev: number, so: string) => {
-            const item = (state.inventory.find((e) => e.pk === Number(so))! as StoreObject);
-            return prev + item.price * cart[Number(so)].quantity;
-        },
-        0,
-    );
+    const totalPrice = calculateTotal(cart, state.inventory);
 
     const balance = user ? user.balance : 0;
     const fundsImageUri = balance >= totalPrice ? 'purchase' : 'insufficient';

@@ -26,9 +26,9 @@ const LoginView: FC<Props> = ({ dispatchUser, setRfid, onEnter }: Props) => {
 
     const login = async () => {
         const user = await handleLogin(input);
-        dispatchUser(user);
         if (!user) setRfid(input);
         setInput('');
+        dispatchUser(user);
     };
 
     const onChange = (event: ChangeEvent<HTMLInputElement>) => setInput(event.target.value);

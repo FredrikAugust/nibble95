@@ -9,17 +9,11 @@ interface BasketItemProps {
   quantity: number;
 }
 
-const BasketItem: React.FC<BasketItemProps> = ({
-    className,
-    id,
-    quantity,
-}: BasketItemProps) => {
+const BasketItem: React.FC<BasketItemProps> = ({ className, id, quantity }: BasketItemProps) => {
     const { state, dispatch } = useContext(GlobalContext);
     const removeItem = () => removeFromCart(dispatch, id);
 
-    if (!quantity) {
-        return null;
-    }
+    if (!quantity) return null;
 
     const item: StoreObject = state.inventory.find((e) => e.pk === id)!;
 

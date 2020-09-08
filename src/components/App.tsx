@@ -15,13 +15,13 @@ const App: FC = () => {
     const { data = [] }: { data: StoreObject[] } = useFetch(INVENTORY_URI);
     const { user } = state;
 
-    useEffect(() => {
+    useEffect(() => { // Set inventory when fetched
         if (data.length) {
             dispatch(setInventory(data));
         }
     }, [data, dispatch]);
 
-    useEffect(() => {
+    useEffect(() => { // Log out user after X time
         let timeoutId: number;
         if (user) {
             timeoutId = setTimeout(() => {
