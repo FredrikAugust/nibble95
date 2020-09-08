@@ -8,13 +8,11 @@ interface ShopWindowItemProps {
   storeObject: StoreObject;
 }
 
-const ShopWindowItem: React.FC<ShopWindowItemProps> = ({
-    storeObject,
-}: ShopWindowItemProps) => {
+const ShopWindowItem: React.FC<ShopWindowItemProps> = ({ storeObject }: ShopWindowItemProps) => {
     const { dispatch } = useContext(GlobalContext);
-    const addItem = (id: number) => addToCart(dispatch, id);
+    const addItem = () => addToCart(dispatch, storeObject.pk);
     return (
-        <WindowItem key={storeObject.pk} onClick={() => addItem(storeObject.pk)}>
+        <WindowItem key={storeObject.pk} onClick={addItem}>
             <div>
                 <img
                     src={storeObject.image ? IMAGE_URI(storeObject.image.sm) : ''}
@@ -33,13 +31,10 @@ type Props = {
 }
 
 const ShopWindow: React.FC<Props> = ({ inventory }: Props) => {
+    const shopItems = inventory.map((e) => <ShopWindowItem key={e.pk} storeObject={e} />);
     return (
         <Container>
-            {inventory.length === 0
-                ? 'Loading...'
-                : inventory.map((e) => (
-                    <ShopWindowItem key={e.pk} storeObject={e} />
-                ))}
+            {inventory.length === 0 ? 'Loading...' : shopItems}
         </Container>
     );
 };
