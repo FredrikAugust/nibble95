@@ -15,6 +15,7 @@ import Button from './atom/Button';
 import { ApplicationWindowTypes } from '../state/applicationWindowState';
 import { GlobalContext, exitUser } from '../state/globalState';
 import { User } from '../types/User';
+import { getCategories } from '../types/StoreObject';
 
 interface StoreProps {
   className?: string;
@@ -29,9 +30,7 @@ type CategoryBarProps = {
   setCategory: Dispatch<SetStateAction<string>>
 }
 
-const CategoryBar: FC<CategoryBarProps> = (
-    { categories, setCategory }: CategoryBarProps,
-) => {
+const CategoryBar: FC<CategoryBarProps> = ({ categories, setCategory }: CategoryBarProps) => {
     const row = categories.map((category) => (
         <Button key={category} text={category} onClick={() => setCategory(category)} />
     ));
@@ -71,12 +70,7 @@ const Store: FC<StoreProps> = (props: StoreProps) => {
         return item.category.name === filterCategory;
     });
 
-    const categories = state.inventory.reduce((acc, current) => {
-        if (acc.includes(current.category.name)) {
-            return [...acc];
-        }
-        return [...acc, current.category.name];
-    }, ['Alt'] as string[]);
+    const categories = getCategories(state.inventory);
 
     return (
         <Window className={className} name={name} onClick={onClick} onClose={logout}>
