@@ -26,7 +26,7 @@ const Desktop: FunctionComponent = () => {
     useEffect(() => {
         AWDispatch(addWindow('Nibble95', Store));
         AWDispatch(addWindow('Login', Login));
-    }, []);
+    }, [AWDispatch]);
 
     return (
         <Container>

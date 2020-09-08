@@ -14,9 +14,7 @@ const App: React.FC = () => {
     const { data = [] }: { data: StoreObject[] } = useFetch(INVENTORY_URI);
     const { user } = state;
 
-    useEffect(() => {
-        dispatch(setInventory(data));
-    }, [data, dispatch]);
+    useEffect(() => dispatch(setInventory(data)), []);
 
     useEffect(() => {
         if (user) {
@@ -24,7 +22,7 @@ const App: React.FC = () => {
                 exitUser(dispatch);
             }, LOGOUT_TIME);
         }
-    }, [user]);
+    }, [user, dispatch]);
 
     return (
         <div style={{ height: 'calc(100vh - 44px)' }}>

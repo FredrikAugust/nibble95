@@ -13,7 +13,6 @@ const ShopWindowItem: React.FC<ShopWindowItemProps> = ({
 }: ShopWindowItemProps) => {
     const { dispatch } = useContext(GlobalContext);
     const addItem = (id: number) => addToCart(dispatch, id);
-    console.log(storeObject.image);
     return (
         <WindowItem key={storeObject.pk} onClick={() => addItem(storeObject.pk)}>
             <div>

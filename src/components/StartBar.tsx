@@ -43,7 +43,7 @@ const StartBar: React.FC = () => {
             AWDispatch(closeWindow('Login'));
             AWDispatch(setActiveWindow('Nibble95'));
         }
-    }, [user]);
+    }, [user, AWDispatch]);
     return (
         <Container>
             <Button
