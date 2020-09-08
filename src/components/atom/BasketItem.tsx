@@ -11,7 +11,7 @@ interface BasketItemProps {
 
 const BasketItem: React.FC<BasketItemProps> = ({ className, id, quantity }: BasketItemProps) => {
     const { state, dispatch } = useContext(GlobalContext);
-    const removeItem = () => removeFromCart(dispatch, id);
+    const removeItem = () => dispatch(removeFromCart(id));
 
     if (!quantity) return null;
 

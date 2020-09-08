@@ -33,7 +33,7 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
     const { dispatch } = useContext(GlobalContext);
     const [rfid, setRfid] = useState<string>('');
 
-    const dispatchUser = (connectedUser?: User | null) => setUser(dispatch, connectedUser);
+    const dispatchUser = (connectedUser?: User | null) => dispatch(setUser(connectedUser));
     if (user) return null;
     const view = user === undefined
         ? <LoginView dispatchUser={dispatchUser} setRfid={setRfid} onEnter={onEnterPressed} />

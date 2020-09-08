@@ -10,7 +10,7 @@ interface ShopWindowItemProps {
 
 const ShopWindowItem: React.FC<ShopWindowItemProps> = ({ storeObject }: ShopWindowItemProps) => {
     const { dispatch } = useContext(GlobalContext);
-    const addItem = () => addToCart(dispatch, storeObject.pk);
+    const addItem = () => dispatch(addToCart(storeObject.pk));
     return (
         <WindowItem key={storeObject.pk} onClick={addItem}>
             <div>
