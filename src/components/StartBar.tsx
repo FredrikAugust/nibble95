@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, FC } from 'react';
 import styled from 'styled-components';
 import {
     ApplicationWindowTypes,
@@ -6,6 +6,8 @@ import {
     setActiveWindow,
     minimizeWindow,
     closeWindow,
+    ApplicationWinodwDispatch,
+    ApplicationWindowState,
 } from '../state/applicationWindowState';
 import Button from './atom/Button';
 import ClockMoney from './atom/ClockMoney';
@@ -22,19 +24,43 @@ const Container = styled.div`
   z-index: 4815162342;
 `;
 
-const StartBar: React.FC = () => {
+type BarApplicationsProps = {
+    AWState: ApplicationWindowState,
+    AWDispatch: ApplicationWinodwDispatch
+};
+
+const getOnClick = (activity: ApplicationWindowTypes): Function => {
+    if (activity === ApplicationWindowTypes.MINIMIZED
+    || activity === ApplicationWindowTypes.NOT_FOCUSED) {
+        return setActiveWindow;
+    }
+    return minimizeWindow;
+};
+
+const BarApplications: FC<BarApplicationsProps> = (
+    { AWState, AWDispatch }: BarApplicationsProps,
+) => {
+    const applications = Object.entries(AWState).map(([name, info]) => {
+        const onClick = () => AWDispatch(getOnClick(info.windowActivity)(name));
+        return (
+            <Button
+                key={name}
+                text={name}
+                application
+                activity={info.windowActivity}
+                onClick={onClick}
+            />
+        );
+    });
+    return (
+        <>{applications}</>
+    );
+};
+
+const StartBar: FC = () => {
     const { state } = useContext(GlobalContext);
     const { AWState, AWDispatch } = useContext(ApplicationWindowContext);
     const { user } = state;
-    const onClick = (startBarState: ApplicationWindowTypes, name: string) => {
-        if (startBarState === ApplicationWindowTypes.MINIMIZED) {
-            AWDispatch(setActiveWindow(name));
-        } else if (startBarState === ApplicationWindowTypes.NOT_FOCUSED) {
-            AWDispatch(setActiveWindow(name));
-        } else {
-            AWDispatch(minimizeWindow(name));
-        }
-    };
 
     useEffect(() => {
         if (!user) {
@@ -44,6 +70,7 @@ const StartBar: React.FC = () => {
             AWDispatch(setActiveWindow('Nibble95'));
         }
     }, [user, AWDispatch]);
+
     return (
         <Container>
             <Button
@@ -51,15 +78,10 @@ const StartBar: React.FC = () => {
                 text="Start"
                 icon={`${process.env.PUBLIC_URL}/start.png`}
             />
-            {Object.entries(AWState).map(([name, info]) => (
-                <Button
-                    key={name}
-                    text={name}
-                    application
-                    activity={info.windowActivity}
-                    onClick={() => onClick(info.windowActivity, name)}
-                />
-            ))}
+            <BarApplications
+                AWState={AWState}
+                AWDispatch={AWDispatch}
+            />
             <ClockMoney />
         </Container>
     );

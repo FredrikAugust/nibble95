@@ -101,9 +101,11 @@ export const closeWindow = (windowName: string) => (
     { type: ApplicationWindowActionTypes.CLOSE, payload: windowName }
 );
 
+export type ApplicationWinodwDispatch = ({ type }: ApplicationWindowActions) => void
+
 type ApplicationWindowContextProps = {
   AWState: ApplicationWindowState
-  AWDispatch: ({ type }: ApplicationWindowActions) => void
+  AWDispatch: ApplicationWinodwDispatch
 }
 
 export const ApplicationWindowContext = createContext({} as ApplicationWindowContextProps);
