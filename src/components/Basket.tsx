@@ -27,12 +27,10 @@ const Basket: FC = () => {
 
     const userId = user ? user.pk : -1;
     const dispatchWithdraw = () => dispatchPurchaseItems(dispatch, totalPrice);
-    const purchase = () => purchaseItems(userId, cart)
-        .then((response) => {
-            if (response.ok) {
-                dispatchWithdraw();
-            }
-        });
+    const purchase = async () => {
+        const response = await purchaseItems(userId, cart);
+        if (response.ok) dispatchWithdraw();
+    }
 
     const refresh = () => window.location.reload();
     return (
