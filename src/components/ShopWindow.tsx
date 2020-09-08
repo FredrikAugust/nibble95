@@ -62,6 +62,7 @@ const WindowItem = styled.button`
   float: left;
   padding: 15px;
   outline: 0;
+  font-size: 20px;
 
   background: #c3c3c3;
 

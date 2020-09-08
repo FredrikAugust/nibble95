@@ -74,6 +74,7 @@ const Basket: FC = () => {
 };
 
 const Container = styled.div`
+  font-size: 20px;
   overflow: hidden;
   grid-column: 10 / span 3;
   grid-row: 3;

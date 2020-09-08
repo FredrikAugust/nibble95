@@ -28,11 +28,19 @@ interface StoreProps {
 type CategoryBarProps = {
   categories: string[]
   setCategory: Dispatch<SetStateAction<string>>
+  selected: string
 }
 
-const CategoryBar: FC<CategoryBarProps> = ({ categories, setCategory }: CategoryBarProps) => {
+const CategoryBar: FC<CategoryBarProps> = (
+    { categories, setCategory, selected }: CategoryBarProps
+) => {
     const row = categories.map((category) => (
-        <Button key={category} text={category} onClick={() => setCategory(category)} />
+        <Button
+            key={category}
+            text={category}
+            activity={selected === category ? ApplicationWindowTypes.FOCUSED : undefined}
+            onClick={() => setCategory(category)}
+        />
     ));
     return (
         <div className="category-window">
@@ -83,7 +91,11 @@ const Store: FC<StoreProps> = (props: StoreProps) => {
             </h1>
             <ShopWindow inventory={filteredInventory} />
             <Basket />
-            <CategoryBar categories={categories} setCategory={setFilterCategory} />
+            <CategoryBar
+                categories={categories}
+                setCategory={setFilterCategory}
+                selected={filterCategory}
+            />
         </Window>
     );
 };
@@ -121,6 +133,7 @@ export default styled(Store)`
   .category-window {
     grid-row: 4;
     display: flex;
+    margin-top: 10px;
     justify-content: flex-start;
   }
 
