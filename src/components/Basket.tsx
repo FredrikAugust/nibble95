@@ -2,7 +2,7 @@ import React, { useContext, FC } from 'react';
 import styled from 'styled-components';
 import { StoreObject } from '../types/StoreObject';
 import BasketItem from './atom/BasketItem';
-import purchaseItems from '../artillery/store';
+import purchaseItems from '../artillery/order';
 import {
     GlobalContext,
     dispatchPurchaseItems,
