@@ -21,11 +21,15 @@ const App: React.FC = () => {
     }, [data, dispatch]);
 
     useEffect(() => {
+        let timeoutId: number;
         if (user) {
-            setTimeout(() => {
+            timeoutId = setTimeout(() => {
                 exitUser(dispatch);
             }, LOGOUT_TIME);
         }
+        return () => {
+            clearTimeout(timeoutId);
+        };
     }, [user, dispatch]);
 
     return (
