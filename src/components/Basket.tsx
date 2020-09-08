@@ -33,6 +33,7 @@ const Basket: FC = () => {
     }
 
     const refresh = () => window.location.reload();
+    
     return (
         <Container>
             <Button className="refresh-window" text="Refresh window" onClick={refresh} />
