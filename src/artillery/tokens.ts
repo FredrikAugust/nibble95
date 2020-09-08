@@ -5,46 +5,35 @@ export const loadToken = (): string => localStorage.getItem('n95_token')!;
 
 export const fetchToken = async (): Promise<void> => {
     const payload = `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`;
-    saveToken(
-    (
-      await (
-          await fetch(AUTHORIZE_URI, {
-              method: 'POST',
-              body: payload,
-              headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded',
-              },
-          })
-      ).json()
-    ).access_token as string,
-    );
+    const response = await fetch(AUTHORIZE_URI, {
+        method: 'POST',
+        body: payload,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+    });
+    const json = await response.json();
+    saveToken(json.access_token as string);
 };
 
-export const fetchWithToken = async (
-    url: string,
-    second = false,
-): Promise<Response> => {
-    const res = await fetch(url, {
+export const fetchWithToken = async (url: string, second = false): Promise<Response> => {
+    const response = await fetch(url, {
         headers: {
             Authorization: `Bearer ${loadToken()}`,
             'Content-Type': 'application/json',
         },
     });
 
-    if (res.status === 401 && !second) {
+    if (response.status === 401 && !second) {
     // token is too old
         await fetchToken();
-
-        const retryRes = await fetchWithToken(url, true);
-
-        if (retryRes.status === 401) {
-            throw retryRes;
+        const retryResponse = await fetchWithToken(url, true);
+        if (retryResponse.status === 401) {
+            throw retryResponse;
         }
-
-        return retryRes;
+        return retryResponse;
     }
-
-    return res;
+    return response;
 };
 
 export const postWithToken = (url: string, data: any): Promise<Response> => (
