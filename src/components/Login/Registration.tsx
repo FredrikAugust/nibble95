@@ -1,13 +1,24 @@
-import React, { FC, useState, useRef, useEffect } from 'react';
+import React, {
+    FC,
+    useState,
+    useRef,
+    useEffect,
+    Dispatch,
+    SetStateAction,
+} from 'react';
 import { User } from '../../types/User';
 import { registerUser, handleLogin } from '../../artillery/authorization';
 
+type KeyboardEvent = React.KeyboardEvent<HTMLInputElement>
+type HtmlEvent = React.ChangeEvent<HTMLInputElement>
+
 type Props = {
-  dispatchUser: (user?: User | null) => void;
-  rfid: string;
+  dispatchUser: (user?: User | null) => void
+  rfid: string
+  onEnter: (func: Function) => (event: KeyboardEvent) => void
 }
 
-const RegistrationView: FC<Props> = ({ dispatchUser, rfid }: Props) => {
+const RegistrationView: FC<Props> = ({ dispatchUser, rfid, onEnter }: Props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [badLogin, setBadLogin] = useState(false);
@@ -15,21 +26,19 @@ const RegistrationView: FC<Props> = ({ dispatchUser, rfid }: Props) => {
 
     useEffect(() => usernameRef.current!.focus(), []);
 
-    const bindRfid = () => registerUser(username, password, rfid)
-        .then((response) => {
-            if (response.ok) {
-                handleLogin(rfid, dispatchUser);
-            } else {
-                setBadLogin(true);
-            }
-        });
-
-    const register = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-        event.persist();
-        if (event.keyCode === 13) {
-            bindRfid();
+    const bindRfid = async () => {
+        const response = await registerUser(username, password, rfid);
+        if (response.ok) {
+            handleLogin(rfid, dispatchUser);
+        } else {
+            setBadLogin(true);
         }
     };
+    const setValue = (setState: Dispatch<SetStateAction<string>>) => (event: HtmlEvent) => (
+        setState(event.target.value)
+    );
+    const goBack = () => dispatchUser(undefined);
+
     return (
         <>
             <div>
@@ -42,20 +51,20 @@ const RegistrationView: FC<Props> = ({ dispatchUser, rfid }: Props) => {
                     ref={usernameRef}
                     id="username"
                     type="text"
-                    onKeyUp={register}
-                    onChange={(event) => setUsername(event.target.value)}
+                    onKeyUp={onEnter(bindRfid)}
+                    onChange={setValue(setUsername)}
                 />
                 <label htmlFor="password">Password: </label>
                 <input
                     id="password"
                     type="password"
-                    onKeyUp={register}
-                    onChange={(event) => setPassword(event.target.value)}
+                    onKeyUp={onEnter(bindRfid)}
+                    onChange={setValue(setPassword)}
                 />
             </div>
             <div>
                 <button type="button" onClick={bindRfid}>OK</button>
-                <button type="button" onClick={() => dispatchUser(undefined)}>Back</button>
+                <button type="button" onClick={goBack}>Back</button>
             </div>
         </>
     );

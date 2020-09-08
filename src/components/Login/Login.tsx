@@ -10,18 +10,26 @@ import React, {
 import { User } from '../../types/User';
 import { handleLogin } from '../../artillery/authorization';
 
+type KeyboardEvent = React.KeyboardEvent<HTMLInputElement>
+
 type Props = {
   dispatchUser: (user?: User | null) => void;
   setRfid: Dispatch<SetStateAction<string>>;
+  onEnter: (func: Function) => (event: KeyboardEvent) => void
 }
 
-const LoginView: FC<Props> = ({ dispatchUser, setRfid }: Props) => {
+const LoginView: FC<Props> = ({ dispatchUser, setRfid, onEnter }: Props) => {
     const [input, setInput] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => inputRef.current!.focus(), []);
 
-    const login = () => handleLogin(input, dispatchUser, setRfid);
+    const login = () => {
+        handleLogin(input, dispatchUser, setRfid);
+        setInput('');
+    };
+
+    const onChange = (event: ChangeEvent<HTMLInputElement>) => setInput(event.target.value);
 
     return (
         <>
@@ -35,14 +43,8 @@ const LoginView: FC<Props> = ({ dispatchUser, setRfid }: Props) => {
                     type="text"
                     ref={inputRef}
                     value={input}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
-                    onKeyUp={async (e) => {
-                        e.persist();
-                        if (e.keyCode === 13) {
-                            login();
-                            (e.target as EventTarget & HTMLInputElement).value = '';
-                        }
-                    }}
+                    onChange={onChange}
+                    onKeyUp={onEnter(login)}
                 />
             </div>
             <div>

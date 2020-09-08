@@ -17,6 +17,13 @@ interface LoginProps {
   user: User
 }
 
+const onEnterPressed = (func: Function) => (event: React.KeyboardEvent<HTMLInputElement>) => {
+    event.persist();
+    if (event.keyCode === 13) {
+        func();
+    }
+};
+
 const Login: React.FC<LoginProps> = (props: LoginProps) => {
     const {
         className,
@@ -30,8 +37,8 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
     const dispatchUser = (connectedUser?: User | null) => setUser(dispatch, connectedUser);
     if (user) return null;
     const view = user === undefined
-        ? <LoginView dispatchUser={dispatchUser} setRfid={setRfid} />
-        : <RegistrationView dispatchUser={dispatchUser} rfid={rfid} />;
+        ? <LoginView dispatchUser={dispatchUser} setRfid={setRfid} onEnter={onEnterPressed} />
+        : <RegistrationView dispatchUser={dispatchUser} rfid={rfid} onEnter={onEnterPressed} />;
     return (
         <Window className={className} name={name} onClick={onClick}>
             <Container>
