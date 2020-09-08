@@ -12,13 +12,17 @@ const useFetch = (uri: string, options = {}): FetchType => {
     const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
-        fetch(uri, options)
-            .then((response) => response.json())
-            .then((result) => {
-                setData(result);
+        const doFetch = async () => {
+            const response = await fetch(uri, options);
+            if (response.ok) {
+                const json = await response.json();
+                setData(json);
                 setIsLoading(false);
-            })
-            .catch(() => setHasError(true));
+            } else {
+                setHasError(true);
+            }
+        };
+        doFetch();
     }, []);
     return { data, isLoading, hasError };
 };
