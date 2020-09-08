@@ -1,4 +1,5 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, FC } from 'react';
+import styled from 'styled-components';
 import Desktop from './Desktop';
 import StartBar from './StartBar';
 import { StoreObject } from '../types/StoreObject';
@@ -9,7 +10,7 @@ import { ApplicationWindowProvider } from '../state/applicationWindowState';
 
 export const LOGOUT_TIME = 1000 * 60 * 2;
 
-const App: React.FC = () => {
+const App: FC = () => {
     const { state, dispatch } = useContext(GlobalContext);
     const { data = [] }: { data: StoreObject[] } = useFetch(INVENTORY_URI);
     const { user } = state;
@@ -33,13 +34,17 @@ const App: React.FC = () => {
     }, [user, dispatch]);
 
     return (
-        <div style={{ height: 'calc(100vh - 44px)' }}>
+        <Component>
             <ApplicationWindowProvider>
                 <Desktop />
                 <StartBar />
             </ApplicationWindowProvider>
-        </div>
+        </Component>
     );
 };
+
+const Component = styled.div`
+    height: calc(100vh - 44px);
+`;
 
 export default App;
