@@ -1,19 +1,27 @@
-import React, { useContext, FC, useState, Dispatch, SetStateAction } from 'react';
+/* eslint-disable react/no-unused-prop-types */
+// It is used in styled container
+import React, {
+    useContext,
+    FC,
+    useState,
+    Dispatch,
+    SetStateAction,
+} from 'react';
 import styled from 'styled-components';
 import Basket from './Basket';
 import ShopWindow from './ShopWindow';
 import Window from './Window';
-import { GlobalContext, exitUser } from '../globalState';
-import { ApplicationState } from '../reducers/application';
 import Button from './atom/Button';
+import { ApplicationWindowTypes } from '../state/applicationWindowState';
+import { GlobalContext, exitUser } from '../state/globalState';
+import { User } from '../types/User';
 
 interface StoreProps {
   className?: string;
-  // It is used in styled container
-  // eslint-disable-next-line react/no-unused-prop-types
-  state: ApplicationState;
+  windowActivity: ApplicationWindowTypes;
   name: string;
   onClick: Function;
+  user: User
 }
 
 type CategoryBarProps = {
@@ -37,7 +45,11 @@ const CategoryBar: FC<CategoryBarProps> = (
 const Store: FC<StoreProps> = (props: StoreProps) => {
     const { state, dispatch } = useContext(GlobalContext);
     const [filterCategory, setFilterCategory] = useState('Alt');
-    const { className, name, onClick } = props;
+    const {
+        className,
+        name,
+        onClick,
+    } = props;
 
     const logout = () => exitUser(dispatch);
 
@@ -119,13 +131,9 @@ export default styled(Store)`
   }
 
   grid-template-rows: 1.6em 3.2em auto min-content;
+  grid-row: 1 /span 2;
 
-  height: calc(95vh - 44px);
-  width: 97vw;
-
-  /* top: 2.5vh;
-  left: 1.5vw; */
-
-  ${(props) => `${props.state === 'focused' ? 'z-index: 1;' : 'z-index: 0'}`}
-  ${(props) => `${props.state === 'minimized' ? 'display: none' : ''}`}
+  ${(props) => `${props.windowActivity === ApplicationWindowTypes.FOCUSED ? 'z-index: 1;' : 'z-index: 0;'}`}
+  ${(props) => `${props.windowActivity === ApplicationWindowTypes.MINIMIZED ? 'display: none;' : ''}`}
+  ${(props) => `${props.user ? 'grid-column: 1 /span 2;' : 'grid-column: 2;'}`}
 `;

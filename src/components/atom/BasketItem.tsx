@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { StoreObject } from '../../types/StoreObject';
-import { GlobalContext, removeFromCart } from '../../globalState';
+import { GlobalContext, removeFromCart } from '../../state/globalState';
 
 interface BasketItemProps {
   className?: string;

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
-import { GlobalProvider } from './globalState';
+import { GlobalProvider } from './state/globalState';
 import { loadToken, fetchToken } from './artillery/tokens';
 
 if (!loadToken()) {

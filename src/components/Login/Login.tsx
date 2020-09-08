@@ -19,18 +19,12 @@ const LoginView: FC<Props> = ({ dispatchUser, setRfid }: Props) => {
     const [input, setInput] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => { inputRef.current!.focus(); });
+    useEffect(() => inputRef.current!.focus(), []);
 
     const login = () => handleLogin(input, dispatchUser, setRfid);
 
     return (
         <>
-            <div>
-                <img
-                    src={`${process.env.PUBLIC_URL}/find.png`}
-                    alt="Search icon win95"
-                />
-            </div>
             <div>
                 <p>Please scan your student card to log in or register to Nibble.</p>
             </div>
@@ -53,6 +47,12 @@ const LoginView: FC<Props> = ({ dispatchUser, setRfid }: Props) => {
             </div>
             <div>
                 <button onClick={login} type="button">OK</button>
+            </div>
+            <div>
+                <img
+                    src={`${process.env.PUBLIC_URL}/rfid.png`}
+                    alt="RFID scan here"
+                />
             </div>
         </>
     );

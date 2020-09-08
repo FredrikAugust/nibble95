@@ -6,7 +6,7 @@ import purchaseItems from '../artillery/store';
 import {
     GlobalContext,
     dispatchPurchaseItems,
-} from '../globalState';
+} from '../state/globalState';
 import Button from './atom/Button';
 
 const Basket: FC = () => {

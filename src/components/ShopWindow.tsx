@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { StoreObject } from '../types/StoreObject';
-import { GlobalContext, addToCart } from '../globalState';
+import { GlobalContext, addToCart } from '../state/globalState';
 import { IMAGE_URI } from '../artillery/API';
 
 interface ShopWindowItemProps {

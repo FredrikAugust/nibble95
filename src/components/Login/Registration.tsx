@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useRef, useEffect } from 'react';
 import { User } from '../../types/User';
 import { registerUser, handleLogin } from '../../artillery/authorization';
 
@@ -11,6 +11,9 @@ const RegistrationView: FC<Props> = ({ dispatchUser, rfid }: Props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [badLogin, setBadLogin] = useState(false);
+    const usernameRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => usernameRef.current!.focus(), []);
 
     const bindRfid = () => registerUser(username, password, rfid)
         .then((response) => {
@@ -30,18 +33,13 @@ const RegistrationView: FC<Props> = ({ dispatchUser, rfid }: Props) => {
     return (
         <>
             <div>
-                <img
-                    src={`${process.env.PUBLIC_URL}/find.png`}
-                    alt="Search icon win95"
-                />
-            </div>
-            <div>
                 <p>Register with your Online.ntnu.no username and password.</p>
                 {badLogin ? <p>You logged in with wrong credentials. Try again</p> : null}
             </div>
             <div>
                 <label htmlFor="username">Username: </label>
                 <input
+                    ref={usernameRef}
                     id="username"
                     type="text"
                     onKeyUp={register}

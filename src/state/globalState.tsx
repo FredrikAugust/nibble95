@@ -1,12 +1,12 @@
 import React, { createContext, useReducer, Dispatch } from 'react';
-import { User } from './types/User';
+import { User } from '../types/User';
 import {
     StoreObject,
     CartItem,
     incrementCartItem,
     createCartItem,
     decrementCartItem,
-} from './types/StoreObject';
+} from '../types/StoreObject';
 
 export enum GlobalActionTypes {
     SET_USER = 'SET_USER',

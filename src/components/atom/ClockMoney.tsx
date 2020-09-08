@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { GlobalContext } from '../../globalState';
+import { GlobalContext } from '../../state/globalState';
 import { LOGOUT_TIME } from '../App';
 
 const ClockMoney: React.FC = () => {

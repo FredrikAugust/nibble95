@@ -19,7 +19,8 @@ const Container = styled.div`
 
   padding: 0.5em;
 
-  position: absolute;
+  /* position: absolute; */
+  transition: all 2s;
 
   height: 100%;
 `;
@@ -40,12 +41,10 @@ const Window: FC<WindowProps> = ({
     onClose,
     children,
 }: WindowProps) => (
-    <Draggable handle=".titlebar" onMouseDown={() => onClick()}>
-        <Container className={className}>
-            <TitleBar name={name} onClose={onClose} />
-            {children}
-        </Container>
-    </Draggable>
+    <Container className={className} onClick={() => onClick()}>
+        <TitleBar name={name} onClose={onClose} />
+        {children}
+    </Container>
 );
 
 export default Window;

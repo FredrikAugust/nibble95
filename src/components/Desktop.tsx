@@ -1,12 +1,11 @@
 import React, {
-    Dispatch, FunctionComponent, useEffect,
+    FunctionComponent, useEffect, useContext,
 } from 'react';
 import styled from 'styled-components';
 import Login from './Login';
 import Store from './Store';
-import {
-    Action, add, set_active, State,
-} from '../reducers/application';
+import { ApplicationWindowContext, addWindow, setActiveWindow } from '../state/applicationWindowState';
+import { GlobalContext } from '../state/globalState';
 
 const Container = styled.div`
   background-color: #008282;
@@ -14,34 +13,30 @@ const Container = styled.div`
 
   padding: 1em;
   overflow: hidden;
+
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: 1fr 1fr;
 `;
 
-interface DesktopProps {
-  addApplication: typeof add;
-  applicationDispatch: Dispatch<Action>;
-  applicationState: State;
-}
-
-const Desktop: FunctionComponent<DesktopProps> = (props: DesktopProps) => {
-    const {
-        applicationState,
-        applicationDispatch,
-        addApplication,
-    } = props;
+const Desktop: FunctionComponent = () => {
+    const { state } = useContext(GlobalContext);
+    const { AWState, AWDispatch } = useContext(ApplicationWindowContext);
 
     useEffect(() => {
-        applicationDispatch(addApplication('Nibble95', Store));
-        applicationDispatch(addApplication('Login', Login));
-    }, [add]);
+        AWDispatch(addWindow('Nibble95', Store));
+        AWDispatch(addWindow('Login', Login));
+    }, []);
 
     return (
         <Container>
-            {Object.entries(applicationState).map(([name, info]) => (
-                <info.component
+            {Object.entries(AWState).map(([name, componentState]) => (
+                <componentState.component
                     key={name}
                     name={name}
-                    state={info.state}
-                    onClick={() => applicationDispatch(set_active(name))}
+                    windowActivity={componentState.windowActivity}
+                    user={state.user}
+                    onClick={() => AWDispatch(setActiveWindow(name))}
                 />
             ))}
         </Container>
