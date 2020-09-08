@@ -30,10 +30,10 @@ const Basket: FC = () => {
     const purchase = async () => {
         const response = await purchaseItems(userId, cart);
         if (response.ok) dispatchWithdraw();
-    }
+    };
 
     const refresh = () => window.location.reload();
-    
+
     return (
         <Container>
             <Button className="refresh-window" text="Refresh window" onClick={refresh} />
@@ -44,7 +44,7 @@ const Basket: FC = () => {
                 />
                 Basket
                 <span style={{ display: totalPrice > 0 ? 'inline' : 'none' }}>
-                    {`(${totalPrice} NOK)`}
+                    ({totalPrice} NOK)
                 </span>
             </h3>
             <BasketItemContainer>
