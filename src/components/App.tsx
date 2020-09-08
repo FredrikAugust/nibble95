@@ -14,7 +14,11 @@ const App: React.FC = () => {
     const { data = [] }: { data: StoreObject[] } = useFetch(INVENTORY_URI);
     const { user } = state;
 
-    useEffect(() => dispatch(setInventory(data)), []);
+    useEffect(() => {
+        if (data.length) {
+            dispatch(setInventory(data));
+        }
+    }, [data, dispatch]);
 
     useEffect(() => {
         if (user) {
