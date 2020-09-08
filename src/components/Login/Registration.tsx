@@ -29,7 +29,8 @@ const RegistrationView: FC<Props> = ({ dispatchUser, rfid, onEnter }: Props) => 
     const bindRfid = async () => {
         const response = await registerUser(username, password, rfid);
         if (response.ok) {
-            handleLogin(rfid, dispatchUser);
+            const user = await handleLogin(rfid);
+            dispatchUser(user);
         } else {
             setBadLogin(true);
         }
