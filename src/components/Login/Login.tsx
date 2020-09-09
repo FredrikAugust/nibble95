@@ -1,13 +1,4 @@
-import React, {
-  FC,
-  useRef,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-  useState,
-  ChangeEvent,
-  useContext,
-} from 'react';
+import React, { FC, useRef, useEffect, Dispatch, SetStateAction, useState, ChangeEvent } from 'react';
 import { User } from '../../types/User';
 import { handleLogin } from '../../artillery/authorization';
 
