@@ -1,65 +1,78 @@
 import React, {
-    FC,
-    useRef,
-    useEffect,
-    Dispatch,
-    SetStateAction,
-    useState,
-    ChangeEvent,
+  FC,
+  useRef,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+  useState,
+  ChangeEvent,
+  useContext,
 } from 'react';
 import { User } from '../../types/User';
 import { handleLogin } from '../../artillery/authorization';
 
-type KeyboardEvent = React.KeyboardEvent<HTMLInputElement>
+type KeyboardEvent = React.KeyboardEvent<HTMLInputElement>;
 
 type Props = {
   dispatchUser: (user?: User | null) => void;
   setRfid: Dispatch<SetStateAction<string>>;
-  onEnter: (func: Function) => (event: KeyboardEvent) => void
-}
+  onEnter: (func: Function) => (event: KeyboardEvent) => void;
+};
+
+const WAIT_INTERVAL = 2000;
 
 const LoginView: FC<Props> = ({ dispatchUser, setRfid, onEnter }: Props) => {
-    const [input, setInput] = useState('');
-    const inputRef = useRef<HTMLInputElement>(null);
+  const [input, setInput] = useState('');
+  const [timer, setTimer] = useState<number | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => inputRef.current!.focus(), []);
+  useEffect(() => {
+    window.addEventListener('keydown', () => {
+      inputRef.current!.focus();
+    });
+  }, []);
+  const login = async () => {
+    const user = await handleLogin(input);
+    if (!user) setRfid(input);
+    setInput('');
+    dispatchUser(user);
+  };
 
-    const login = async () => {
-        const user = await handleLogin(input);
-        if (!user) setRfid(input);
-        setInput('');
-        dispatchUser(user);
-    };
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    setInput(event.target.value);
+    setTimer(setTimeout(() => setInput(''), WAIT_INTERVAL));
+  };
 
-    const onChange = (event: ChangeEvent<HTMLInputElement>) => setInput(event.target.value);
-
-    return (
-        <>
-            <div>
-                <p>Please scan your student card to log in or register to Nibble.</p>
-            </div>
-            <div>
-                <label htmlFor="rfid">RFID: </label>
-                <input
-                    id="rfid"
-                    type="text"
-                    ref={inputRef}
-                    value={input}
-                    onChange={onChange}
-                    onKeyUp={onEnter(login)}
-                />
-            </div>
-            <div>
-                <button onClick={login} type="button">OK</button>
-            </div>
-            <div>
-                <img
-                    src={`${process.env.PUBLIC_URL}/rfid.png`}
-                    alt="RFID scan here"
-                />
-            </div>
-        </>
-    );
+  return (
+    <>
+      <div>
+        <p>Please scan your student card to log in or register to Nibble.</p>
+      </div>
+      <div>
+        <label htmlFor="rfid">RFID: </label>
+        <input
+          id="rfid"
+          type="text"
+          ref={inputRef}
+          value={input}
+          onChange={onChange}
+          onKeyUp={onEnter(login)}
+          autoFocus={true}
+        />
+      </div>
+      <div>
+        <button onClick={login} type="button">
+          OK
+        </button>
+      </div>
+      <div>
+        <img src={`${process.env.PUBLIC_URL}/rfid.png`} alt="RFID scan here" />
+      </div>
+    </>
+  );
 };
 
 export default LoginView;
