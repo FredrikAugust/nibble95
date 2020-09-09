@@ -1,12 +1,11 @@
-import React, { Dispatch } from "react";
-
-import styled from "styled-components";
-
-import Login from "./Login";
-import Store from "./Store";
-
-import { Action, add, set_active, State } from "../reducers/application";
-import { User } from "../types/User";
+import React, {
+    FunctionComponent, useEffect, useContext,
+} from 'react';
+import styled from 'styled-components';
+import Login from './Login';
+import Store from './Store';
+import { ApplicationWindowContext, addWindow, setActiveWindow } from '../state/applicationWindowState';
+import { GlobalContext } from '../state/globalState';
 
 const Container = styled.div`
   background-color: #008282;
@@ -14,39 +13,34 @@ const Container = styled.div`
 
   padding: 1em;
   overflow: hidden;
+
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: 1fr 1fr;
 `;
 
-interface DesktopProps {
-  add: typeof add;
-  dispatch: Dispatch<Action>;
-  state: State;
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
-  user: User | undefined;
-}
+const Desktop: FunctionComponent = () => {
+    const { state } = useContext(GlobalContext);
+    const { AWState, AWDispatch } = useContext(ApplicationWindowContext);
 
-class Desktop extends React.Component<DesktopProps, {}> {
-  public componentDidMount() {
-    const { dispatch, add } = this.props;
-    dispatch(add("Nibble95", Store));
-    dispatch(add("Login", Login));
-  }
+    useEffect(() => {
+        AWDispatch(addWindow('Nibble95', Store));
+        AWDispatch(addWindow('Login', Login));
+    }, [AWDispatch]);
 
-  public render() {
     return (
-      <Container>
-        {Object.entries(this.props.state).map(([name, info]) => (
-          <info.component
-            key={name}
-            name={name}
-            state={info.state}
-            onClick={() => this.props.dispatch(set_active(name))}
-            setUser={this.props.setUser}
-            user={this.props.user}
-          />
-        ))}
-      </Container>
+        <Container>
+            {Object.entries(AWState).map(([name, componentState]) => (
+                <componentState.component
+                    key={name}
+                    name={name}
+                    windowActivity={componentState.windowActivity}
+                    user={state.user}
+                    onClick={() => AWDispatch(setActiveWindow(name))}
+                />
+            ))}
+        </Container>
     );
-  }
-}
+};
 
 export default Desktop;

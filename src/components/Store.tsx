@@ -1,40 +1,103 @@
-import React from "react";
-
-import styled from "styled-components";
-
-import { reducer } from "./../reducers/basket";
-
-import { User } from "../types/User";
-import Basket from "./Basket";
-import ShopWindow from "./ShopWindow";
-import Window from "./Window";
+/* eslint-disable react/no-unused-prop-types */
+// It is used in styled container
+import React, {
+    useContext,
+    FC,
+    useState,
+    Dispatch,
+    SetStateAction,
+} from 'react';
+import styled from 'styled-components';
+import Basket from './Basket';
+import ShopWindow from './ShopWindow';
+import Window from './Window';
+import Button from './atom/Button';
+import { ApplicationWindowTypes } from '../state/applicationWindowState';
+import { GlobalContext, exitUser } from '../state/globalState';
+import { User } from '../types/User';
+import { getCategories } from '../types/StoreObject';
 
 interface StoreProps {
   className?: string;
-  state: "focused" | "not_focused" | "minimized";
+  windowActivity: ApplicationWindowTypes;
   name: string;
   onClick: Function;
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
-  user: User | undefined;
+  user: User
 }
 
-const Store: React.FC<StoreProps> = ({ className, name, onClick }) => {
-  const [state, dispatch] = React.useReducer(reducer, {});
+type CategoryBarProps = {
+  categories: string[]
+  setCategory: Dispatch<SetStateAction<string>>
+  selected: string
+}
 
-  return (
-    <Window className={className} name={name} onClick={onClick}>
-      <h1>
-        <img
-          src={`${process.env.PUBLIC_URL}/logo.png`}
-          alt="Nibble Logo (Windows 95 Search Computer Icon)"
+const CategoryBar: FC<CategoryBarProps> = (
+    { categories, setCategory, selected }: CategoryBarProps
+) => {
+    const row = categories.map((category) => (
+        <Button
+            key={category}
+            text={category}
+            activity={selected === category ? ApplicationWindowTypes.FOCUSED : undefined}
+            onClick={() => setCategory(category)}
         />
-        Welcome to <strong>Nibble</strong>
-        <span>95</span>
-      </h1>
-      <ShopWindow dispatch={dispatch} />
-      <Basket dispatch={dispatch} balance={0} basket={state}></Basket>
-    </Window>
-  );
+    ));
+    return (
+        <div className="category-window">
+            {row}
+        </div>
+    );
+};
+
+const Store: FC<StoreProps> = (props: StoreProps) => {
+    const { state, dispatch } = useContext(GlobalContext);
+    const [filterCategory, setFilterCategory] = useState('Alt');
+    const {
+        className,
+        name,
+        onClick,
+    } = props;
+
+    const logout = () => exitUser(dispatch);
+
+    const username = state.user?.first_name || '';
+    const titleText = state.isLoggingOut ? `Logging ${username} out of ` : 'Welcome to ';
+
+    const welcomeTitle = (
+        <>
+            {titleText}
+            {' '}
+            <strong>Nibble</strong>
+            <span>95</span>
+            { state.user && !state.isLoggingOut ? `, ${username}` : ''}
+        </>
+    );
+
+    const filteredInventory = state.inventory.filter((item) => {
+        if (filterCategory === 'Alt') return item;
+        return item.category.name === filterCategory;
+    });
+
+    const categories = getCategories(state.inventory);
+
+    return (
+        <Window className={className} name={name} onClick={onClick} onClose={logout}>
+            <h1>
+                <img
+                    src={`${process.env.PUBLIC_URL}/logo.png`}
+                    alt="Nibble Logo (Windows 95 Search Computer Icon)"
+                />
+                {welcomeTitle}
+            </h1>
+            <ShopWindow inventory={filteredInventory} />
+            <Basket />
+            <CategoryBar
+                categories={categories}
+                setCategory={setFilterCategory}
+                selected={filterCategory}
+            />
+        </Window>
+    );
 };
 
 export default styled(Store)`
@@ -67,14 +130,17 @@ export default styled(Store)`
     }
   }
 
-  grid-template-rows: 1.6em 3.2em auto;
+  .category-window {
+    grid-row: 4;
+    display: flex;
+    margin-top: 10px;
+    justify-content: flex-start;
+  }
 
-  height: calc(95vh - 44px);
-  width: 97vw;
+  grid-template-rows: 1.6em 3.2em auto min-content;
+  grid-row: 1 /span 2;
 
-  /* top: 2.5vh;
-  left: 1.5vw; */
-
-  ${props => `${props.state === "focused" ? "z-index: 1;" : "z-index: 0"}`}
-  ${props => `${props.state === "minimized" ? "display: none" : ""}`}
+  ${(props) => `${props.windowActivity === ApplicationWindowTypes.FOCUSED ? 'z-index: 1;' : 'z-index: 0;'}`}
+  ${(props) => `${props.windowActivity === ApplicationWindowTypes.MINIMIZED ? 'display: none;' : ''}`}
+  ${(props) => `${props.user ? 'grid-column: 1 /span 2;' : 'grid-column: 2;'}`}
 `;

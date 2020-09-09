@@ -1,10 +1,7 @@
-import React from "react";
-
-import styled from "styled-components";
-
-import TitleBar from "./TitleBar";
-
-import Draggable from "react-draggable";
+import React, { FC } from 'react';
+import styled from 'styled-components';
+import Draggable from 'react-draggable';
+import TitleBar from './TitleBar';
 
 const Container = styled.div`
   background: #c3c3c3;
@@ -22,22 +19,32 @@ const Container = styled.div`
 
   padding: 0.5em;
 
-  position: absolute;
+  /* position: absolute; */
+  transition: all 2s;
 
   height: 100%;
 `;
 
-const Window: React.FC<{
+type WindowProps = {
   className?: string;
   name: string;
   onClick: Function;
-}> = props => (
-  <Draggable handle=".titlebar" onMouseDown={() => props.onClick()}>
-    <Container className={props.className}>
-      <TitleBar name={props.name} />
-      {props.children}
+  onClose?: () => void;
+  // eslint-disable-next-line no-undef
+  children: JSX.Element[] | JSX.Element;
+}
+
+const Window: FC<WindowProps> = ({
+    className,
+    name,
+    onClick,
+    onClose,
+    children,
+}: WindowProps) => (
+    <Container className={className} onClick={() => onClick()}>
+        <TitleBar name={name} onClose={onClose} />
+        {children}
     </Container>
-  </Draggable>
 );
 
 export default Window;

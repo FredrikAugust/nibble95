@@ -1,18 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
-
-import "./index.css";
-
-import App from "./components/App";
-
-import { fetchToken, loadToken } from "./artillery/API";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './components/App';
+import { GlobalProvider } from './state/globalState';
+import { loadToken, fetchToken } from './artillery/tokens';
 
 if (!loadToken()) {
-  fetchToken().catch(() =>
-    console.warn(
-      "It appears you have not provided the token required for the app to run."
-    )
-  );
+    fetchToken().catch(() => console.warn(
+        'It appears you have not provided the token required for the app to run.',
+    ));
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+    <GlobalProvider>
+        <App />
+    </GlobalProvider>,
+    document.getElementById('root'),
+);

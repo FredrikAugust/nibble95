@@ -1,58 +1,50 @@
-import React from "react";
+import React, { useContext, useEffect, FC } from 'react';
+import styled from 'styled-components';
+import Desktop from './Desktop';
+import StartBar from './StartBar';
+import { StoreObject } from '../types/StoreObject';
+import { GlobalContext, setInventory, exitUser } from '../state/globalState';
+import useFetch from '../hooks/useFetch';
+import { INVENTORY_URI } from '../artillery/API';
+import { ApplicationWindowProvider } from '../state/applicationWindowState';
 
-import Desktop from "./Desktop";
-import StartBar from "./StartBar";
+export const LOGOUT_TIME = 1000 * 60 * 2;
 
-import { User } from "../types/User";
-import { add, minimize, reducer, set_active } from "./../reducers/application";
-import { StoreObject } from "./../types/StoreObject";
+const App: FC = () => {
+    const { state, dispatch } = useContext(GlobalContext);
+    const { data = [] }: { data: StoreObject[] } = useFetch(INVENTORY_URI);
+    const { user } = state;
 
-const Container: React.FC = () => {
-  const [state, dispatch] = React.useReducer(reducer, {});
-  const [user, setUser] = React.useState<User>();
+    useEffect(() => { // Set inventory when fetched
+        if (data.length) {
+            dispatch(setInventory(data));
+        }
+    }, [data, dispatch]);
 
-  return (
-    <div style={{ height: "calc(100vh - 44px)" }}>
-      <Desktop
-        user={user}
-        dispatch={dispatch}
-        add={add}
-        state={state}
-        setUser={setUser}
-      />
-      <StartBar
-        dispatch={dispatch}
-        state={state}
-        minimize={minimize}
-        set_active={set_active}
-      />
-    </div>
-  );
+    useEffect(() => { // Log out user after X time
+        let timeoutId: number;
+        if (user) {
+            timeoutId = setTimeout(() => {
+                exitUser(dispatch);
+            }, LOGOUT_TIME);
+        }
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [user, dispatch]);
+
+    return (
+        <Component>
+            <ApplicationWindowProvider>
+                <Desktop />
+                <StartBar />
+            </ApplicationWindowProvider>
+        </Component>
+    );
 };
 
-export const StoreCtx = React.createContext<Array<StoreObject>>([]);
-
-class App extends React.Component<{}, { items: Array<StoreObject> }> {
-  constructor(props: {}) {
-    super(props);
-
-    this.state = { items: [] };
-  }
-
-  public async componentDidMount() {
-    const res = await (
-      await fetch(`https://online.ntnu.no/api/v1/inventory/`)
-    ).json();
-    this.setState({ items: res });
-  }
-
-  public render() {
-    return (
-      <StoreCtx.Provider value={this.state.items}>
-        <Container />
-      </StoreCtx.Provider>
-    );
-  }
-}
+const Component = styled.div`
+    height: calc(100vh - 44px);
+`;
 
 export default App;

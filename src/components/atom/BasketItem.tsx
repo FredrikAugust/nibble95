@@ -1,45 +1,46 @@
-import React, { Dispatch } from "react";
-import styled from "styled-components";
-import { Action, remove } from "../../reducers/basket";
-import { StoreObject } from "../../types/StoreObject";
-import { StoreCtx } from "../App";
+import React, { useContext } from 'react';
+import styled from 'styled-components';
+import { StoreObject } from '../../types/StoreObject';
+import { GlobalContext, removeFromCart } from '../../state/globalState';
 
 interface BasketItemProps {
   className?: string;
   id: number;
   quantity: number;
-  dispatch: Dispatch<Action>;
 }
 
-const BasketItem: React.FC<BasketItemProps> = ({
-  className,
-  id,
-  quantity,
-  dispatch
-}) => {
-  const store = React.useContext(StoreCtx);
+const BasketItem: React.FC<BasketItemProps> = ({ className, id, quantity }: BasketItemProps) => {
+    const { state, dispatch } = useContext(GlobalContext);
+    const removeItem = () => dispatch(removeFromCart(id));
 
-  if (!quantity) {
-    return null;
-  }
+    if (!quantity) return null;
 
-  const item: StoreObject = store.find(e => e.pk === id)!; // I PROMISE this exists, ok typescript?
+    const item: StoreObject = state.inventory.find((e) => e.pk === id)!;
 
-  return (
-    <div className={className} onClick={() => dispatch(remove(item))}>
-      <div>
-        <h3>{item.name}</h3>
-        <h5>x{quantity}</h5>
-      </div>
-      <h5>
-        {item.price * quantity}
-        <span>NOK</span>
-      </h5>
-    </div>
-  );
+    return (
+        <div
+            role="button"
+            className={className}
+            onClick={removeItem}
+            tabIndex={0}
+        >
+            <div>
+                <h3>{item.name}</h3>
+                <h5>
+x
+                    {quantity}
+                </h5>
+            </div>
+            <h5>
+                {item.price * quantity}
+                <span>NOK</span>
+            </h5>
+        </div>
+    );
 };
 
 export default styled(BasketItem)`
+  font-size: 20px;
   h3,
   h5 {
     margin: 0;

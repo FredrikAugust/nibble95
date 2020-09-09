@@ -1,10 +1,33 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { GlobalContext } from '../../state/globalState';
+import { LOGOUT_TIME } from '../App';
 
-import styled from "styled-components";
+const ClockMoney: React.FC = () => {
+    const { state } = useContext(GlobalContext);
+    const { user } = state;
+    const [countdown, setCountdown] = useState(LOGOUT_TIME);
+    const value = user ? user.balance : '-';
+    const loggingOutText = user ? ` | Logout in ${countdown / 1000}S` : '';
+    useEffect(() => {
+        let intervalId: number;
+        if (user) {
+            intervalId = window.setInterval(() => {
+                setCountdown(countdown - 1000);
+            }, 1000);
+        }
+        return () => clearInterval(intervalId);
+    }, [user, countdown]);
 
-interface ClockMoneyProps {
-  className?: string;
-}
+    return (
+        <Container>
+            <span>
+                {`${value} NOK`}
+                {loggingOutText}
+            </span>
+        </Container>
+    );
+};
 
 const Container = styled.div`
   align-self: center;
@@ -30,11 +53,5 @@ const Container = styled.div`
     display: block;
   }
 `;
-
-const ClockMoney: React.FC<ClockMoneyProps> = ({ className }) => (
-  <Container>
-    <span>- NOK</span>
-  </Container>
-);
 
 export default ClockMoney;

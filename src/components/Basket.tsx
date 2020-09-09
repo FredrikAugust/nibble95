@@ -1,14 +1,80 @@
-import React, { Dispatch } from "react";
+import React, { useContext, FC } from 'react';
+import styled from 'styled-components';
+import { StoreObject, CartItem } from '../types/StoreObject';
+import BasketItem from './atom/BasketItem';
+import purchaseItems from '../artillery/order';
+import {
+    GlobalContext,
+    dispatchPurchaseItems,
+} from '../state/globalState';
+import Button from './atom/Button';
 
-import styled from "styled-components";
+const calculateTotal = (cart: { [name: number]: CartItem }, inventory: StoreObject[]) => (
+    Object.keys(cart).reduce((accumulator: number, id: string) => {
+        const item = cart[Number(id)];
+        const product = inventory.find((e) => e.pk === Number(id))! as StoreObject;
+        return accumulator + product.price * item.quantity;
+    }, 0)
+);
 
-import { Action, State } from "./../reducers/basket";
-import { StoreObject } from "./../types/StoreObject";
+const Basket: FC = () => {
+    const { state, dispatch } = useContext(GlobalContext);
+    const { user, cart } = state;
+    const totalPrice = calculateTotal(cart, state.inventory);
 
-import { StoreCtx } from "./App";
-import BasketItem from "./atom/BasketItem";
+    const balance = user ? user.balance : 0;
+    const fundsImageUri = balance >= totalPrice ? 'purchase' : 'insufficient';
+    const fundsText = balance >= totalPrice ? 'PURCHASE' : 'INSUFFICIENT';
+    const cartImageUri = Math.max(Object.keys(cart).length) > 0 ? 'food' : 'nofood';
+
+    const userId = user ? user.pk : -1;
+    const dispatchWithdraw = () => dispatchPurchaseItems(dispatch, totalPrice);
+    const purchase = async () => {
+        const response = await purchaseItems(userId, cart);
+        if (response.ok) dispatchWithdraw();
+    };
+
+    const refresh = () => window.location.reload();
+
+    return (
+        <Container>
+            <Button className="refresh-window" text="Refresh window" onClick={refresh} />
+            <h3>
+                <img
+                    src={`${process.env.PUBLIC_URL}/${cartImageUri}.png`}
+                    alt="Empty folder"
+                />
+                Basket
+                <span style={{ display: totalPrice > 0 ? 'inline' : 'none' }}>
+                    ({totalPrice} NOK)
+                </span>
+            </h3>
+            <BasketItemContainer>
+                {Object.keys(cart).map((key: string) => (
+                    <BasketItem
+                        key={key}
+                        id={Number(key)}
+                        quantity={cart[Number(key)].quantity}
+                    />
+                ))}
+            </BasketItemContainer>
+            <hr />
+            <PurchaseButton
+                onClick={purchase}
+                disabled={balance < totalPrice}
+            >
+                <img
+                    src={`${process.env.PUBLIC_URL}/${fundsImageUri}.png`}
+                    alt="Money or no money"
+                />
+                {fundsText}
+            </PurchaseButton>
+        </Container>
+    );
+};
 
 const Container = styled.div`
+  font-size: 20px;
   overflow: hidden;
   grid-column: 10 / span 3;
   grid-row: 3;
@@ -17,22 +83,26 @@ const Container = styled.div`
   display: grid;
 
   grid-template-columns: 100%;
-  grid-template-rows: 2.3em 79% 2px auto;
+  grid-template-rows: 2.3em 2.3em 79% 2px;
 
   grid-row-gap: 5px;
+
+  .refresh-window {
+    grid-row: 1;
+  }
 
   hr {
     border-top: 1px solid #929292;
     border-bottom: 1px solid white;
 
-    grid-row: 3;
+    grid-row: 4;
 
     margin: 0;
     padding: 0;
   }
 
   h3 {
-    grid-row: 1;
+    grid-row: 2;
     margin: 0;
     font-weight: 100;
 
@@ -48,7 +118,7 @@ const Container = styled.div`
   }
 
   & > div:nth-child(2) {
-    grid-row: 2 / span 1;
+    grid-row: 3 / span 1;
 
     border-top: 1px solid #828282;
     border-left: 1px solid #828282;
@@ -59,12 +129,6 @@ const Container = styled.div`
   }
 `;
 
-interface BasketProps {
-  balance: number;
-  basket: State;
-  dispatch: Dispatch<Action>;
-}
-
 const PurchaseButton = styled.button`
   background-color: #008282;
   border-top: 1px solid white;
@@ -74,7 +138,7 @@ const PurchaseButton = styled.button`
   box-shadow: 1px 1px 0 1px black;
   margin: 1px 3px 3px 1px;
 
-  grid-row: 4;
+  grid-row: 5;
 
   color: white;
 
@@ -99,56 +163,8 @@ const PurchaseButton = styled.button`
 `;
 
 const BasketItemContainer = styled.div`
+  grid-row: 3;
   overflow-y: auto;
 `;
-
-const Basket: React.FC<BasketProps> = props => {
-  const store = React.useContext(StoreCtx);
-
-  const totalPrice = Object.keys(props.basket).reduce(
-    (prev: number, so: string) => {
-      const p = (store.find(e => e.pk === Number(so))! as StoreObject).price;
-      return prev + p * props.basket[Number(so)];
-    },
-    0
-  );
-
-  return (
-    <Container>
-      <h3>
-        <img
-          src={`${process.env.PUBLIC_URL}/${
-            Math.max(...Object.values(props.basket)) > 0 ? "food" : "nofood"
-          }.png`}
-          alt="Empty folder"
-        />
-        Basket{" "}
-        <span style={{ display: totalPrice > 0 ? "inline" : "none" }}>
-          ({totalPrice}NOK)
-        </span>
-      </h3>
-      <BasketItemContainer>
-        {Object.keys(props.basket).map((e: string) => (
-          <BasketItem
-            key={e}
-            id={Number(e)}
-            quantity={props.basket[Number(e)]}
-            dispatch={props.dispatch}
-          />
-        ))}
-      </BasketItemContainer>
-      <hr />
-      <PurchaseButton>
-        <img
-          src={`${process.env.PUBLIC_URL}/${
-            props.balance >= 0 ? "purchase" : "insufficient"
-          }.png`}
-          alt="Money or no money"
-        />
-        Purchase
-      </PurchaseButton>
-    </Container>
-  );
-};
 
 export default Basket;
