@@ -53,7 +53,6 @@ const LoginView: FC<Props> = ({ dispatchUser, setRfid, onEnter }: Props) => {
                     value={input}
                     onChange={onChange}
                     onKeyUp={onEnter(login)}
-                    autoFocus
                 />
             </div>
             <div>
