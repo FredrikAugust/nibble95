@@ -74,7 +74,6 @@ const Basket: FC = () => {
 };
 
 const Container = styled.div`
-  font-size: 20px;
   overflow: hidden;
   grid-column: 10 / span 3;
   grid-row: 3;
@@ -105,7 +104,7 @@ const Container = styled.div`
     grid-row: 2;
     margin: 0;
     font-weight: 100;
-    font-size: 20px;
+    font-size: 1.2em;
 
     img {
       vertical-align: middle;
@@ -142,7 +141,7 @@ const PurchaseButton = styled.button`
 
   color: white;
 
-  font-size: 20px;
+  font-size: 1em;
   padding: 1rem;
   text-align: left;
 

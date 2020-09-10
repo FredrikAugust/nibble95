@@ -93,7 +93,7 @@ const Container = styled.div`
     grid-template-rows: min-content min-content max-content;
     grid-gap: 10px;
     height: auto;
-    font-size: 20px;
+    font-size: 1em;
 
     div:nth-child(1) {
         grid-row: 1 / span 2;

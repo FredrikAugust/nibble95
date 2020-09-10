@@ -40,7 +40,7 @@ x
 };
 
 export default styled(BasketItem)`
-  font-size: 15px;
+  font-size: 0.9em;
   h3,
   h5 {
     margin: 0;

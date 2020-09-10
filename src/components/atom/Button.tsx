@@ -36,7 +36,7 @@ export default styled(Button)`
     box-shadow: 1px 1px 0 1px black;
     font-weight: 400;
     text-align: left;
-    font-size: 20px;
+    font-size: 1.2em;
     letter-spacing: -1px;
 
     *, & { /* All children and itself */
