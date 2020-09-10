@@ -32,7 +32,7 @@ type CategoryBarProps = {
 }
 
 const CategoryBar: FC<CategoryBarProps> = (
-    { categories, setCategory, selected }: CategoryBarProps
+    { categories, setCategory, selected }: CategoryBarProps,
 ) => {
     const row = categories.map((category) => (
         <Button

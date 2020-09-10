@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import Draggable from 'react-draggable';
 import TitleBar from './TitleBar';
 
 const Container = styled.div`
