@@ -6,9 +6,9 @@ import { GlobalProvider } from './state/globalState';
 import { loadToken, fetchToken } from './artillery/tokens';
 
 if (!loadToken()) {
-    fetchToken().catch(() => console.warn(
-        'It appears you have not provided the token required for the app to run.',
-    ));
+    fetchToken().catch((error: Error) => {
+        throw new Error(`It appears you have not provided the token required for the app to run. Error: ${error}`);
+    });
 }
 
 ReactDOM.render(
