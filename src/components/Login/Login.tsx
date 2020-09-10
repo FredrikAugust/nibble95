@@ -30,8 +30,9 @@ const LoginView: FC<Props> = ({ dispatchUser, setRfid, onEnter }: Props) => {
         setInput('');
         dispatchUser(user);
     };
-
+    
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+        // Reset timer if there's user interaction
         if (timer) {
             clearTimeout(timer);
         }
