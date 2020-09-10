@@ -83,7 +83,7 @@ const Container = styled.div`
   display: grid;
 
   grid-template-columns: 100%;
-  grid-template-rows:  2.3em 2.3em auto 2px min-content;
+  grid-template-rows:  min-content min-content auto 2px min-content;
 
   grid-row-gap: 5px;
 
@@ -105,6 +105,7 @@ const Container = styled.div`
     grid-row: 2;
     margin: 0;
     font-weight: 100;
+    font-size: 20px;
 
     img {
       vertical-align: middle;
@@ -113,7 +114,6 @@ const Container = styled.div`
 
     span {
       font-weight: 100;
-      font-size: 0.9em;
     }
   }
 
@@ -142,7 +142,7 @@ const PurchaseButton = styled.button`
 
   color: white;
 
-  font-size: 25px;
+  font-size: 20px;
   padding: 1rem;
   text-align: left;
 
