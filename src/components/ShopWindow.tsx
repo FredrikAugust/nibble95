@@ -60,9 +60,9 @@ const WindowItem = styled.button`
   width: calc(100% / 3 - 2em);
   margin: 1em;
   float: left;
-  padding: 15px;
+  padding: 5px;
   outline: 0;
-  font-size: 20px;
+  font-size: 13px;
 
   background: #c3c3c3;
 
@@ -74,8 +74,8 @@ const WindowItem = styled.button`
   box-shadow: 1px 1px 0 1px black;
 
   img {
-    width: 126px;
-    height: 151px;
+    width: 100px;
+    height: 125px;
     margin: auto;
     display: block;
   }
