@@ -42,7 +42,7 @@ const initialState: ApplicationWindowState = {
 };
 
 const minimizeAllOthers = (state: ApplicationWindowState, applicationName: string) => {
-    const new_state = state;
+    const new_state = { ...state };
 
     Object.entries(state).forEach(([name, body]) => {
         if (body.windowActivity === ApplicationWindowTypes.FOCUSED && name !== applicationName) {
@@ -51,7 +51,7 @@ const minimizeAllOthers = (state: ApplicationWindowState, applicationName: strin
     });
 
     return { ...new_state };
-}
+};
 
 const applicationReducer = (
     state: ApplicationWindowState,

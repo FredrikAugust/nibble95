@@ -25,6 +25,7 @@ const LoginView: FC<Props> = ({ dispatchUser, setRfid, onEnter }: Props) => {
     useEffect(() => inputRef.current!.focus(), []);
 
     const login = async () => {
+        if (!input) return null;
         const user = await handleLogin(input);
         if (!user) setRfid(input);
         setInput('');
