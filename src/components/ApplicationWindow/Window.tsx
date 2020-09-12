@@ -24,7 +24,6 @@ type WindowProps = {
   className?: string;
   name: string;
   onClose?: () => void;
-  // eslint-disable-next-line no-undef
   children: JSX.Element | JSX.Element[];
 }
 
