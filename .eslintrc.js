@@ -49,6 +49,7 @@ module.exports = {
       "no-shadow": "off",
       "@typescript-eslint/no-shadow": ["error"],
       "react/jsx-one-expression-per-line": "off",
+      "react/prop-types": "off",
       camelcase: ['off', { properties: 'never'}],
   },
 };
