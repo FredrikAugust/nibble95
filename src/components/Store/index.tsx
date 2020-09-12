@@ -4,74 +4,32 @@ import React, {
     useContext,
     FC,
     useState,
-    Dispatch,
-    SetStateAction,
 } from 'react';
 import styled from 'styled-components';
-import Basket from './Basket';
+import Basket from '../Basket';
 import ShopWindow from './ShopWindow';
-import Window from './Window';
-import Button from './atom/Button';
-import { ApplicationWindowTypes } from '../state/applicationWindowState';
-import { GlobalContext, exitUser } from '../state/globalState';
-import { User } from '../types/User';
-import { getCategories } from '../types/StoreObject';
+import Window from '../ApplicationWindow/Window';
+import { ApplicationWindowTypes } from '../../state/applicationWindowState';
+import { GlobalContext, exitUser } from '../../state/globalState';
+import { User } from '../../types/User';
+import { getCategories } from '../../types/StoreObject';
+import CategoryBar from './CategoryBar';
+import WelcomeTitle from './WelcomeTitle';
 
 interface StoreProps {
   className?: string;
   windowActivity: ApplicationWindowTypes;
   name: string;
-  onClick: Function;
+  onClick: () => void;
   user: User
 }
-
-type CategoryBarProps = {
-  categories: string[]
-  setCategory: Dispatch<SetStateAction<string>>
-  selected: string
-}
-
-const CategoryBar: FC<CategoryBarProps> = (
-    { categories, setCategory, selected }: CategoryBarProps,
-) => {
-    const row = categories.map((category) => (
-        <Button
-            key={category}
-            text={category}
-            activity={selected === category ? ApplicationWindowTypes.FOCUSED : undefined}
-            onClick={() => setCategory(category)}
-        />
-    ));
-    return (
-        <div className="category-window">
-            {row}
-        </div>
-    );
-};
 
 const Store: FC<StoreProps> = (props: StoreProps) => {
     const { state, dispatch } = useContext(GlobalContext);
     const [filterCategory, setFilterCategory] = useState('Alt');
-    const {
-        className,
-        name,
-        onClick,
-    } = props;
+    const { className, name, onClick } = props;
 
     const logout = () => exitUser(dispatch);
-
-    const username = state.user?.first_name || '';
-    const titleText = state.isLoggingOut ? `Logging ${username} out of ` : 'Welcome to ';
-
-    const welcomeTitle = (
-        <>
-            {titleText}
-            {' '}
-            <strong>Nibble</strong>
-            <span>95</span>
-            { state.user && !state.isLoggingOut ? `, ${username}` : ''}
-        </>
-    );
 
     const filteredInventory = state.inventory.filter((item) => {
         if (filterCategory === 'Alt') return item;
@@ -82,13 +40,7 @@ const Store: FC<StoreProps> = (props: StoreProps) => {
 
     return (
         <Window className={className} name={name} onClick={onClick} onClose={logout}>
-            <h1>
-                <img
-                    src={`${process.env.PUBLIC_URL}/logo.png`}
-                    alt="Nibble Logo (Windows 95 Search Computer Icon)"
-                />
-                {welcomeTitle}
-            </h1>
+            <WelcomeTitle user={state.user} />
             <ShopWindow inventory={filteredInventory} />
             <Basket />
             <CategoryBar
@@ -128,13 +80,6 @@ export default styled(Store)`
       vertical-align: middle;
       margin-top: -10px;
     }
-  }
-
-  .category-window {
-    grid-row: 4;
-    display: flex;
-    margin-top: 10px;
-    justify-content: flex-start;
   }
 
   grid-template-rows: 1.6em 3.2em auto min-content;

@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import Login from './Login';
-import Store from './Store';
+import Store from './Store/';
 import { ApplicationWindowContext, addWindow, setActiveWindow } from '../state/applicationWindowState';
 import { GlobalContext } from '../state/globalState';
 
@@ -30,15 +30,18 @@ const Desktop: FunctionComponent = () => {
 
     return (
         <Container>
-            {Object.entries(AWState).map(([name, componentState]) => (
-                <componentState.component
-                    key={name}
-                    name={name}
-                    windowActivity={componentState.windowActivity}
-                    user={state.user}
-                    onClick={() => AWDispatch(setActiveWindow(name))}
-                />
-            ))}
+            {Object.entries(AWState).map(([name, componentState]) => {
+                const setActive = () => AWDispatch(setActiveWindow(name));
+                return (
+                    <componentState.component
+                        key={name}
+                        name={name}
+                        windowActivity={componentState.windowActivity}
+                        user={state.user}
+                        onClick={setActive}
+                    />
+                );
+            })}
         </Container>
     );
 };

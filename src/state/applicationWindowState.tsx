@@ -100,6 +100,13 @@ export const addWindow = (windowName: string, component: ComponentType<any>) => 
 export const closeWindow = (windowName: string) => (
     { type: ApplicationWindowActionTypes.CLOSE, payload: windowName }
 );
+export const getWindowActivityFunction = (activity: ApplicationWindowTypes): Function => {
+    if (activity === ApplicationWindowTypes.MINIMIZED
+    || activity === ApplicationWindowTypes.NOT_FOCUSED) {
+        return setActiveWindow;
+    }
+    return minimizeWindow;
+};
 
 export type ApplicationWinodwDispatch = ({ type }: ApplicationWindowActions) => void
 

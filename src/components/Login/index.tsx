@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { User } from '../../types/User';
-import Window from '../Window';
+import Window from '../ApplicationWindow/Window';
 import { ApplicationWindowTypes } from '../../state/applicationWindowState';
 import LoginView from './Login';
 import { GlobalContext, setUser } from '../../state/globalState';
@@ -10,7 +10,7 @@ import RegistrationView from './Registration';
 interface LoginProps {
   className?: string;
   name: string;
-  onClick: Function;
+  onClick: () => void;
   // It used with styled component
   // eslint-disable-next-line react/no-unused-prop-types
   windowActivity: ApplicationWindowTypes;
