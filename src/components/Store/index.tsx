@@ -20,14 +20,13 @@ interface StoreProps {
   className?: string;
   windowActivity: ApplicationWindowTypes;
   name: string;
-  onClick: () => void;
   user: User
 }
 
 const Store: FC<StoreProps> = (props: StoreProps) => {
     const { state, dispatch } = useContext(GlobalContext);
     const [filterCategory, setFilterCategory] = useState('Alt');
-    const { className, name, onClick } = props;
+    const { className, name } = props;
 
     const logout = () => exitUser(dispatch);
 
@@ -39,7 +38,7 @@ const Store: FC<StoreProps> = (props: StoreProps) => {
     const categories = getCategories(state.inventory);
 
     return (
-        <Window className={className} name={name} onClick={onClick} onClose={logout}>
+        <Window className={className} name={name} onClose={logout}>
             <WelcomeTitle user={state.user} />
             <ShopWindow inventory={filteredInventory} />
             <Basket />

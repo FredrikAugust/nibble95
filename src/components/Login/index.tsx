@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { User } from '../../types/User';
 import Window from '../ApplicationWindow/Window';
@@ -10,7 +10,6 @@ import RegistrationView from './Registration';
 interface LoginProps {
   className?: string;
   name: string;
-  onClick: () => void;
   // It used with styled component
   // eslint-disable-next-line react/no-unused-prop-types
   windowActivity: ApplicationWindowTypes;
@@ -24,22 +23,17 @@ const onEnterPressed = (func: Function) => (event: React.KeyboardEvent<HTMLInput
 };
 
 const Login: React.FC<LoginProps> = (props: LoginProps) => {
-    const {
-        className,
-        name,
-        onClick,
-        user,
-    } = props;
+    const { className, name, user } = props;
     const { dispatch } = useContext(GlobalContext);
     const [rfid, setRfid] = useState<string>('');
 
     const dispatchUser = (connectedUser?: User | null) => dispatch(setUser(connectedUser));
     if (user) return null;
-    const view = user === undefined
+    const View: FC = () => (user === undefined
         ? <LoginView dispatchUser={dispatchUser} setRfid={setRfid} onEnter={onEnterPressed} />
-        : <RegistrationView dispatchUser={dispatchUser} rfid={rfid} onEnter={onEnterPressed} />;
+        : <RegistrationView dispatchUser={dispatchUser} rfid={rfid} onEnter={onEnterPressed} />);
     return (
-        <Window className={className} name={name} onClick={onClick}>
+        <Window className={className} name={name}>
             <Container>
                 <div>
                     <img
@@ -47,7 +41,7 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
                         alt="Search icon win95"
                     />
                 </div>
-                {view}
+                <View />
             </Container>
         </Window>
     );

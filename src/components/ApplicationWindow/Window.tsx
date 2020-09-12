@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import styled from 'styled-components';
+import { ApplicationWindowContext, setActiveWindow } from '../../state/applicationWindowState';
 import WindowBar from './WindowBar';
 
 const Container = styled.div`
@@ -22,7 +23,6 @@ const Container = styled.div`
 type WindowProps = {
   className?: string;
   name: string;
-  onClick: () => void;
   onClose?: () => void;
   // eslint-disable-next-line no-undef
   children: JSX.Element | JSX.Element[];
@@ -31,14 +31,17 @@ type WindowProps = {
 const Window: FC<WindowProps> = ({
     className,
     name,
-    onClick,
     onClose,
     children,
-}: WindowProps) => (
-    <Container className={className} onClick={onClick}>
-        <WindowBar name={name} onClose={onClose} />
-        {children}
-    </Container>
-);
+}: WindowProps) => {
+    const { AWDispatch } = useContext(ApplicationWindowContext);
+    const onClick = () => AWDispatch(setActiveWindow(name));
+    return (
+        <Container className={className} onClick={onClick}>
+            <WindowBar name={name} onClose={onClose} />
+            {children}
+        </Container>
+    );
+};
 
 export default Window;
