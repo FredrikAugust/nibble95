@@ -1,4 +1,6 @@
 import React, { ComponentType, createContext, useReducer } from 'react';
+import Login from '../components/Login';
+import Store from '../components/Store';
 
 export enum ApplicationWindowTypes {
   FOCUSED = 'FOCUSED',
@@ -14,11 +16,13 @@ export enum ApplicationWindowActionTypes {
   ADD = 'ADD',
 }
 
+interface ComponentState {
+  component: ComponentType<any>;
+  windowActivity: ApplicationWindowTypes
+}
+
 export interface ApplicationWindowState {
-  [applicationName: string]: {
-    component: ComponentType<any>;
-    windowActivity: ApplicationWindowTypes
-  };
+  [applicationName: string]: ComponentState
 }
 
 export type ApplicationWindowActions = {
@@ -26,8 +30,19 @@ export type ApplicationWindowActions = {
   payload: any
 }
 
-function minimizeAllOthers(state: ApplicationWindowState, applicationName: string) {
-    const new_state = state;
+const initialState: ApplicationWindowState = {
+    Nibble95: {
+        component: Store,
+        windowActivity: ApplicationWindowTypes.NOT_FOCUSED,
+    },
+    Login: {
+        component: Login,
+        windowActivity: ApplicationWindowTypes.FOCUSED,
+    },
+};
+
+const minimizeAllOthers = (state: ApplicationWindowState, applicationName: string) => {
+    const new_state = { ...state };
 
     Object.entries(state).forEach(([name, body]) => {
         if (body.windowActivity === ApplicationWindowTypes.FOCUSED && name !== applicationName) {
@@ -36,7 +51,7 @@ function minimizeAllOthers(state: ApplicationWindowState, applicationName: strin
     });
 
     return { ...new_state };
-}
+};
 
 const applicationReducer = (
     state: ApplicationWindowState,
@@ -100,6 +115,13 @@ export const addWindow = (windowName: string, component: ComponentType<any>) => 
 export const closeWindow = (windowName: string) => (
     { type: ApplicationWindowActionTypes.CLOSE, payload: windowName }
 );
+export const getWindowActivityFunction = (activity: ApplicationWindowTypes): Function => {
+    if (activity === ApplicationWindowTypes.MINIMIZED
+    || activity === ApplicationWindowTypes.NOT_FOCUSED) {
+        return setActiveWindow;
+    }
+    return minimizeWindow;
+};
 
 export type ApplicationWinodwDispatch = ({ type }: ApplicationWindowActions) => void
 
@@ -115,7 +137,7 @@ type ApplicationWindowProviderProps = {
 }
 
 export const ApplicationWindowProvider = (props: ApplicationWindowProviderProps) => {
-    const [AWState, AWDispatch] = useReducer(applicationReducer, { });
+    const [AWState, AWDispatch] = useReducer(applicationReducer, initialState);
     const { children } = props;
 
     return (

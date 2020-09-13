@@ -1,12 +1,12 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { ApplicationWindowTypes } from '../../state/applicationWindowState';
+import { ApplicationWindowTypes } from '../state/applicationWindowState';
 
 export interface ButtonProps {
   icon?: string;
   text: string;
   className?: string;
-  application?: boolean;
+  isApplication?: boolean;
   activity?: ApplicationWindowTypes;
   onClick: Function;
 }
@@ -54,7 +54,7 @@ export default styled(Button)`
     outline: none;
 
     /* If it is an "application" */
-    ${(props: ButtonProps) => (props.application
+    ${(props: ButtonProps) => (props.isApplication
         ? css`width: 10em;`
         : null)}
 

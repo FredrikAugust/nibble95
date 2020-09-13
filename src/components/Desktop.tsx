@@ -1,11 +1,25 @@
-import React, {
-    FunctionComponent, useEffect, useContext,
-} from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import styled from 'styled-components';
-import Login from './Login';
-import Store from './Store';
-import { ApplicationWindowContext, addWindow, setActiveWindow } from '../state/applicationWindowState';
+import { ApplicationWindowContext } from '../state/applicationWindowState';
 import { GlobalContext } from '../state/globalState';
+
+const Desktop: FunctionComponent = () => {
+    const { state } = useContext(GlobalContext);
+    const { AWState } = useContext(ApplicationWindowContext);
+
+    return (
+        <Container>
+            {Object.entries(AWState).map(([name, componentState]) => (
+                <componentState.component
+                    key={name}
+                    name={name}
+                    windowActivity={componentState.windowActivity}
+                    user={state.user}
+                />
+            ))}
+        </Container>
+    );
+};
 
 const Container = styled.div`
   background-color: #008282;
@@ -18,29 +32,5 @@ const Container = styled.div`
   grid-template-columns: 1fr 4fr;
   grid-template-rows: 1fr 1fr;
 `;
-
-const Desktop: FunctionComponent = () => {
-    const { state } = useContext(GlobalContext);
-    const { AWState, AWDispatch } = useContext(ApplicationWindowContext);
-
-    useEffect(() => {
-        AWDispatch(addWindow('Nibble95', Store));
-        AWDispatch(addWindow('Login', Login));
-    }, [AWDispatch]);
-
-    return (
-        <Container>
-            {Object.entries(AWState).map(([name, componentState]) => (
-                <componentState.component
-                    key={name}
-                    name={name}
-                    windowActivity={componentState.windowActivity}
-                    user={state.user}
-                    onClick={() => AWDispatch(setActiveWindow(name))}
-                />
-            ))}
-        </Container>
-    );
-};
 
 export default Desktop;

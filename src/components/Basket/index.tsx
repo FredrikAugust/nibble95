@@ -1,54 +1,36 @@
 import React, { useContext, FC } from 'react';
 import styled from 'styled-components';
-import { StoreObject, CartItem } from '../types/StoreObject';
-import BasketItem from './atom/BasketItem';
-import purchaseItems from '../artillery/order';
+import { calculateCartTotal } from '../../types/StoreObject';
+import BasketItem from './BasketItem';
+import purchaseItems from '../../artillery/order';
 import {
     GlobalContext,
     dispatchPurchaseItems,
-} from '../state/globalState';
-import Button from './atom/Button';
-
-const calculateTotal = (cart: { [name: number]: CartItem }, inventory: StoreObject[]) => (
-    Object.keys(cart).reduce((accumulator: number, id: string) => {
-        const item = cart[Number(id)];
-        const product = inventory.find((e) => e.pk === Number(id))! as StoreObject;
-        return accumulator + product.price * item.quantity;
-    }, 0)
-);
+} from '../../state/globalState';
+import Button from '../../atom/Button';
+import BasketStatus from './BasketStatus';
 
 const Basket: FC = () => {
     const { state, dispatch } = useContext(GlobalContext);
     const { user, cart } = state;
-    const totalPrice = calculateTotal(cart, state.inventory);
+    const totalPrice = calculateCartTotal(cart, state.inventory);
 
     const balance = user ? user.balance : 0;
-    const fundsImageUri = balance >= totalPrice ? 'purchase' : 'insufficient';
     const fundsText = balance >= totalPrice ? 'PURCHASE' : 'INSUFFICIENT';
-    const cartImageUri = Math.max(Object.keys(cart).length) > 0 ? 'food' : 'nofood';
 
-    const userId = user ? user.pk : -1;
-    const dispatchWithdraw = () => dispatchPurchaseItems(dispatch, totalPrice);
     const purchase = async () => {
-        const response = await purchaseItems(userId, cart);
-        if (response.ok) dispatchWithdraw();
+        if (user) {
+            const response = await purchaseItems(user.pk, cart);
+            if (response.ok) dispatchPurchaseItems(dispatch, totalPrice);
+        }
     };
 
     const refresh = () => window.location.reload();
 
     return (
         <Container>
-            <Button className="refresh-window" text="Refresh window" onClick={refresh} />
-            <h3>
-                <img
-                    src={`${process.env.PUBLIC_URL}/${cartImageUri}.png`}
-                    alt="Empty folder"
-                />
-                Basket
-                <span style={{ display: totalPrice > 0 ? 'inline' : 'none' }}>
-                    ({totalPrice} NOK)
-                </span>
-            </h3>
+            <Button text="Refresh window" onClick={refresh} />
+            <BasketStatus cartSize={Object.keys(cart).length} total={totalPrice} />
             <BasketItemContainer>
                 {Object.keys(cart).map((key: string) => (
                     <BasketItem
@@ -59,12 +41,9 @@ const Basket: FC = () => {
                 ))}
             </BasketItemContainer>
             <hr />
-            <PurchaseButton
-                onClick={purchase}
-                disabled={balance < totalPrice}
-            >
+            <PurchaseButton onClick={purchase} disabled={balance < totalPrice}>
                 <img
-                    src={`${process.env.PUBLIC_URL}/${fundsImageUri}.png`}
+                    src={`${process.env.PUBLIC_URL}/${fundsText.toUpperCase()}.png`}
                     alt="Money or no money"
                 />
                 {fundsText}
@@ -87,7 +66,7 @@ const Container = styled.div`
 
   grid-row-gap: 5px;
 
-  .refresh-window {
+  div:nth-child(1) {
     grid-row: 1;
   }
 
