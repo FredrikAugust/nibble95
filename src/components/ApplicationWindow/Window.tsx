@@ -24,15 +24,11 @@ type WindowProps = {
   className?: string;
   name: string;
   onClose?: () => void;
-  children: JSX.Element | JSX.Element[];
 }
 
 const Window: FC<WindowProps> = ({
-    className,
-    name,
-    onClose,
-    children,
-}: WindowProps) => {
+    className, name, onClose, children,
+}) => {
     const { AWDispatch } = useContext(ApplicationWindowContext);
     const onClick = () => AWDispatch(setActiveWindow(name));
     return (

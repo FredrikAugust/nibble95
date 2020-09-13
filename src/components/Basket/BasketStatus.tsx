@@ -21,8 +21,8 @@ const BasketStatus: FC<BasketStatusProps> = ({ cartSize, total }) => {
     );
 };
 
-const TotalDisplay = styled.span`
-  display: ${(props: { total: number}) => (props.total > 0 ? 'inline' : 'none')};
+const TotalDisplay = styled.span<{ total: number }>`
+  display: ${(props) => (props.total > 0 ? 'inline' : 'none')};
 `;
 
 export default BasketStatus;
