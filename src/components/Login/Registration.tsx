@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { User } from '../../types/User';
 import { registerUser, handleLogin } from '../../artillery/authorization';
+import { InputField } from './index';
 
 type KeyboardEvent = React.KeyboardEvent<HTMLInputElement>
 type HtmlEvent = React.ChangeEvent<HTMLInputElement>
@@ -47,21 +48,25 @@ const RegistrationView: FC<Props> = ({ dispatchUser, rfid, onEnter }: Props) => 
                 {badLogin ? <p>You logged in with wrong credentials. Try again</p> : null}
             </div>
             <div>
-                <label htmlFor="username">Username: </label>
-                <input
-                    ref={usernameRef}
-                    id="username"
-                    type="text"
-                    onKeyUp={onEnter(bindRfid)}
-                    onChange={setValue(setUsername)}
-                />
-                <label htmlFor="password">Password: </label>
-                <input
-                    id="password"
-                    type="password"
-                    onKeyUp={onEnter(bindRfid)}
-                    onChange={setValue(setPassword)}
-                />
+                <InputField>
+                    <label htmlFor="username">Username: </label>
+                    <input
+                        ref={usernameRef}
+                        id="username"
+                        type="text"
+                        onKeyUp={onEnter(bindRfid)}
+                        onChange={setValue(setUsername)}
+                    />
+                </InputField>
+                <InputField>
+                    <label htmlFor="password">Password: </label>
+                    <input
+                        id="password"
+                        type="password"
+                        onKeyUp={onEnter(bindRfid)}
+                        onChange={setValue(setPassword)}
+                    />
+                </InputField>
             </div>
             <div>
                 <button type="button" onClick={bindRfid}>OK</button>

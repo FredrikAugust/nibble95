@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import { User } from '../../types/User';
 import { handleLogin } from '../../artillery/authorization';
+import { InputField } from './index';
 
 type KeyboardEvent = React.KeyboardEvent<HTMLInputElement>;
 
@@ -46,7 +47,7 @@ const LoginView: FC<Props> = ({ dispatchUser, setRfid, onEnter }: Props) => {
             <div>
                 <p>Please scan your student card to log in or register to Nibble.</p>
             </div>
-            <div>
+            <InputField>
                 <label htmlFor="rfid">RFID: </label>
                 <input
                     id="rfid"
@@ -56,7 +57,7 @@ const LoginView: FC<Props> = ({ dispatchUser, setRfid, onEnter }: Props) => {
                     onChange={onChange}
                     onKeyUp={onEnter(login)}
                 />
-            </div>
+            </InputField>
             <div>
                 <button onClick={login} type="button">
           OK
