@@ -32,6 +32,7 @@ const CategoryBar: FC<CategoryBarProps> = ({ categories, setCategory, selected }
     <Component>
         {categories.map((category) => (
             <CategoryButton
+                key={category}
                 category={category}
                 setCategory={setCategory}
                 isSelected={selected === category}
