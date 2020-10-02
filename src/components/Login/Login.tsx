@@ -21,17 +21,18 @@ const LoginView: FC<Props> = ({ dispatchUser, setRfid, onEnter }: Props) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        window.addEventListener('keydown', () => {
-      inputRef.current!.focus();
-        });
+        const focusInput = () => inputRef.current!.focus();
+        window.addEventListener('keydown', focusInput);
+        return () => window.removeEventListener('keydown', focusInput);
     }, []);
     const login = async () => {
+        if (!input) return;
         const user = await handleLogin(input);
         if (!user) setRfid(input);
         setInput('');
         dispatchUser(user);
     };
-    
+
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
         // Reset timer if there's user interaction
         if (timer) {

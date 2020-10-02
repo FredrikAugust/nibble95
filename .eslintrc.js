@@ -44,11 +44,13 @@ module.exports = {
       'jsx-a11y/click-events-have-key-events': 'off',
       'jsx-a11y/label-has-associated-control': 'off',
       'no-unused-vars': 'off',
+      'no-undef': 'off',
       '@typescript-eslint/no-unused-vars': ['error'],
       'react/require-default-props': 'off',
       "no-shadow": "off",
       "@typescript-eslint/no-shadow": ["error"],
       "react/jsx-one-expression-per-line": "off",
+      "react/prop-types": "off",
       camelcase: ['off', { properties: 'never'}],
   },
 };

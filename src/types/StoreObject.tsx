@@ -16,6 +16,10 @@ export type CartItem = {
   quantity: number
 }
 
+export type CartKeyValue = {
+  [name: number]: CartItem
+}
+
 export const createCartItem = (id: number): CartItem => ({
     object_id: id,
     quantity: 1,
@@ -38,4 +42,12 @@ export const getCategories = (inventory: StoreObject[]) => (
         }
         return [...acc, current.category.name];
     }, ['Alt'] as string[])
+);
+
+export const calculateCartTotal = (cart: CartKeyValue, inventory: StoreObject[]) => (
+    Object.keys(cart).reduce((accumulator: number, id: string) => {
+        const item = cart[Number(id)];
+        const product = inventory.find((e) => e.pk === Number(id))! as StoreObject;
+        return accumulator + product.price * item.quantity;
+    }, 0)
 );
