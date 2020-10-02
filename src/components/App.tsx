@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import Desktop from './Desktop';
 import StartBar from './StartBar';
 import { StoreObject } from '../types/StoreObject';
-import { GlobalContext, setInventory, exitUser } from '../state/globalState';
+import { GlobalContext } from '../state/globalState';
 import useFetch from '../hooks/useFetch';
 import { INVENTORY_URI } from '../artillery/API';
 import { ApplicationWindowProvider } from '../state/applicationWindowState';
+import { setInventory, exitUser } from '../state/actions';
 
 export const LOGOUT_TIME = 1000 * 60 * 2;
 

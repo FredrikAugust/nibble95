@@ -1,7 +1,8 @@
 import React, { FC, useContext } from 'react';
 import styled from 'styled-components';
+import { exitUser } from '../../state/actions';
 import { ApplicationWindowContext, setActiveWindow } from '../../state/applicationWindowState';
-import { exitUser, GlobalContext } from '../../state/globalState';
+import { GlobalContext } from '../../state/globalState';
 import { TitleBarButtonType as ButtonType } from './TitleBarButton';
 import WindowBar from './WindowBar';
 

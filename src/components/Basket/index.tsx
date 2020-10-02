@@ -3,12 +3,10 @@ import styled from 'styled-components';
 import { calculateCartTotal } from '../../types/StoreObject';
 import BasketItem from './BasketItem';
 import purchaseItems from '../../artillery/order';
-import {
-    GlobalContext,
-    dispatchPurchaseItems,
-} from '../../state/globalState';
+import { GlobalContext } from '../../state/globalState';
 import Button from '../../atom/Button';
 import BasketStatus from './BasketStatus';
+import { dispatchPurchaseItems } from '../../state/actions';
 
 const Basket: FC = () => {
     const { state, dispatch } = useContext(GlobalContext);

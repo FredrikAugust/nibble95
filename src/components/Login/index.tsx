@@ -4,8 +4,9 @@ import { User } from '../../types/User';
 import Window from '../ApplicationWindow/Window';
 import { ApplicationWindowTypes } from '../../state/applicationWindowState';
 import LoginView from './Login';
-import { GlobalContext, setUser } from '../../state/globalState';
+import { GlobalContext } from '../../state/globalState';
 import RegistrationView from './Registration';
+import { setUser } from '../../state/actions';
 
 interface LoginProps {
   className?: string;
