@@ -18,7 +18,7 @@ interface LoginProps {
 }
 
 const onEnterPressed = (func: Function) => (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.keyCode === 13) {
+    if (event.key === 'Enter') {
         func();
     }
 };
