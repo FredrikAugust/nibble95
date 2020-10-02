@@ -1,30 +1,33 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 
-export enum ButtonType {
+export enum TitleBarButtonType {
   minimize,
   maximize,
-  close
+  close,
+  logout,
 }
 
-interface TitleBarButtonProps {
-  button: ButtonType;
+type TitleBarButtonProps = {
+  button: TitleBarButtonType;
   className?: string;
   onClick?: () => void;
 }
 
-const TitleBarButton: React.FC<TitleBarButtonProps> = ({
+const TitleBarButton: FC<TitleBarButtonProps> = ({
     button,
     className,
     onClick,
 }: TitleBarButtonProps) => {
     switch (button) {
-        case ButtonType.minimize:
+        case TitleBarButtonType.minimize:
             return <button type="button" className={className}>_</button>;
-        case ButtonType.maximize:
+        case TitleBarButtonType.maximize:
             return <button type="button" className={className}>&#x274f;</button>;
-        case ButtonType.close:
+        case TitleBarButtonType.close:
             return <button type="button" className={className} onClick={onClick}>X</button>;
+        case TitleBarButtonType.logout:
+            return <button type="button" className={className} onClick={onClick}>Sign out</button>;
         default:
             return null;
     }
@@ -34,8 +37,8 @@ export default styled(TitleBarButton)`
   padding: 0 1px;
   font-size: 0.9em;
   line-height: 1em;
-  height: 1.15em;
-  width: 1.15em;
+  min-height: 1.15em;
+  min-width: 1.15em;
   margin-right: 2px;
   margin-top: 1px;
   outline: none;

@@ -16,10 +16,10 @@ import { getCategories } from '../../types/StoreObject';
 import CategoryBar from './CategoryBar';
 import WelcomeTitle from './WelcomeTitle';
 
-interface StoreProps {
-  className?: string;
-  windowActivity: ApplicationWindowTypes;
-  name: string;
+type StoreProps = {
+  className?: string
+  windowActivity: ApplicationWindowTypes
+  name: string
   user: User
 }
 
