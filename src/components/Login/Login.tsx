@@ -7,9 +7,9 @@ import { handleLogin } from '../../artillery/authorization';
 type KeyboardEvent = React.KeyboardEvent<HTMLInputElement>;
 
 type Props = {
-  dispatchUser: (user?: User | null) => void;
-  setRfid: Dispatch<SetStateAction<string>>;
-  onEnter: (func: Function) => (event: KeyboardEvent) => void;
+  dispatchUser: (user?: User | null) => void
+  setRfid: Dispatch<SetStateAction<string>>
+  onEnter: (func: Function) => (event: KeyboardEvent) => void
 };
 
 const WAIT_INTERVAL = 2000;
@@ -18,17 +18,22 @@ const LoginView: FC<Props> = ({ dispatchUser, setRfid, onEnter }: Props) => {
     const [input, setInput] = useState('');
     const [timer, setTimer] = useState<number | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+    const focusInput = () => {
+        if (inputRef.current) inputRef.current.focus();
+    };
 
     useEffect(() => {
-        const focusInput = () => inputRef.current!.focus();
         window.addEventListener('keydown', focusInput);
-        return () => window.removeEventListener('keydown', focusInput);
-    }, []);
+        return () => {
+            if (timer) clearTimeout(timer);
+            window.removeEventListener('keydown', focusInput);
+        };
+    }, [inputRef, timer]);
+
     const login = async () => {
         if (!input) return;
         const user = await handleLogin(input);
         if (!user) setRfid(input);
-        setInput('');
         dispatchUser(user);
     };
 
