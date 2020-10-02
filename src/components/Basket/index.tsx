@@ -4,7 +4,6 @@ import { calculateCartTotal } from '../../types/StoreObject';
 import BasketItem from './BasketItem';
 import purchaseItems from '../../artillery/order';
 import { GlobalContext } from '../../state/globalState';
-import Button from '../../atom/Button';
 import BasketStatus from './BasketStatus';
 import { dispatchPurchaseItems } from '../../state/actions';
 
@@ -24,11 +23,8 @@ const Basket: FC = () => {
         }
     };
 
-    const refresh = () => window.location.reload();
-
     return (
         <Container>
-            <Button text="Refresh window" onClick={refresh} />
             <BasketStatus cartSize={Object.keys(cart).length} total={totalPrice} />
             <BasketItemContainer>
                 {Object.keys(cart).map((key: string) => (
@@ -61,26 +57,19 @@ const Container = styled.div`
   display: grid;
 
   grid-template-columns: 100%;
-  grid-template-rows:  2.3em 2.3em auto 2px min-content;
+  grid-template-rows: 2.3em auto 2px max-content;
 
   grid-row-gap: 5px;
-
-  div:nth-child(1) {
-    grid-row: 1;
-  }
 
   hr {
     border-top: 1px solid #929292;
     border-bottom: 1px solid white;
-
-    grid-row: 4;
 
     margin: 0;
     padding: 0;
   }
 
   h3 {
-    grid-row: 2;
     margin: 0;
     font-weight: 100;
 
@@ -96,7 +85,6 @@ const Container = styled.div`
   }
 
   & > div:nth-child(2) {
-    grid-row: 3 / span 1;
 
     border-top: 1px solid #828282;
     border-left: 1px solid #828282;
@@ -115,8 +103,6 @@ const PurchaseButton = styled.button`
   border-right: 1px solid #929292;
   box-shadow: 1px 1px 0 1px black;
   margin: 1px 3px 3px 1px;
-
-  grid-row: 5;
 
   color: white;
 
@@ -142,7 +128,6 @@ const PurchaseButton = styled.button`
 `;
 
 const BasketItemContainer = styled.div`
-  grid-row: 3;
   overflow-y: auto;
 `;
 
