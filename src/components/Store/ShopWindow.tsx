@@ -1,6 +1,7 @@
 import React, { FC, useContext } from 'react';
 import styled from 'styled-components';
-import { GlobalContext, addToCart } from '../../state/globalState';
+import { addToCart } from '../../state/actions';
+import { GlobalContext } from '../../state/globalState';
 import { StoreObject } from '../../types/StoreObject';
 import ShopWindowItem from './ShopItem';
 

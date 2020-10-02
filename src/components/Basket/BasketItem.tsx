@@ -1,15 +1,16 @@
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import styled from 'styled-components';
 import { StoreObject } from '../../types/StoreObject';
-import { GlobalContext, removeFromCart } from '../../state/globalState';
+import { GlobalContext } from '../../state/globalState';
+import { removeFromCart } from '../../state/actions';
 
-interface BasketItemProps {
-  className?: string;
-  id: number;
-  quantity: number;
+type BasketItemProps = {
+  className?: string
+  id: number
+  quantity: number
 }
 
-const BasketItem: React.FC<BasketItemProps> = ({ className, id, quantity }: BasketItemProps) => {
+const BasketItem: FC<BasketItemProps> = ({ className, id, quantity }: BasketItemProps) => {
     const { state, dispatch } = useContext(GlobalContext);
     const removeItem = () => dispatch(removeFromCart(id));
 
@@ -26,10 +27,7 @@ const BasketItem: React.FC<BasketItemProps> = ({ className, id, quantity }: Bask
         >
             <div>
                 <h3>{item.name}</h3>
-                <h5>
-x
-                    {quantity}
-                </h5>
+                <h5>x {quantity}</h5>
             </div>
             <h5>
                 {item.price * quantity}

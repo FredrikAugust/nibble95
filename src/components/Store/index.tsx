@@ -10,11 +10,12 @@ import Basket from '../Basket';
 import ShopWindow from './ShopWindow';
 import Window from '../ApplicationWindow/Window';
 import { ApplicationWindowTypes } from '../../state/applicationWindowState';
-import { GlobalContext, exitUser } from '../../state/globalState';
+import { GlobalContext } from '../../state/globalState';
 import { User } from '../../types/User';
 import { getCategories } from '../../types/StoreObject';
 import CategoryBar from './CategoryBar';
 import WelcomeTitle from './WelcomeTitle';
+import { exitUser } from '../../state/actions';
 
 type StoreProps = {
   className?: string
