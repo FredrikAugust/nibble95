@@ -48,6 +48,24 @@ const Login: FC<LoginProps> = (props: LoginProps) => {
     );
 };
 
+export const InputField = styled.div`
+    display: flex;
+    justify-content: space-between;
+
+    input {
+        grid-column: 2;
+
+        border-top: 2px solid black;
+        border-left: 2px solid black;
+        border-right: 1px solid #c3c3c3;
+        border-bottom: 1px solid #c3c3c3;
+
+        box-shadow: 1px 1px 0 0.3px white;
+        margin-right: 2px;
+    }
+`;
+
+
 export default styled(Login)`
   ${(props) => `${props.windowActivity === ApplicationWindowTypes.MINIMIZED ? 'display: none;' : ''}`}
   ${(props) => `${
@@ -56,7 +74,7 @@ export default styled(Login)`
 
   grid-row: 1;
   grid-column: 1;
-  height: auto;
+  height: fit-content;
   margin-right: 1em;
   grid-template-rows: 2em auto;
 
@@ -70,7 +88,7 @@ const Container = styled.div`
     grid-template-rows: min-content min-content max-content;
     grid-gap: 10px;
     height: auto;
-    font-size: 20px;
+    font-size: 1em;
 
     div:nth-child(1) {
         grid-row: 1 / span 2;
@@ -95,32 +113,12 @@ const Container = styled.div`
 
     div:nth-child(3) {
         grid-row: 2 / span 1;
-        grid-column: 2;
-        display: grid;
-        grid-template-columns: 5em auto;
-
-        label {
-           grid-column: 1;
-        }
-
-        input {
-            grid-column: 2;
-
-            border-top: 2px solid black;
-            border-left: 2px solid black;
-            border-right: 1px solid #c3c3c3;
-            border-bottom: 1px solid #c3c3c3;
-
-            box-shadow: 1px 1px 0 0.3px white;
-            margin-right: 2px;
-
-            display: inline;
-        }
+        grid-column: 1 /span 2;
     }
 
     div:nth-child(4) {
         grid-row: 3;
-        grid-column: 2;
+        grid-column: 1 /span 2;
 
         button {
             height: 1.8em;

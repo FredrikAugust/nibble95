@@ -38,7 +38,7 @@ const BasketItem: FC<BasketItemProps> = ({ className, id, quantity }: BasketItem
 };
 
 export default styled(BasketItem)`
-  font-size: 20px;
+  font-size: 0.9em;
   h3,
   h5 {
     margin: 0;
@@ -57,7 +57,6 @@ export default styled(BasketItem)`
   border-bottom: 1px solid #929292;
   box-shadow: 1px 1px 0 1px black;
   padding: 3px;
-
   margin-bottom: 5px;
 
   & > h5 {
@@ -66,7 +65,7 @@ export default styled(BasketItem)`
 
     font-weight: 100;
 
-    font-size: 1.25em;
+    font-size: 1em;
     color: #000082;
 
     span {

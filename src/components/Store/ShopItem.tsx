@@ -24,12 +24,12 @@ const ShopWindowItem: FC<ShopWindowItemProps> = ({ storeObject, addItem }) => {
 };
 
 const ShopItem = styled.button`
-  width: calc(100% / 3 - 2em);
+  width: calc(100% / 4 - 2em);
   margin: 1em;
   float: left;
-  padding: 15px;
+  padding: 5px;
   outline: 0;
-  font-size: 20px;
+  font-size: 0.8em;
 
   background: #c3c3c3;
 
@@ -40,9 +40,17 @@ const ShopItem = styled.button`
 
   box-shadow: 1px 1px 0 1px black;
 
+  @media screen and (max-width: 1200px) {
+    width: calc(100% / 3 - 2em);
+  }
+
+  @media screen and (max-width: 900px) {
+    width: calc(100% / 2 - 2em);
+  }
+
   img {
-    width: 126px;
-    height: 151px;
+    width: 100px;
+    height: 125px;
     margin: auto;
     display: block;
   }
