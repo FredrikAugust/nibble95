@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
 import { ApplicationWindowTypes } from '../state/applicationWindowState';
 
@@ -18,7 +18,7 @@ const Icon = styled.img`
   margin-right: 0.3em;
 `;
 
-const Button: React.FC<ButtonProps> = ({
+const Button: FC<ButtonProps> = ({
     text, className, icon, onClick,
 }: ButtonProps) => (
     <button

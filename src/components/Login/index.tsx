@@ -23,7 +23,7 @@ const onEnterPressed = (func: Function) => (event: React.KeyboardEvent<HTMLInput
     }
 };
 
-const Login: React.FC<LoginProps> = (props: LoginProps) => {
+const Login: FC<LoginProps> = (props: LoginProps) => {
     const { className, name, user } = props;
     const { dispatch } = useContext(GlobalContext);
     const [rfid, setRfid] = useState<string>('');
