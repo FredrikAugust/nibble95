@@ -39,6 +39,7 @@ const StartBar: FC = () => {
             />
             {Object.entries(AWState).map(([name, application]) => (
                 <BarApplication
+                    key={name}
                     setWindowActivity={setWindowActivity}
                     name={name}
                     activity={application.windowActivity}

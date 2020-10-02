@@ -16,7 +16,8 @@ const Basket: FC = () => {
     const totalPrice = calculateCartTotal(cart, state.inventory);
 
     const balance = user ? user.balance : 0;
-    const fundsText = balance >= totalPrice ? 'PURCHASE' : 'INSUFFICIENT';
+    const isDisabled = state.user == null || balance < totalPrice;
+    const fundsText = isDisabled ? 'INSUFFICIENT' : 'PURCHASE';
 
     const purchase = async () => {
         if (user) {
@@ -41,7 +42,7 @@ const Basket: FC = () => {
                 ))}
             </BasketItemContainer>
             <hr />
-            <PurchaseButton onClick={purchase} disabled={balance < totalPrice}>
+            <PurchaseButton onClick={purchase} disabled={isDisabled}>
                 <img
                     src={`${process.env.PUBLIC_URL}/${fundsText.toUpperCase()}.png`}
                     alt="Money or no money"
