@@ -1,7 +1,7 @@
 import { Dispatch } from 'react';
 import { StoreObject } from '../types/StoreObject';
 import { User } from '../types/User';
-import { GlobalAction, GlobalActionTypes } from './globalState';
+import { GlobalAction, GlobalActionTypes, Themes } from './globalState';
 
 export const setUser = (user?: User | null) => (
     { type: GlobalActionTypes.SET_USER, payload: user }
@@ -36,3 +36,4 @@ export const dispatchPurchaseItems = (dispatch: Dispatch<GlobalAction>, amount: 
     dispatch(withdrawBalance(amount));
     exitUserWithTimer(dispatch);
 };
+export const setTheme = (theme: Themes) => ({ type: GlobalActionTypes.SET_THEME, payload: theme });

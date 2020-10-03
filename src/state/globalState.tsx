@@ -17,6 +17,12 @@ export enum GlobalActionTypes {
     REMOVE_FROM_CART = 'REMOVE_FROM_CART',
     EMPTY_CART = 'EMPTY_CART',
     SET_IS_LOGGING_OUT = 'SET_IS_LOGGING_OUT',
+    SET_THEME = 'SET_THEME',
+}
+
+export enum Themes {
+    WINDOWS95 = 'WINDOWS95',
+    DEFAULT = 'DEFAULT',
 }
 
 export type GlobalAction = {
@@ -29,12 +35,14 @@ type GlobalState = {
     inventory: StoreObject[]
     cart: { [id: number]: CartItem }
     isLoggingOut: boolean
+    theme: Themes
 }
 
 const initialState: GlobalState = {
     inventory: [],
     cart: {},
     isLoggingOut: false,
+    theme: Themes.WINDOWS95,
 };
 
 const getIncrementedCartItem = (id: number, state: GlobalState): CartItem => {
@@ -87,6 +95,8 @@ const globalReducer = (state: GlobalState, action: GlobalAction) => {
             return { ...state, cart: { } };
         case GlobalActionTypes.SET_IS_LOGGING_OUT:
             return { ...state, isLoggingOut: action.payload };
+        case GlobalActionTypes.SET_THEME:
+            return { ...state, theme: action.payload };
         default: return { ...state };
     }
 };
