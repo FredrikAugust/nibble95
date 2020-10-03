@@ -13,17 +13,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  /* Turn off eye comfort */
-  font-family: "95font";
-  -webkit-font-smoothing: none;
-  font-smooth: never;
-  box-sizing: border-box;
-  outline: none;
-}
-
-body,
-#root {
+body, #root {
   max-height: 100vh;
 }
 

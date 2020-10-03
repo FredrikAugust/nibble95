@@ -1,12 +1,15 @@
 import React, { useContext, useEffect, FC } from 'react';
 import styled from 'styled-components';
-import Desktop from './Desktop';
-import StartBar from './StartBar';
-import { StoreObject } from '../types/StoreObject';
-import { GlobalContext } from '../state/globalState';
-import { INVENTORY_URI } from '../artillery/API';
-import { ApplicationWindowProvider } from '../state/applicationWindowState';
-import { setInventory, exitUser } from '../state/actions';
+import Desktop from '../Desktop';
+import StartBar from '../StartBar';
+import { StoreObject } from '../../types/StoreObject';
+import { GlobalContext, Themes } from '../../state/globalState';
+import { INVENTORY_URI } from '../../artillery/API';
+import { ApplicationWindowProvider } from '../../state/applicationWindowState';
+import { setInventory, exitUser } from '../../state/actions';
+
+import * as windows95Theme from './themes/windows95';
+import * as defaultTheme from './themes/default';
 
 export const LOGOUT_TIME = 1000 * 60 * 2;
 
@@ -50,7 +53,7 @@ const App: FC = () => {
     }, [user, dispatch]);
 
     return (
-        <Component>
+        <Component theme={state.theme}>
             <ApplicationWindowProvider>
                 <Desktop />
                 <StartBar />
@@ -60,7 +63,19 @@ const App: FC = () => {
 };
 
 const Component = styled.div`
-    height: calc(100vh - 44px);
+    ${(props) => {
+        switch (props.theme) {
+            case Themes.WINDOWS95: return windows95Theme.Index;
+            default: return null;
+        }
+    }}
+    ${(props) => {
+        switch (props.theme) {
+            case Themes.WINDOWS95: return windows95Theme.Component;
+            case Themes.DEFAULT: return defaultTheme.Component;
+            default: return null;
+        }
+    }}
 `;
 
 export default App;
