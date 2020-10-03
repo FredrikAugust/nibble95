@@ -9,6 +9,7 @@ import React, {
 import { User } from '../../types/User';
 import { registerUser, handleLogin } from '../../artillery/authorization';
 import { InputField } from './index';
+import { Themes } from '../../state/globalState';
 
 type KeyboardEvent = React.KeyboardEvent<HTMLInputElement>
 type HtmlEvent = React.ChangeEvent<HTMLInputElement>
@@ -17,9 +18,12 @@ type Props = {
   dispatchUser: (user?: User | null) => void
   rfid: string
   onEnter: (func: Function) => (event: KeyboardEvent) => void
+  theme: Themes
 }
 
-const RegistrationView: FC<Props> = ({ dispatchUser, rfid, onEnter }: Props) => {
+const RegistrationView: FC<Props> = ({
+    dispatchUser, rfid, onEnter, theme,
+}: Props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [badLogin, setBadLogin] = useState(false);
@@ -48,7 +52,7 @@ const RegistrationView: FC<Props> = ({ dispatchUser, rfid, onEnter }: Props) => 
                 {badLogin ? <p>You logged in with wrong credentials. Try again</p> : null}
             </div>
             <div>
-                <InputField>
+                <InputField theme={theme}>
                     <label htmlFor="username">Username: </label>
                     <input
                         ref={usernameRef}
@@ -58,7 +62,7 @@ const RegistrationView: FC<Props> = ({ dispatchUser, rfid, onEnter }: Props) => 
                         onChange={setValue(setUsername)}
                     />
                 </InputField>
-                <InputField>
+                <InputField theme={theme}>
                     <label htmlFor="password">Password: </label>
                     <input
                         id="password"

@@ -4,17 +4,22 @@ import { User } from '../../types/User';
 import Window from '../ApplicationWindow/Window';
 import { ApplicationWindowTypes } from '../../state/applicationWindowState';
 import LoginView from './Login';
-import { GlobalContext } from '../../state/globalState';
+import { GlobalContext, Themes } from '../../state/globalState';
 import RegistrationView from './Registration';
 import { setUser } from '../../state/actions';
+import nibbleContainer from './themes/default';
 
-interface LoginProps {
-  className?: string;
-  name: string;
+import * as windows95Theme from './themes/windows95';
+import * as defaultTheme from './themes/default';
+
+export type LoginProps = {
+  className?: string
+  name: string
   // It used with styled component
   // eslint-disable-next-line react/no-unused-prop-types
-  windowActivity: ApplicationWindowTypes;
+  windowActivity: ApplicationWindowTypes
   user: User
+  theme: Themes
 }
 
 const onEnterPressed = (func: Function) => (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -24,18 +29,34 @@ const onEnterPressed = (func: Function) => (event: React.KeyboardEvent<HTMLInput
 };
 
 const Login: FC<LoginProps> = (props: LoginProps) => {
-    const { className, name, user } = props;
+    const {
+        className, name, user, theme,
+    } = props;
     const { dispatch } = useContext(GlobalContext);
     const [rfid, setRfid] = useState<string>('');
 
     const dispatchUser = (connectedUser?: User | null) => dispatch(setUser(connectedUser));
     if (user) return null;
     const View: FC = () => (user === undefined
-        ? <LoginView dispatchUser={dispatchUser} setRfid={setRfid} onEnter={onEnterPressed} />
-        : <RegistrationView dispatchUser={dispatchUser} rfid={rfid} onEnter={onEnterPressed} />);
+        ? (
+            <LoginView
+                theme={theme}
+                dispatchUser={dispatchUser}
+                setRfid={setRfid}
+                onEnter={onEnterPressed}
+            />
+        )
+        : (
+            <RegistrationView
+                theme={theme}
+                dispatchUser={dispatchUser}
+                rfid={rfid}
+                onEnter={onEnterPressed}
+            />
+        ));
     return (
         <Window className={className} name={name}>
-            <Container>
+            <Container theme={theme}>
                 <div>
                     <img
                         src={`${process.env.PUBLIC_URL}/find.png`}
@@ -48,109 +69,32 @@ const Login: FC<LoginProps> = (props: LoginProps) => {
     );
 };
 
-export const InputField = styled.div`
-    display: flex;
-    justify-content: space-between;
-
-    input {
-        grid-column: 2;
-
-        border-top: 2px solid black;
-        border-left: 2px solid black;
-        border-right: 1px solid #c3c3c3;
-        border-bottom: 1px solid #c3c3c3;
-
-        box-shadow: 1px 1px 0 0.3px white;
-        margin-right: 2px;
-    }
-`;
-
-
 export default styled(Login)`
-  ${(props) => `${props.windowActivity === ApplicationWindowTypes.MINIMIZED ? 'display: none;' : ''}`}
-  ${(props) => `${
-        props.windowActivity === ApplicationWindowTypes.FOCUSED ? 'z-index: 1;' : 'z-index: 0;'
-    }`}
-
-  grid-row: 1;
-  grid-column: 1;
-  height: fit-content;
-  margin-right: 1em;
-  grid-template-rows: 2em auto;
-
-  top: calc(50% - 30vh / 2);
-  left: calc(50% - 40vw / 2);
+    ${(props) => {
+        switch (props.theme) {
+            case Themes.WINDOWS95: return windows95Theme.Login;
+            case Themes.DEFAULT: return null;
+            default: return null;
+        }
+    }}
 `;
 
 const Container = styled.div`
-    grid-column: 1 / span 12;
-    display: grid;
-    grid-template-rows: min-content min-content max-content;
-    grid-gap: 10px;
-    height: auto;
-    font-size: 1em;
-
-    div:nth-child(1) {
-        grid-row: 1 / span 2;
-        grid-column: 1;
-
-        img {
-            margin: auto;
-            display: block;
-            width: 2em;
+    ${(props) => {
+        switch (props.theme) {
+            case Themes.WINDOWS95: return windows95Theme.Container;
+            case Themes.DEFAULT: return null;
+            default: return null;
         }
-    }
+    }}
+`;
 
-    div:nth-child(2) {
-        grid-row: 1;
-        grid-column: 2;
-
-        p {
-            font-weight: 100;
-            margin: 0;
+export const InputField = styled.div`
+    ${(props) => {
+        switch (props.theme) {
+            case Themes.WINDOWS95: return windows95Theme.InputField;
+            case Themes.DEFAULT: return null;
+            default: return null;
         }
-    }
-
-    div:nth-child(3) {
-        grid-row: 2 / span 1;
-        grid-column: 1 /span 2;
-    }
-
-    div:nth-child(4) {
-        grid-row: 3;
-        grid-column: 1 /span 2;
-
-        button {
-            height: 1.8em;
-            border-top: 1px solid white;
-            border-left: 1px solid white;
-            border-right: 1px solid #929292;
-            border-bottom: 1px solid #929292;
-
-            box-shadow: 1px 1px 0 1px black;
-
-            width: calc(100% - 3px);
-
-            font-weight: 100;
-            font-family: monospace;
-            font-size: 0.9em;
-
-            background: #c3c3c3;
-            margin-bottom: 0.5em;
-
-            &::first-letter {
-              text-decoration: underline;
-            }
-        }
-    }
-
-    div:nth-child(5) {
-        margin: auto;
-        grid-row: 4;
-        grid-column: 1 /span 2;
-
-        img {
-            max-height: 250px;
-        }
-    }
+    }}
 `;

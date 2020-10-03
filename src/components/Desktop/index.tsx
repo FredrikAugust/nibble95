@@ -18,6 +18,7 @@ const Desktop: FunctionComponent = () => {
                     name={name}
                     windowActivity={componentState.windowActivity}
                     user={state.user}
+                    theme={state.theme}
                 />
             ))}
         </Container>

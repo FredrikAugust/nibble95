@@ -1,26 +1,30 @@
 import React, { FC, useContext } from 'react';
 import styled from 'styled-components';
 import { addToCart } from '../../state/actions';
-import { GlobalContext } from '../../state/globalState';
+import { GlobalContext, Themes } from '../../state/globalState';
 import { StoreObject } from '../../types/StoreObject';
 import ShopWindowItem from './ShopItem';
+
+import * as windows95Theme from './themes/windows95';
+import * as defaultTheme from './themes/default';
 
 type ShopWindowProps = {
   inventory: StoreObject[]
 }
 
 const ShopWindow: FC<ShopWindowProps> = ({ inventory }) => {
-    const { dispatch } = useContext(GlobalContext);
+    const { state, dispatch } = useContext(GlobalContext);
     const addItem = (id: number) => dispatch(addToCart(id));
     const shopItems = inventory.map((item) => (
         <ShopWindowItem
             key={item.pk}
             storeObject={item}
             addItem={addItem}
+            theme={state.theme}
         />
     ));
     return (
-        <Container>
+        <Container theme={state.theme}>
             {inventory.length === 0 ? 'Loading...' : shopItems}
         </Container>
     );
@@ -29,16 +33,11 @@ const ShopWindow: FC<ShopWindowProps> = ({ inventory }) => {
 export default ShopWindow;
 
 const Container = styled.div`
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAMklEQVQoU2P8/5//PwMYfIBQaICRCAX/oSZgNYCB8f9/khUIQI2CuAmLCQQVoLqFoBsA13oh6VgfNmcAAAAASUVORK5CYII=)
-    repeat;
-
-  border-top: 2px solid #898989;
-  border-left: 2px solid #898989;
-
-  box-shadow: 1px 1px 0 1px white;
-
-  grid-column: 1 / span 9;
-  grid-row: 3;
-
-  overflow-y: scroll;
+    ${(props) => {
+        switch (props.theme) {
+            case Themes.WINDOWS95: return windows95Theme.ShopWindow;
+            case Themes.DEFAULT: return defaultTheme.ShopWindow;
+            default: return null;
+        }
+    }}
 `;
