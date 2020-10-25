@@ -46,7 +46,6 @@ const Store: FC<StoreProps> = (props: StoreProps) => {
       theme={state.theme}
     >
       <ShopWindow inventory={filteredInventory} />
-      <WelcomeTitle theme={state.theme} user={state.user} />
       <Basket theme={state.theme} />
       <CategoryBar
         theme={state.theme}

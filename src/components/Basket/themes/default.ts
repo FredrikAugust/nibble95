@@ -41,7 +41,7 @@ const Item = css`
 const Container = css`
   overflow: hidden;
   grid-column: 10 / span 3;
-  grid-row: 3;
+  grid-row: 2 / span 2;
   padding-left: 1em;
 
   display: grid;

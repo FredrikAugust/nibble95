@@ -35,7 +35,7 @@ const ShopWindow = css`
   border: 1px solid black;
   border-radius: 5px;
   grid-column: 1 / span 9;
-  grid-row: 3;
+  grid-row: 2 / span 2;
   overflow-y: scroll;
 `;
 
@@ -85,16 +85,6 @@ const ShopItem = css`
   p {
     margin: 3px 0 5px 0;
     font-size: 1.3em;
-  }
-
-  &:active {
-    box-shadow: 2px 2px 0px 4px;
-  }
-
-  &:focus > div {
-    border: 2px dotted black;
-    margin: -0.6em;
-    padding: calc(0.6em - 2px);
   }
 `;
 

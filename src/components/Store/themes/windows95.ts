@@ -37,7 +37,7 @@ const ShopWindow = css`
   border-left: 2px solid #898989;
   box-shadow: 1px 1px 0 1px white;
   grid-column: 1 / span 9;
-  grid-row: 3;
+  grid-row: 2 / span 2;
   overflow-y: scroll;
 `;
 
