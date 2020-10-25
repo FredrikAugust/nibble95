@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, FC } from "react";
+import React, { useContext, useEffect, FC, Dispatch } from "react";
 import styled from "styled-components";
 import {
   ApplicationWindowContext,
@@ -9,7 +9,8 @@ import {
 } from "../../state/applicationWindowState";
 import Button from "../../atom/Button";
 import ClockMoney from "./ClockMoney";
-import { GlobalContext, Themes } from "../../state/globalState";
+import { GlobalContext, Themes, GlobalAction } from "../../state/globalState";
+import { setTheme } from "../../state/actions";
 import BarApplication from "./BarApplication";
 
 import * as windows95Theme from "./themes/windows95";
@@ -20,7 +21,7 @@ type StartBarProps = {
 };
 
 const StartBar: FC<StartBarProps> = ({ theme }) => {
-  const { state } = useContext(GlobalContext);
+  const { state, dispatch } = useContext(GlobalContext);
   const { AWState, AWDispatch } = useContext(ApplicationWindowContext);
   const { user } = state;
 
@@ -39,7 +40,10 @@ const StartBar: FC<StartBarProps> = ({ theme }) => {
   return (
     <Container theme={state.theme}>
       <Button
-        onClick={() => {}}
+        onClick={() => {
+          if (state.theme == "DEFAULT") dispatch(setTheme(Themes.WINDOWS95));
+          if (state.theme == "WINDOWS95") dispatch(setTheme(Themes.DEFAULT));
+        }}
         text="Start"
         icon={`${process.env.PUBLIC_URL}/images/themes/${theme}/start.png`}
       />
