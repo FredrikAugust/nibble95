@@ -42,7 +42,7 @@ const initialState: GlobalState = {
   inventory: [],
   cart: {},
   isLoggingOut: false,
-  theme: Themes.DEFAULT,
+  theme: Themes.WINDOWS95,
 };
 
 const getIncrementedCartItem = (id: number, state: GlobalState): CartItem => {

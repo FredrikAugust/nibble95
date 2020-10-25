@@ -9,7 +9,11 @@ import { dispatchPurchaseItems } from "../../state/actions";
 import * as windows95Theme from "./themes/windows95";
 import * as defaultTheme from "./themes/default";
 
-const Basket: FC = () => {
+type BasketProps = {
+  theme: Themes;
+};
+
+const Basket: FC<BasketProps> = ({ theme }) => {
   const { state, dispatch } = useContext(GlobalContext);
   const { user, cart } = state;
   const totalPrice = calculateCartTotal(cart, state.inventory);
@@ -27,7 +31,11 @@ const Basket: FC = () => {
 
   return (
     <Container theme={state.theme}>
-      <BasketStatus cartSize={Object.keys(cart).length} total={totalPrice} />
+      <BasketStatus
+        cartSize={Object.keys(cart).length}
+        total={totalPrice}
+        theme={state.theme}
+      />
       <BasketItemContainer theme={state.theme}>
         {Object.keys(cart).map((key: string) => (
           <BasketItem
@@ -45,7 +53,9 @@ const Basket: FC = () => {
         theme={state.theme}
       >
         <img
-          src={`${process.env.PUBLIC_URL}/${fundsText.toUpperCase()}.png`}
+          src={`${
+            process.env.PUBLIC_URL
+          }/images/themes/${theme}/${fundsText.toUpperCase()}.png`}
           alt="Money or no money"
         />
         {fundsText}

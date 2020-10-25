@@ -58,7 +58,7 @@ const Login: FC<LoginProps> = (props: LoginProps) => {
       <Container theme={theme}>
         <div>
           <img
-            src={`${process.env.PUBLIC_URL}/find.png`}
+            src={`${process.env.PUBLIC_URL}/images/themes/${theme}/find.png`}
             alt="Search icon win95"
           />
         </div>

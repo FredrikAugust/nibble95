@@ -31,11 +31,9 @@ const CategoryBar = css`
 `;
 
 const ShopWindow = css`
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAMklEQVQoU2P8/5//PwMYfIBQaICRCAX/oSZgNYCB8f9/khUIQI2CuAmLCQQVoLqFoBsA13oh6VgfNmcAAAAASUVORK5CYII=)
-    repeat;
-  border-top: 2px solid #898989;
-  border-left: 2px solid #898989;
-  box-shadow: 1px 1px 0 1px white;
+  background: rgb(8, 76, 126);
+  border: 1px solid black;
+  border-radius: 5px;
   grid-column: 1 / span 9;
   grid-row: 3;
   overflow-y: scroll;
@@ -49,14 +47,10 @@ const ShopItem = css`
   outline: 0;
   font-size: 0.8em;
 
-  background: #c3c3c3;
+  background: white;
 
-  border-left: 2px solid white;
-  border-top: 2px solid white;
-  border-right: 2px solid #929292;
-  border-bottom: 2px solid #929292;
-
-  box-shadow: 1px 1px 0 1px black;
+  border: 1px solid black;
+  border-radius: 5px;
 
   @media screen and (max-width: 1200px) {
     width: calc(100% / 3 - 2em);
@@ -74,8 +68,9 @@ const ShopItem = css`
   }
 
   hr {
-    border-top: 1px solid #929292;
-    border-bottom: 1px solid white;
+    width: 80%;
+    border: 1px solid black;
+    border-radius: 5px;
   }
 
   h3 {

@@ -15,7 +15,11 @@ import BarApplication from "./BarApplication";
 import * as windows95Theme from "./themes/windows95";
 import * as defaultTheme from "./themes/default";
 
-const StartBar: FC = () => {
+type StartBarProps = {
+  theme: Themes;
+};
+
+const StartBar: FC<StartBarProps> = ({ theme }) => {
   const { state } = useContext(GlobalContext);
   const { AWState, AWDispatch } = useContext(ApplicationWindowContext);
   const { user } = state;
@@ -37,7 +41,7 @@ const StartBar: FC = () => {
       <Button
         onClick={() => {}}
         text="Start"
-        icon={`${process.env.PUBLIC_URL}/start.png`}
+        icon={`${process.env.PUBLIC_URL}/images/themes/${theme}/start.png`}
       />
       {Object.entries(AWState).map(([name, application]) => (
         <BarApplication

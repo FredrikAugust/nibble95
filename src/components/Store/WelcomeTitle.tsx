@@ -16,12 +16,10 @@ const WelcomeTitle: FC<WelcomeTitleProps> = ({ user, theme }) => {
   return (
     <Component theme={theme}>
       <img
-        src={`${process.env.PUBLIC_URL}/logo.png`}
+        src={`${process.env.PUBLIC_URL}/images/themes/${theme}/logo.png`}
         alt="Nibble Logo (Windows 95 Search Computer Icon)"
       />
-      Weclome to &nbsp;
-      <strong>Nibble</strong>
-      <span>95</span>
+      Welcome to Nibble4
       {user ? `, ${username}` : null}
     </Component>
   );

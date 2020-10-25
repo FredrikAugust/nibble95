@@ -4,9 +4,10 @@ import { ApplicationWindowTypes } from "../../../state/applicationWindowState";
 const Bar = css`
   height: 1.6em;
   font-size: 1.1em;
-  background-color: #000082;
+  background-color: rgb(8, 76, 126);
   color: white;
   padding: 3px 3px 2px 6px;
+  border-radius: 5px;
 
   margin: -0.5em; /* Counteract the padding from window */
 
@@ -22,12 +23,13 @@ const Bar = css`
 `;
 
 const Window = css`
-  background: #c3c3c3;
+  background: #dee3e0;
 
   border-top: 4px solid #eee;
   border-left: 4px solid #eee;
   border-right: 2px solid #c3c3c3;
   border-bottom: 2px solid #c3c3c3;
+  border-radius: 5px;
 
   box-shadow: 1px 1px 0 1px black;
 

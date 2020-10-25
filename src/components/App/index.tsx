@@ -61,7 +61,7 @@ const App: FC = () => {
     <Component theme={state.theme}>
       <ApplicationWindowProvider>
         <Desktop />
-        <StartBar />
+        <StartBar theme={state.theme} />
       </ApplicationWindowProvider>
     </Component>
   );

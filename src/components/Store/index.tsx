@@ -45,9 +45,9 @@ const Store: FC<StoreProps> = (props: StoreProps) => {
       onClose={logout}
       theme={state.theme}
     >
-      <WelcomeTitle theme={state.theme} user={state.user} />
       <ShopWindow inventory={filteredInventory} />
-      <Basket />
+      <WelcomeTitle theme={state.theme} user={state.user} />
+      <Basket theme={state.theme} />
       <CategoryBar
         theme={state.theme}
         categories={categories}
