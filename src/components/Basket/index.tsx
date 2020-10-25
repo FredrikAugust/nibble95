@@ -26,9 +26,9 @@ const Basket: FC = () => {
   };
 
   return (
-    <Container>
+    <Container theme={state.theme}>
       <BasketStatus cartSize={Object.keys(cart).length} total={totalPrice} />
-      <BasketItemContainer>
+      <BasketItemContainer theme={state.theme}>
         {Object.keys(cart).map((key: string) => (
           <BasketItem
             key={key}
@@ -39,7 +39,11 @@ const Basket: FC = () => {
         ))}
       </BasketItemContainer>
       <hr />
-      <PurchaseButton onClick={purchase} disabled={isDisabled}>
+      <PurchaseButton
+        onClick={purchase}
+        disabled={isDisabled}
+        theme={state.theme}
+      >
         <img
           src={`${process.env.PUBLIC_URL}/${fundsText.toUpperCase()}.png`}
           alt="Money or no money"

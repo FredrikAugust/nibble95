@@ -32,7 +32,7 @@ const Window: FC<WindowProps> = ({
   const onClick = () => AWDispatch(setActiveWindow(name));
   const signOut = () => exitUser(dispatch);
   return (
-    <Container className={className} onClick={onClick}>
+    <Container className={className} onClick={onClick} theme={state.theme}>
       <WindowBar
         name={name}
         onClose={state.user ? signOut : onClose}

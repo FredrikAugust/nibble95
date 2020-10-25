@@ -33,7 +33,7 @@ const StartBar: FC = () => {
     AWDispatch(getWindowActivityFunction(activity)(name));
 
   return (
-    <Container>
+    <Container theme={state.theme}>
       <Button
         onClick={() => {}}
         text="Start"

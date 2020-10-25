@@ -27,7 +27,7 @@ const ClockMoney: React.FC<ClockMoneyProps> = ({ theme }: ClockMoneyProps) => {
   }, [user, countdown]);
 
   return (
-    <Container>
+    <Container theme={state.theme}>
       <span>
         {`${value} NOK`}
         {loggingOutText}

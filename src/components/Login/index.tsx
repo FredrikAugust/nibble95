@@ -7,7 +7,6 @@ import LoginView from "./Login";
 import { GlobalContext, Themes } from "../../state/globalState";
 import RegistrationView from "./Registration";
 import { setUser } from "../../state/actions";
-import nibbleContainer from "./themes/default";
 
 import * as windows95Theme from "./themes/windows95";
 import * as defaultTheme from "./themes/default";

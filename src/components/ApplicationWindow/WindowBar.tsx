@@ -23,7 +23,7 @@ const WindowBar: React.FC<WindowBarProps> = ({
 }) => {
   const { state, dispatch } = useContext(GlobalContext);
   return (
-    <Container>
+    <Container theme={state.theme}>
       <span>{name}</span>
       <TitleBarButton
         button={buttonType}
