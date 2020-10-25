@@ -1,38 +1,50 @@
-import React from 'react';
-import styled from 'styled-components';
-import TitleBarButton, { TitleBarButtonType as ButtonType } from './TitleBarButton';
+import React, { useContext, FC, useState } from "react";
+import styled from "styled-components";
+import TitleBarButton, {
+  TitleBarButtonType as ButtonType,
+} from "./TitleBarButton";
+import { Themes, GlobalContext } from "../../state/globalState";
+import * as windows95Theme from "./themes/windows95";
+import * as defaultTheme from "./themes/default";
+import { ApplicationWindowContext } from "../../state/applicationWindowState";
 
 type WindowBarProps = {
-  name: string
-  onClose?: () => void
-  buttonType: ButtonType
-}
+  name: string;
+  onClose?: () => void;
+  buttonType: ButtonType;
+  theme: Themes;
+};
 
-const WindowBar: React.FC<WindowBarProps> = ({ name, onClose, buttonType }) => (
+const WindowBar: React.FC<WindowBarProps> = ({
+  name,
+  onClose,
+  buttonType,
+  theme,
+}) => {
+  const { state, dispatch } = useContext(GlobalContext);
+  return (
     <Container>
-        <span>{name}</span>
-        <TitleBarButton button={buttonType} onClick={onClose} />
+      <span>{name}</span>
+      <TitleBarButton
+        button={buttonType}
+        onClick={onClose}
+        theme={state.theme}
+      />
     </Container>
-);
+  );
+};
 
 const Container = styled.div`
-  height: 1.6em;
-  font-size: 1.1em;
-  background-color: #000082;
-  color: white;
-  padding: 3px 3px 2px 6px;
-
-  margin: -0.5em; /* Counteract the padding from window */
-
-  display: flex;
-  justify-content: space-between;
-
-  span {
-    line-height: 1.3em;
-  }
-
-  grid-column: 1 / span 13;
-  grid-row: 1;
+  ${(props) => {
+    switch (props.theme) {
+      case Themes.WINDOWS95:
+        return windows95Theme.Bar;
+      case Themes.DEFAULT:
+        return null;
+      default:
+        return null;
+    }
+  }}
 `;
 
 export default WindowBar;
