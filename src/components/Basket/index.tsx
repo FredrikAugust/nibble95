@@ -60,7 +60,7 @@ const Container = styled.div`
       case Themes.WINDOWS95:
         return windows95Theme.Container;
       case Themes.DEFAULT:
-        return null;
+        return defaultTheme.Container;
       default:
         return null;
     }
@@ -73,7 +73,7 @@ const PurchaseButton = styled.button`
       case Themes.WINDOWS95:
         return windows95Theme.Purchase;
       case Themes.DEFAULT:
-        return null;
+        return defaultTheme.Purchase;
       default:
         return null;
     }

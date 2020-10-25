@@ -74,7 +74,7 @@ export default styled(Login)`
       case Themes.WINDOWS95:
         return windows95Theme.Login;
       case Themes.DEFAULT:
-        return null;
+        return defaultTheme.Login;
       default:
         return null;
     }
@@ -87,7 +87,7 @@ const Container = styled.div`
       case Themes.WINDOWS95:
         return windows95Theme.Container;
       case Themes.DEFAULT:
-        return null;
+        return defaultTheme.Container;
       default:
         return null;
     }
@@ -100,7 +100,7 @@ export const InputField = styled.div`
       case Themes.WINDOWS95:
         return windows95Theme.InputField;
       case Themes.DEFAULT:
-        return null;
+        return defaultTheme.InputField;
       default:
         return null;
     }

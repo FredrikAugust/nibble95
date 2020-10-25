@@ -1,10 +1,18 @@
-import { css } from 'styled-components';
+import { css } from "styled-components";
 
-const Component = css`
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: flex-end;
+const Index = css`
+  * {
+    /* Turn off eye comfort */
+    font-family: "95font";
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    box-sizing: border-box;
+    outline: none;
+  }
 `;
 
-// eslint-disable-next-line import/prefer-default-export
-export { Component };
+const Component = css`
+  height: calc(100vh - 44px);
+`;
+
+export { Component, Index };

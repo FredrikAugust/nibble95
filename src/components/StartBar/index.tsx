@@ -58,7 +58,7 @@ const Container = styled.div`
       case Themes.WINDOWS95:
         return windows95Theme.Main;
       case Themes.DEFAULT:
-        return null;
+        return defaultTheme.Main;
       default:
         return null;
     }

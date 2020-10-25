@@ -102,4 +102,4 @@ const InputField = css`
   }
 `;
 
-export default { Container, Login, InputField };
+export { Container, Login, InputField };

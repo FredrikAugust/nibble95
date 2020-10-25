@@ -33,7 +33,7 @@ const Component = styled.h1`
       case Themes.WINDOWS95:
         return windows95Theme.Title;
       case Themes.DEFAULT:
-        return null;
+        return defaultTheme.Title;
       default:
         return null;
     }

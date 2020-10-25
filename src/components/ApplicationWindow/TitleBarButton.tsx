@@ -62,7 +62,7 @@ export default styled(TitleBarButton)`
       case Themes.WINDOWS95:
         return windows95Theme.BarButton;
       case Themes.DEFAULT:
-        return null;
+        return defaultTheme.BarButton;
       default:
         return null;
     }

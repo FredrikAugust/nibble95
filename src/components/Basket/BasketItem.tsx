@@ -45,7 +45,7 @@ export default styled(BasketItem)`
       case Themes.WINDOWS95:
         return windows95Theme.Item;
       case Themes.DEFAULT:
-        return null;
+        return defaultTheme.Item;
       default:
         return null;
     }

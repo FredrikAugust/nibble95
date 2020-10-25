@@ -42,7 +42,7 @@ const Container = styled.div`
       case Themes.WINDOWS95:
         return windows95Theme.Money;
       case Themes.DEFAULT:
-        return null;
+        return defaultTheme.Money;
       default:
         return null;
     }
