@@ -1,81 +1,56 @@
-import React, { FC } from 'react';
-import styled, { css } from 'styled-components';
-import { ApplicationWindowTypes } from '../state/applicationWindowState';
+import React, { FC, useContext } from "react";
+import styled, { css } from "styled-components";
+import { ApplicationWindowTypes } from "../state/applicationWindowState";
+import * as windows95Theme from "./themes/windows95";
+import * as defaultTheme from "./themes/default";
+import { Themes, GlobalContext } from "../state/globalState";
 
-export interface ButtonProps {
+export type ButtonProps = {
   icon?: string;
   text: string;
   className?: string;
   isApplication?: boolean;
   activity?: ApplicationWindowTypes;
   onClick: Function;
-}
+};
 
 const Icon = styled.img`
   height: 1em;
   width: 1em;
-
   margin-right: 0.3em;
 `;
 
 const Button: FC<ButtonProps> = ({
-    text, className, icon, onClick,
-}: ButtonProps) => (
-    <button
-        className={className}
-        onClick={() => onClick()}
-        type="button"
+  text,
+  className,
+  icon,
+  onClick,
+}: ButtonProps) => {
+  const { state } = useContext(GlobalContext);
+  return (
+    <Knapp
+      className={className}
+      onClick={() => onClick()}
+      type="button"
+      theme={state.theme}
     >
-        {icon ? <Icon src={icon} alt="Windows 95 Logo" /> : ''}
-        {text}
-    </button>
-);
+      {icon ? <Icon src={icon} alt="Windows 95 Logo" /> : ""}
+      {text}
+    </Knapp>
+  );
+};
 
-export default styled(Button)`
-    background-color: #C3C3C3;
-    box-shadow: 1px 1px 0 1px black;
-    font-weight: 400;
-    text-align: left;
-    font-size: 1.2em;
-    letter-spacing: -1px;
-
-    *, & { /* All children and itself */
-        vertical-align: middle;
+const Knapp = styled.button`
+  ${(props) => {
+    switch (props.theme) {
+      case Themes.WINDOWS95:
+        return windows95Theme.Button;
+      case Themes.DEFAULT:
+        return defaultTheme.Button;
+      default:
+        return null;
     }
-
-    padding: 0 5px;
-    border-right: 1px solid #c3c3c3;
-    border-bottom: 1px solid #c3c3c3;
-    border-top: 2px solid white;
-    border-left: 2px solid white;
-    outline: none;
-
-    /* If it is an "application" */
-    ${(props: ButtonProps) => (props.isApplication
-        ? css`width: 10em;`
-        : null)}
-
-    /* If it is active */
-    ${(props: ButtonProps) => (props.activity === ApplicationWindowTypes.FOCUSED
-        ? css`
-            border-top: 1px solid #c3c3c3;
-            border-left: 1px solid #c3c3c3;
-            border-bottom: 2px solid white;
-            border-right: 2px solid white;
-
-            margin-top: -1px;
-            height: 36px;
-
-            box-shadow: 1px 1px 1px 1px black inset;
-
-            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAJ0lEQVQYV2N88ODBfwYGBgZ5eXkQxcCIIfD//3+wiocPH0JUoAsAAMp5FTuPL92NAAAAAElFTkSuQmCC)
-            repeat;`
-        : null)}
-    ${(props: ButtonProps) => (props.activity === ApplicationWindowTypes.CLOSED
-        ? css`display: none;`
-        : null)}
-
-    &:not(:last-of-type) {
-        margin-right: .3em;
-    }
+  }}
 `;
+
+export default Button;
