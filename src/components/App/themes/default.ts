@@ -4,7 +4,6 @@ const Index = css`
   * {
     /* Turn off eye comfort */
     font-family: Arial;
-
     box-sizing: border-box;
   }
 `;

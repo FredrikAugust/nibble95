@@ -5,9 +5,8 @@ import { ApplicationWindowTypes } from "../../state/applicationWindowState";
 const Button = css<ThemeProps<ButtonProps>>`
 background-color: rgb(8, 76, 126);
 color: white;
-font-weight: 400;
-
-font-size: 1.4em;
+font-family: Arial;
+font-size: 1.2em;
 
 
 *, & { /* All children and itself */

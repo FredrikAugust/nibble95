@@ -33,6 +33,7 @@ const Store = css<ThemeProps<StoreProps>>`
   display: flex;
   margin-top: 10px;
   justify-content: flex-start;
+
 `;
 
 const ShopWindow = css`
@@ -49,15 +50,11 @@ const ShopWindow = css`
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #fcc981;
-    border-radius: 5px;
-
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
     background: #F9B759;
+    border-radius: 2px;
 
   }
+
 `;
 
 const ShopItem = css`
