@@ -43,14 +43,13 @@ const BarButton = css`
   min-width: 1.15em;
   margin-right: 2px;
   margin-top: 1px;
-  outline: none;
-  background-color: #c3c3c3;
-  font-weight: 600;
 
-  border-top: 2px solid white;
-  border-left: 2px solid white;
+  background-color: white;
+  font-weight: 300;
 
-  box-shadow: 1px 1px 0 1px black;
+  border: 1px solid black;
+  border-radius: 5px;
+
 `;
 
 export { Bar, Window, BarButton };

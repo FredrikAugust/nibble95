@@ -7,6 +7,7 @@ import { StoreProps } from "../index";
 const Store = css<ThemeProps<StoreProps>>`
     grid-template-rows: 1.6em 3.2em auto min-content;
     grid-row: 1 /span 2;
+
     ${(props) =>
       `${
         props.theme.windowActivity === ApplicationWindowTypes.FOCUSED
