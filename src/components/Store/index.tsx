@@ -31,6 +31,8 @@ const Store: FC<StoreProps> = (props: StoreProps) => {
 
   const logout = () => exitUser(dispatch);
 
+
+
   const filteredInventory = state.inventory.filter((item) => {
     if (filterCategory === "Alt") return item;
     return item.category.name === filterCategory;

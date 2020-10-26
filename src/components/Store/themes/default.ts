@@ -1,31 +1,38 @@
 import { css, ThemeProps } from "styled-components";
 import { ApplicationWindowTypes } from "../../../state/applicationWindowState";
 import { StoreProps } from "../index";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { GlobalContext } from "../../../state/globalState";
 
 // Necesarry typing to avoid some weird prop expectancy conflict
 // TODO learn more about the problem
 
-
-
-const Store = css<ThemeProps<StoreProps>>`
-
+const Store = css<StoreProps>`
     grid-template-rows: 1.6em 3.2em auto min-content;
     grid-row: 1 /span 3;
     grid-column: 1 / span 3;
-    ${(props) =>
+
+
+    ${(props : StoreProps) =>
       `${
-        props.theme.windowActivity === ApplicationWindowTypes.FOCUSED
+        props.windowActivity === ApplicationWindowTypes.FOCUSED
           ? "z-index: 1;"
           : "z-index: 0;"
       }`}
-    ${(props) =>
+    ${(props : StoreProps) =>
       `${
-        props.theme.windowActivity === ApplicationWindowTypes.MINIMIZED
+        props.windowActivity === ApplicationWindowTypes.MINIMIZED
           ? "display: none;"
           : ""
       }`}
+
+      ${(props : StoreProps) =>
+        `${
+          props.user
+            ? "filter: blur(0);"
+            : "filter: blur(3px);"
+        }`}
+
 `;
 
  const CategoryBar = css`
@@ -43,7 +50,7 @@ const ShopWindow = css`
   grid-column: 1 / span 9;
   grid-row: 2 / span 2;
   overflow-y: scroll;
-  transition: 2s;
+  transition: 0.1s;
   ::-webkit-scrollbar {
     width: 15px;
 

@@ -26,7 +26,7 @@ ${(props) =>
     : ""}
 
 /* If it is active */
-${(props) =>
+${(props ) =>
   props.theme.activity === ApplicationWindowTypes.FOCUSED
     ? `
         border-top: 1px solid #c3c3c3;
