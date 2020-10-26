@@ -15,13 +15,14 @@ const Login = css`
         ? "z-index: 1;"
         : "z-index: 0;"
     }`}
-  grid-row: 1;
-  grid-column: 1;
+  grid-row: 2;
+  grid-column: 2;
   height: fit-content;
   margin-right: 1em;
   grid-template-rows: 2em auto;
   top: calc(50% - 30vh / 2);
   left: calc(50% - 40vw / 2);
+  width: 60%;
 `;
 
 const Container = css`

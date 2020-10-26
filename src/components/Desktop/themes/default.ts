@@ -3,11 +3,11 @@ import { css } from "styled-components";
 const Container = css`
 
   height: 100%;
-  padding: 1em;
+
   overflow: hidden;
   display: grid;
-  grid-template-columns: 1fr 4fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 2fr 2fr 2fr;
+  grid-template-rows: 1fr 1fr 1fr;
 `;
 
 // eslint-disable-next-line import/prefer-default-export

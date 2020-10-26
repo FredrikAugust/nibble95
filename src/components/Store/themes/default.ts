@@ -1,13 +1,19 @@
 import { css, ThemeProps } from "styled-components";
 import { ApplicationWindowTypes } from "../../../state/applicationWindowState";
 import { StoreProps } from "../index";
+import { useContext } from "react";
+import { GlobalContext } from "../../../state/globalState";
 
 // Necesarry typing to avoid some weird prop expectancy conflict
 // TODO learn more about the problem
-const Store = css<ThemeProps<StoreProps>>`
-    grid-template-rows: 1.6em 3.2em auto min-content;
-    grid-row: 1 /span 2;
 
+
+
+const Store = css<ThemeProps<StoreProps>>`
+
+    grid-template-rows: 1.6em 3.2em auto min-content;
+    grid-row: 1 /span 3;
+    grid-column: 1 / span 3;
     ${(props) =>
       `${
         props.theme.windowActivity === ApplicationWindowTypes.FOCUSED
@@ -20,11 +26,9 @@ const Store = css<ThemeProps<StoreProps>>`
           ? "display: none;"
           : ""
       }`}
-    ${(props) =>
-      `${props.theme.user ? "grid-column: 1 /span 2;" : "grid-column: 2;"}`}
 `;
 
-const CategoryBar = css`
+ const CategoryBar = css`
   grid-row: 4;
   display: flex;
   margin-top: 10px;
@@ -33,11 +37,27 @@ const CategoryBar = css`
 
 const ShopWindow = css`
   background: rgb(8, 76, 126);
-  border: 1px solid black;
+
   border-radius: 5px;
   grid-column: 1 / span 9;
   grid-row: 2 / span 2;
   overflow-y: scroll;
+  transition: 2s;
+  ::-webkit-scrollbar {
+    width: 15px;
+
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #fcc981;
+    border-radius: 5px;
+
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #F9B759;
+
+  }
 `;
 
 const ShopItem = css`
@@ -50,7 +70,7 @@ const ShopItem = css`
 
   background: white;
 
-  border: 1px solid black;
+  border: none;
   border-radius: 5px;
 
   @media screen and (max-width: 1200px) {

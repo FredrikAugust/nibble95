@@ -73,11 +73,8 @@ const Container = css`
   }
 
   & > div:nth-child(2) {
-    border-top: 1px solid #828282;
-    border-left: 1px solid #828282;
-    border-right: 1px solid white;
-    border-bottom: 1px solid white;
-
+    border: 1px solid black;
+    border-radius: 5px;
     padding: 5px;
   }
 `;

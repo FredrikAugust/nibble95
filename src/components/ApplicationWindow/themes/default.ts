@@ -7,7 +7,6 @@ const Bar = css`
   background-color: rgb(8, 76, 126);
   color: white;
   padding: 3px 3px 2px 6px;
-  border-radius: 5px;
 
   margin: -0.5em; /* Counteract the padding from window */
 
@@ -24,10 +23,7 @@ const Bar = css`
 
 const Window = css`
   background: white;
-
   border: 1px solid black;
-  border-radius: 5px;
-
   display: grid;
   grid-template-columns: repeat(12, 8.25%);
   padding: 0.5em;
