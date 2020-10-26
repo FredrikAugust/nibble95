@@ -30,7 +30,7 @@ const StartBar: FC<StartBarProps> = ({ theme }) => {
       AWDispatch(setActiveWindow("Login"));
     } else {
       AWDispatch(closeWindow("Login"));
-      AWDispatch(setActiveWindow("Nibble95"));
+      AWDispatch(setActiveWindow("Butikk"));
     }
   }, [user, AWDispatch]);
 

@@ -15,14 +15,12 @@ const Item = css`
   }
 
   display: flex;
-  border-top: 1px solid white;
-  border-left: 1px solid white;
-  border-right: 1px solid #929292;
-  border-bottom: 1px solid #929292;
-  box-shadow: 1px 1px 0 1px black;
+  border: 1px solid black;
+  border-radius: 5px;
   padding: 3px;
   margin-bottom: 5px;
-
+  background-color: rgb(8, 76, 126);
+  color: white;
   & > h5 {
     margin-left: auto;
     align-self: center;
@@ -30,10 +28,10 @@ const Item = css`
     font-weight: 100;
 
     font-size: 1em;
-    color: #000082;
+    color: white;
 
     span {
-      color: black;
+      color: white;
     }
   }
 `;
@@ -85,12 +83,9 @@ const Container = css`
 `;
 
 const Purchase = css`
-  background-color: #008282;
-  border-top: 1px solid white;
-  border-left: 1px solid white;
-  border-bottom: 1px solid #929292;
-  border-right: 1px solid #929292;
-  box-shadow: 1px 1px 0 1px black;
+  background-color: rgb(8, 76, 126);
+  border: 1px solid black;
+  border-radius: 5px;
   margin: 1px 3px 3px 1px;
 
   color: white;

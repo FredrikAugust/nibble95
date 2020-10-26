@@ -1,7 +1,7 @@
 import { css } from "styled-components";
 
 const Container = css`
-  background-color: #008282;
+
   height: 100%;
   padding: 1em;
   overflow: hidden;

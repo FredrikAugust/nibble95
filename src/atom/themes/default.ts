@@ -4,11 +4,11 @@ import { ApplicationWindowTypes } from "../../state/applicationWindowState";
 
 const Button = css<ThemeProps<ButtonProps>>`
 background-color: rgb(8, 76, 126);
-
+color: white;
 font-weight: 400;
-text-align: left;
-font-size: 1.2em;
-letter-spacing: -1px;
+
+font-size: 1.4em;
+
 
 *, & { /* All children and itself */
     vertical-align: middle;

@@ -23,15 +23,10 @@ const Bar = css`
 `;
 
 const Window = css`
-  background: #dee3e0;
+  background: white;
 
-  border-top: 4px solid #eee;
-  border-left: 4px solid #eee;
-  border-right: 2px solid #c3c3c3;
-  border-bottom: 2px solid #c3c3c3;
+  border: 1px solid black;
   border-radius: 5px;
-
-  box-shadow: 1px 1px 0 1px black;
 
   display: grid;
   grid-template-columns: repeat(12, 8.25%);

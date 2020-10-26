@@ -31,7 +31,7 @@ export type ApplicationWindowActions = {
 }
 
 const initialState: ApplicationWindowState = {
-    Nibble95: {
+    Butikk: {
         component: Store,
         windowActivity: ApplicationWindowTypes.NOT_FOCUSED,
     },

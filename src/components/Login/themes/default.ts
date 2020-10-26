@@ -58,17 +58,15 @@ const Container = css`
     grid-row: 3;
     grid-column: 1 / span 2;
     button {
+      background-color: rgb(8, 76, 126);
       height: 1.8em;
-      border-top: 1px solid white;
-      border-left: 1px solid white;
-      border-right: 1px solid #929292;
-      border-bottom: 1px solid #929292;
-      box-shadow: 1px 1px 0 1px black;
+      border: 1px solid black;
+      border-radius: 5px;
+      color: white;
       width: calc(100% - 3px);
       font-weight: 100;
       font-family: monospace;
       font-size: 0.9em;
-      background: #c3c3c3;
       margin-bottom: 0.5em;
       &::first-letter {
         text-decoration: underline;
