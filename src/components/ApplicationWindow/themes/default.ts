@@ -27,7 +27,7 @@ const Window = css`
   display: grid;
   grid-template-columns: repeat(12, 8.25%);
   padding: 0.5em;
-  transition: all 2s;
+  transition: all 0.1s;
   height: 100%;
 `;
 
